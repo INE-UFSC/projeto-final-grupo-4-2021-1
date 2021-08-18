@@ -1,0 +1,120 @@
+from abc import ABC, abstractmethod
+from copy import deepcopy
+#from Skill import Skill
+from Resource import Resource
+from DamageType import DamageType
+from Stats import Stats
+
+
+class Fighter(ABC):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict[bufftarget, dict[DamageType, multiplier]], skills: list = []):
+        self.__stats = stats
+        self.__hp = hp
+        self.__ap = ap
+        self.__equipment = equipment
+        self.__buffs = buffs
+        self.__skills = skills
+
+    @property
+    def hp(self):
+        return self.__hp
+
+    @property
+    def ap(self):
+        return self.__ap
+
+    @property
+    def stats(self):
+        return self.__stats
+
+    @property
+    def skills(self):
+        return self.__skills
+        
+    #Remover?
+    def basicattack(self):
+        if self.__skills:
+            self.use_skill(self.__skills[0])
+
+
+    def use_skill(self, skill):
+        "Returns a copy of the skill with it's values multiplied by the buffs multipliers in self.__buffs"
+        skill = deepcopy(skill)
+        for effect, ieffect in enumerate(skill.effects):
+            if isinstance(effect, DamageEffect):
+                for damageType in effect.damage:
+                    #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
+
+                    multiplier = self.__buffs[BuffTarget.damage][damageType] + self.__buffs[BuffTarget.damage][DamageType.all]
+                    skill.effects[ieffect].damage[damageType] *= max(0, multiplier)
+
+                    if effect.target == Target.self:
+
+                        #Multiplica o valor do dano por -1 e aplica na vida
+                        self.__hp.increase_current(-1 * effect.damage[damageType])
+
+                    #Implementar precisão --------------------------------------------------------------------------------------------------------------------
+
+            #Implementar Healing e Buff Effect ---------------------------------------------------------------------------------------------------------------
+
+            if isinstance(effect, HealingEffect):
+                if effect.target == Target.self:
+                    self.__hp.increase_current(effect.amount)
+
+            if isinstance(effect, BuffEffect):
+                pass
+
+        return skill
+
+    def get_attacked(self, skill):
+        for effect, ieffect in enumerate(skill.effects):
+            if isinstance(effect, DamageEffect):
+                for damageType in effect.damage:
+                    multiplier = self.__buffs[BuffTarget.resistance][damageType] + self.__buffs[BuffTarget.resistance][DamageType.all]
+                    skill.effects[ieffect].damage[damageType] *= max(0, multiplier)
+
+                    if effect.target == Target.enemy or effect.target == Target.both:
+
+                        #Multiplica o valor do dano por -1 e aplica na vida
+                        self.__hp.increase_current(-1 * effect.damage[damageType])
+
+            if isinstance(effect, HealingEffect):
+                if effect.target == Target.enemy or effect.target == Target.both:
+                    self.__hp.increase_current(effect.amount) 
+
+            if isinstance(effect, BuffEffect):
+                pass
+
+        return skill
+                     
+    def add_buff(self, buff_effect: BuffEffect):
+        "Adds up the values of the buff effects received by BuffEffect on self.__buffs"
+        for target, damage in buff_effect.buff.items():
+            for damageType, multiplier in damage.items():
+                try:
+                    self.__buffs[target][damageType] += multiplier
+                except:
+                    self.__buffs[target][damageType] = multiplier
+
+    def remove_buff(self, buff_effect: BuffEffect):
+        "Subtracts the value of the buff effects received by BuffEffect on self.__buffs"
+        for target, damage in buff_effect.buff.items():
+            for damageType, multiplier in damage.items():
+                    self.__buffs[target][damageType] -= multiplier
+
+    def add_skill(self, skill):
+        "Appends the skill in self.__skills"
+        self.__skills.append(skill)
+    
+    def remove_skill(self, skill):
+        "If the parameter is an Int, then the skill will be poped out by its index. If it is a Skill, then the skill will be removed"
+        if isinstance(skill, int):
+            self.__skills.pop(skill)
+        else:
+            self.__skills.remove(skill)
+    
+    def switch_skill_place(self, currentpos: int, newpos: int):
+        "Switch the position of two skills in self.__skills"
+        tmp = self.__skills[newpos]
+        self.__skills[newpos] = self.__skills[currentpos]
+        self.__skills[currentpos] = tmp
