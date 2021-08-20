@@ -25,11 +25,12 @@ states = {
     "END": End(),
 }
 
-main_character = MainCharacter.test_character()
-opponent = Opponent.test_opponent()
+main_character = MainCharacter.generate_test_character()
+opponent = Opponent.generate_test_opponent()
 
-opponent.get_attacked(main_character.basicattack())
-main_character.get_attacked(opponent.basicattack())
+opponent.get_attacked(main_character.use_skill(0))
+main_character.get_attacked(opponent.use_skill(0))
+opponent.get_attacked(main_character.use_skill(1))
 
 game = Game(screen, states, "SPLASH")
 game.run()

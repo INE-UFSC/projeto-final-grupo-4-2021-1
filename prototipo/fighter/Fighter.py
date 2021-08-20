@@ -5,7 +5,6 @@ from skill.Skill import Skill
 from .Resource import Resource
 from skill.DamageType import DamageType
 from skill.DamageEffect import DamageEffect
-from skill.DamageClass import DamageClass
 from skill.BuffTarget import BuffTarget
 from skill.EffectTarget import EffectTarget
 from skill.HealingEffect import HealingEffect
@@ -42,7 +41,7 @@ class Fighter(ABC):
     #Remover?
     def basicattack(self):
         if self.__skills:
-            return self.use_skill(self.__skills[0])
+            return self.use_skill(0)
 
     def initialize_buffs(self):
         buffs = {}
@@ -52,9 +51,9 @@ class Fighter(ABC):
                 buffs[buffTarget][damageType] = 0
         return buffs
 
-    def use_skill(self, skill):
+    def use_skill(self, idx):
         "Returns a copy of the skill with it's values multiplied by the buffs multipliers in self.__buffs"
-        skill = deepcopy(skill)
+        skill = deepcopy(self.__skills[idx])
         for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:

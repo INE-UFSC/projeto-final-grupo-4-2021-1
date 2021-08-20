@@ -17,7 +17,7 @@ class Opponent(Fighter):
         super().__init__(stats, hp, ap, equipment, skills)
 
     @staticmethod
-    def test_opponent():
+    def generate_test_opponent():
         return Opponent(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 4}, 100, 0, EffectTarget.ENEMY)], "teste")])
 
     @property
