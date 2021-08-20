@@ -4,7 +4,7 @@ from Trinket import Trinket
 
 
 class Equipment:
-    def __init__(self, weapon, armor, trinket):
+    def __init__(self, weapon: Weapon, armor: Armor, trinket: Trinket):
         self.__weapon = weapon
         self.__armor = armor
         self.__trinket = trinket
@@ -22,13 +22,13 @@ class Equipment:
         return self.__trinket
     
     @weapon.setter
-    def weapon(self, weapon):
+    def weapon(self, weapon: Weapon):
         self.__weapon = weapon
     
     @armor.setter
-    def armor(self, armor):
+    def armor(self, armor: Armor):
         self.__armor = armor
     
     @trinket.setter
-    def trinket(self, trinket):
+    def trinket(self, trinket: Trinket):
         self.__trinket = trinket

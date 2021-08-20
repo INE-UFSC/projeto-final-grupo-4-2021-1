@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
+from prototipo.item.ItemTypes import ItemType
 
 class Item(ABC):
     @abstractmethod
-    def __init__(self, name, description, weight, type):
+    def __init__(self, name: str, description: str, weight: float, type: ItemType):
         self.__name = name
         self.__description = description
         self.__weight = weight

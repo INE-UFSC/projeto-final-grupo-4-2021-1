@@ -1,8 +1,11 @@
 from Item import Item
+from ItemTypes import ItemType
+from skill.BuffEffect import BuffEffect
+from skill.DamageType import DamageType
 
 
 class Weapon(Item):
-    def __init__(self, name, description, weight, type, base_damage, buff_effect):
+    def __init__(self, name: str, description: str, weight: float, type: ItemType, base_damage: dict, buff_effect: BuffEffect):
         super().__init__(name, description, weight, type)
         self.__base_damage = base_damage
         self.__buff_effect = buff_effect
@@ -10,7 +13,7 @@ class Weapon(Item):
     @property
     def base_damage(self):
         return self.__base_damage
-    
+
     @property
     def buff_effect(self):
         return self.__buff_effect
