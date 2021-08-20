@@ -1,14 +1,15 @@
 import pygame
+
 from states.SplashState import Splash
 from states.InitState import Init
 from states.MenuState import Menu
 from states.TreasureRoomState import TreasureRoom
 from states.HealRoomState import HealRoom
+from states.StartCombatState import StartCombatState
 from states.MainCharacterPlayingState import MainCharacterPlaying
 from states.OpponentPlayingState import OpponentPlaying
 from states.EndState import End
 from Game import Game
-
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
 
@@ -18,6 +19,7 @@ states = {
     "SPLASH": Splash(),
     "INIT": Init(),
     "MENU": Menu(),
+    "START_COMBAT": StartCombatState(),
     "MAIN_CHARACTER_PLAYING": MainCharacterPlaying(),
     "OPPONENT_PLAYING": OpponentPlaying(),
     "HEAL_ROOM": HealRoom(),
