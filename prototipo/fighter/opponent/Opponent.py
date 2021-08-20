@@ -1,4 +1,8 @@
-from Fighter import Fighter
+from fighter.Fighter import Fighter
+from fighter.Stats import Stats
+from fighter.Resource import Resource
+from OpponentInfo import OpponentInfo
+from Behavior import Behavior
 
 class Opponent(Fighter):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict[bufftarget, dict[DamageType, multiplier]], info: OpponentInfo, behavior: Behavior, skills: list = []):
@@ -16,3 +20,4 @@ class Opponent(Fighter):
 
     def use_skill(self):
         super().use_skill(self.__behavior.choose_skill)
+

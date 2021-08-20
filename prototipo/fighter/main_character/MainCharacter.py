@@ -1,4 +1,7 @@
-from Fighter import Fighter
+from fighter.Fighter import Fighter
+from fighter.Stats import Stats
+from fighter.Resource import Resource
+#importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
 

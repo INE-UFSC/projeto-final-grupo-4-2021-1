@@ -1,8 +1,8 @@
 #Essa classe ainda não adiciona os buffs ao upar os stats.
 #Falta decidir se haverá categorização dos danos ou não.
 from Fighter import Fighter
-from DamageType import DamageType
-from DamageClass import DamageClass
+from skill.DamageType import DamageType
+from skill.DamageClass import DamageClass
 
 INTELLIGENCE_MULTIPLIER = 1.05
 STRENGTH_MULTIPLIER = 1.05
