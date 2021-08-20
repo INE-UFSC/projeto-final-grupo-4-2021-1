@@ -1,5 +1,5 @@
 from enum import Enum
 
 class DamageClass(Enum):
-    magical = 1
-    physical = 2
+    MAGICAL = 1
+    PHYSICAL = 2

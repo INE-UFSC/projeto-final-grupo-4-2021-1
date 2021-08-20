@@ -12,6 +12,3 @@ class BuffEffect(Effect):
     @property
     def buff(self):
         return self.__buff
-    
-    def apply_effect(self, character: Fighter, enemy: Fighter):
-        pass

@@ -1,9 +1,15 @@
-from Fighter import Fighter
+from fighter.Fighter import Fighter
+from fighter.Stats import Stats
+from fighter.Resource import Resource
+from item.Inventory import Inventory
+from item.Equipment import Equipment
+#importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
 
+#buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class MainCharacter(Fighter):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict[bufftarget, dict[DamageType, multiplier]], inventory: Inventory, exp: int, skills: list = []):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = []):
         self.__inventory = inventory
         self.__exp = exp
         super().__init__(stats, hp, ap, equipment, buffs, skills)

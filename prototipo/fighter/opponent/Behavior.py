@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from BehaviorType import BehaviorType
+
 
 class Behavior(ABC):
     def __init__(self, behaviorType: BehaviorType):

@@ -2,15 +2,14 @@ from enum import Enum
 from DamageClass import DamageClass
 
 class DamageType(Enum):
-    fire = DamageClass.magical
-    water = DamageClass.magical
-    earth = DamageClass.magical
-    air = DamageClass.magical
+    FIRE = DamageClass.MAGICAL
+    WATER = DamageClass.MAGICAL
+    EARTH = DamageClass.MAGICAL
+    AIR = DamageClass.MAGICAL
 
-    piercing = DamageClass.physical
-    slashing = DamageClass.physical
-    blunt = DamageClass.physical
+    PIERCING = DamageClass.PHYSICAL
+    SLASHING = DamageClass.PHYSICAL
+    BLUDGEONING = DamageClass.PHYSICAL
 
     #Special type, must only be used to specify buffs
-    all = 1
-    
+    ALL = 1
