@@ -5,6 +5,7 @@ from item.Inventory import Inventory
 from item.Equipment import Equipment
 from skill.EffectTarget import EffectTarget
 from skill.DamageEffect import DamageEffect
+from skill.DamageType import DamageType
 from skill.Skill import Skill
 #importar inventário e equipamento
 
@@ -19,7 +20,7 @@ class MainCharacter(Fighter):
 
     @staticmethod
     def test_character():
-        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, 0, [Skill([DamageEffect({1, 5}, 100, 0, EffectTarget.ENEMY)], "teste")])
+        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, 0, [Skill([DamageEffect({DamageType.SLASHING: 5}, 100, 0, EffectTarget.ENEMY)], "teste")])
     
     @property
     def inventory(self):

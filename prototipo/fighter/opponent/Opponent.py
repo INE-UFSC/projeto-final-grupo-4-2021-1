@@ -1,8 +1,12 @@
+from skill.DamageEffect import DamageEffect
+from skill.Skill import Skill
+from skill.EffectTarget import  EffectTarget
+from skill.DamageType import DamageType
 from fighter.Fighter import Fighter
 from fighter.Stats import Stats
 from fighter.Resource import Resource
-from OpponentInfo import OpponentInfo
-from Behavior import Behavior
+from .OpponentInfo import OpponentInfo
+from .Behavior import Behavior
 from item.Equipment import Equipment
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
@@ -12,6 +16,10 @@ class Opponent(Fighter):
         self.__behavior = behavior
         super().__init__(stats, hp, ap, equipment, skills)
 
+    @staticmethod
+    def test_opponent():
+        return Opponent(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 4}, 100, 0, EffectTarget.ENEMY)], "teste")])
+
     @property
     def info(self):
         return self.__info
@@ -20,6 +28,6 @@ class Opponent(Fighter):
     def behavior(self):
         return self.__behavior
 
-    def use_skill(self):
-        super().use_skill(self.__behavior.choose_skill)
+    #def use_skill(self):
+        #super().use_skill(self.__behavior.choose_skill)
 

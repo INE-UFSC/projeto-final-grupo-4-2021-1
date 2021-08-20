@@ -42,7 +42,7 @@ class Fighter(ABC):
     #Remover?
     def basicattack(self):
         if self.__skills:
-            self.use_skill(self.__skills[0])
+            return self.use_skill(self.__skills[0])
 
     def initialize_buffs(self):
         buffs = {}
@@ -55,12 +55,14 @@ class Fighter(ABC):
     def use_skill(self, skill):
         "Returns a copy of the skill with it's values multiplied by the buffs multipliers in self.__buffs"
         skill = deepcopy(skill)
-        for effect, index in enumerate(skill.effects):
+        for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:
                     #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
 
-                    multiplier = self.__buffs[BuffTarget.damage][damageType] + self.__buffs[BuffTarget.damage][DamageType.all]
+                    multiplier = self.__buffs[BuffTarget.DAMAGE][damageType] * self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
+                    a = skill.effects[index]
+                    b = a.damage[DamageType.SLASHING]
                     skill.effects[index].damage[damageType] *= max(0, multiplier)
 
                     if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
@@ -81,11 +83,11 @@ class Fighter(ABC):
 
         return skill
 
-    def get_attacked(self, skill):
-        for effect, index in enumerate(skill.effects):
+    def get_attacked(self, skill: Skill):
+        for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:
-                    multiplier = self.__buffs[BuffTarget.resistance][damageType] + self.__buffs[BuffTarget.resistance][DamageType.all]
+                    multiplier = self.__buffs[BuffTarget.RESISTANCE][damageType] * self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
                     skill.effects[index].damage[damageType] *= max(0, multiplier)
 
                     if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:

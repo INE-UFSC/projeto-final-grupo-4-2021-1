@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from BehaviorType import BehaviorType
+from .BehaviorType import BehaviorType
 
 
 class Behavior(ABC):
