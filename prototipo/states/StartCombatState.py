@@ -2,9 +2,9 @@ import pygame
 from .BaseState import BaseState
 
 
-class StartCombatState(BaseState):
+class StartCombat(BaseState):
     def __init__(self):
-        super(StartCombatState, self).__init__()
+        super(StartCombat, self).__init__()
         self.time_active = 0
 
     def run(self):
@@ -15,4 +15,3 @@ class StartCombatState(BaseState):
     def draw(self, surface):
         surface.fill(pygame.Color("red"))
         # desenhar quadrado como oponente
-

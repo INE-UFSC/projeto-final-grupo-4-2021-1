@@ -41,7 +41,6 @@ class MainCharacterPlaying(BaseState):
 
     def handle_action(self):
         if self.active_index == 0:
-            # return "HEAL_ROOM"
             #atacar
             pass
         elif self.active_index == 1:
