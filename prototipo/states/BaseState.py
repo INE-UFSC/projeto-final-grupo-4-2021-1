@@ -1,4 +1,5 @@
 import pygame
+from abc import ABC, abstractmethod
 
 
 class BaseState:
@@ -13,11 +14,14 @@ class BaseState:
     def startup(self, persistent):
         self.persist = persistent
 
-    def get_event(self, event):
+    @abstractmethod
+    def run(self):
         pass
 
+    #Colocar dentro do run? Ou pelo menos ser executado dentro dele.
     def update(self, dt):
         pass
 
+    @abstractmethod
     def draw(self, surface):
         pass

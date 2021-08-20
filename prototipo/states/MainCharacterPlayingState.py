@@ -21,40 +21,37 @@ class MainCharacterPlaying(BaseState):
 
     def handle_action(self):
         if self.active_index == 0:
-            # self.done = True
-            # self.next_state = "HEAL_ROOM"
+            # return "HEAL_ROOM"
             #atacar
             pass
         elif self.active_index == 1:
-            # self.done = True
-            # self.next_state = "TREASURE_ROOM"
+            # return "TREASURE_ROOM"
             #efeito
             pass
         elif self.active_index == 2:
-            # self.done = True
-            # self.next_state = "END"
+            # return "END"
             #item
             pass
         elif self.active_index == 3:
-            self.done = True
-            self.next_state = "MENU"
+            return "MENU"
 
-    def get_event(self, event):
-        if event.type == pygame.QUIT:
-            self.quit = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                if self.active_index > 0:
-                    self.active_index -= 1
-                else:
-                    self.active_index = 0
-            elif event.key == pygame.K_DOWN:
-                if self.active_index < 3:
-                    self.active_index += 1
-                else:
-                    self.active_index = 3
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.quit = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    if self.active_index > 0:
+                        self.active_index -= 1
+                    else:
+                        self.active_index = 0
+                elif event.key == pygame.K_DOWN:
+                    if self.active_index < 3:
+                        self.active_index += 1
+                    else:
+                        self.active_index = 3
+                elif event.key == pygame.K_RETURN:
+                    return self.handle_action()
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))

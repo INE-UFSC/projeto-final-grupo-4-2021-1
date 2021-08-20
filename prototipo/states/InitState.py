@@ -1,7 +1,6 @@
 import pygame
 from .BaseState import BaseState
 
-
 class Init(BaseState):
     def __init__(self):
         super(Init, self).__init__()
@@ -18,21 +17,21 @@ class Init(BaseState):
 
     def handle_action(self):
         if self.active_index == 0:
-            self.done = True
-            self.next_state = "MAIN_CHARACTER_PLAYING"
+            return "MAIN_CHARACTER_PLAYING"
         elif self.active_index == 1:
-            self.quit = True
+            return "QUIT"
 
-    def get_event(self, event):
-        if event.type == pygame.QUIT:
-            self.quit = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.active_index = 1 if self.active_index <= 0 else 0
-            elif event.key == pygame.K_DOWN:
-                self.active_index = 0 if self.active_index >= 1 else 1
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.quit = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.active_index = 1 if self.active_index <= 0 else 0
+                elif event.key == pygame.K_DOWN:
+                    self.active_index = 0 if self.active_index >= 1 else 1
+                elif event.key == pygame.K_RETURN:
+                    return self.handle_action()
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
