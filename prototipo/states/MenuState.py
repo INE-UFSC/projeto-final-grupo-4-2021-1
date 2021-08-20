@@ -29,7 +29,7 @@ class Menu(BaseState):
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.quit = True
+                return "QUIT"
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     if self.active_index > 0:
