@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class RoomType(Enum):
-    combat = 1
-    treasure = 2
+    COMBAT = 1
+    TREASURE = 2
