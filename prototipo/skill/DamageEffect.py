@@ -21,6 +21,3 @@ class DamageEffect(Effect):
     @property
     def crit_chance(self):
         return self.__crit_chance
-    
-    def apply_effect(self, character: Fighter, enemy: Fighter):
-        pass

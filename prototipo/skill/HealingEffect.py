@@ -9,6 +9,3 @@ class HealingEffect(Effect):
     @property
     def amount(self):
         return self.__amount
-    
-    def apply_effect(self, character: Fighter, enemy: Fighter):
-        pass
