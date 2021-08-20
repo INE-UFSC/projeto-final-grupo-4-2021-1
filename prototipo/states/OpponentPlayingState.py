@@ -11,4 +11,4 @@ class OpponentPlaying(BaseState):
         pass
 
     def draw(self, surface):
-        surface.fill(pygame.Color("white"))
+        surface.fill(pygame.Color("black"))
