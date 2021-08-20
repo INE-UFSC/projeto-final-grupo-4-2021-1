@@ -22,7 +22,6 @@ class MainCharacterPlaying(BaseState):
         for option in options[1:]:
             index += 100
             surface = self.font.render(option, True, pygame.Color("white"))
-            
             self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(index, 500))))
 
             
@@ -61,12 +60,12 @@ class MainCharacterPlaying(BaseState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_LEFT:
                     if self.active_index > 0:
                         self.active_index -= 1
                     else:
                         self.active_index = 0
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_RIGHT:
                     if self.active_index < 3:
                         self.active_index += 1
                     else:

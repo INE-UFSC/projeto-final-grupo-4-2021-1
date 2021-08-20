@@ -9,19 +9,18 @@ class Game:
         self.screen = screen
         self.states = states
         self.current_state = self.states[start_state]
-        self.statesQueue = []
+        self.previous_state = self.current_state
 
     def update_state(self, next_state_key):
         if next_state_key == None:
             return
         if next_state_key == "PREVIOUS":
-            self.statesQueue.pop()
-            self.current_state = self.statesQueue[-1]
+            self.current_state, self.previous_state = self.previous_state, self.current_state
         elif next_state_key == "QUIT":
             quit()
         else:
+            self.previous_state = self.current_state
             self.current_state = self.states[next_state_key]
-            self.statesQueue.append(self.states[next_state_key])
 
 
     def draw_current_state(self):
