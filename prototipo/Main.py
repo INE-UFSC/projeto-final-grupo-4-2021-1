@@ -5,7 +5,8 @@ from states.InitState import Init
 from states.MenuState import Menu
 from states.TreasureRoomState import TreasureRoom
 from states.HealRoomState import HealRoom
-from states.StartCombatState import StartCombatState
+from states.StartCombatState import StartCombat
+from states.EndCombatState import EndCombat
 from states.MainCharacterPlayingState import MainCharacterPlaying
 from states.OpponentPlayingState import OpponentPlaying
 from states.EndState import End
@@ -19,9 +20,10 @@ states = {
     "SPLASH": Splash(),
     "INIT": Init(),
     "MENU": Menu(),
-    "START_COMBAT": StartCombatState(),
+    "START_COMBAT": StartCombat(),
     "MAIN_CHARACTER_PLAYING": MainCharacterPlaying(),
     "OPPONENT_PLAYING": OpponentPlaying(),
+    "END_COMBAT": EndCombat(),
     "HEAL_ROOM": HealRoom(),
     "TREASURE_ROOM": TreasureRoom(),
     "END": End(),
