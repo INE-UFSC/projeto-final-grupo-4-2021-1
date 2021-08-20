@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from prototipo.item.ItemTypes import ItemType
+from item.ItemTypes import ItemType
 
 class Item(ABC):
     @abstractmethod

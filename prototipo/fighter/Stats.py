@@ -1,6 +1,5 @@
 #Essa classe ainda não adiciona os buffs ao upar os stats.
 #Falta decidir se haverá categorização dos danos ou não.
-from Fighter import Fighter
 from skill.DamageType import DamageType
 from skill.DamageClass import DamageClass
 
@@ -10,14 +9,13 @@ CONSTITUTION_MULTIPLIER = 1.05
 WITS_MULTIPLIER = 1.05
 
 class Stats:
-    def __init__(self, fighter: Fighter, strengh: int = 0, intelligence: int = 0,
-                 constitution: int = 0, wits: int = 0, availablePoints:int = 0):
-        self.__fighter = fighter
+    def __init__(self, strengh: int = 0, intelligence: int = 0,
+                 constitution: int = 0, wits: int = 0):
         self.__intelligence = intelligence
         self.__strength = strengh
         self.__constitution = constitution
         self.__wits = wits
-        self.__availablePoints = availablePoints
+        self.__availablePoints = 2
 
     @property
     def intelligence(self):
@@ -64,9 +62,6 @@ class Stats:
     def increase_constitution(self):
         if self.__availablePoints:
             self.__constitution += 1
-            heal = self.__fighter.hp * (CONSTITUTION_MULTIPLIER - 1)
-            self.__fighter.hp.increase_max(CONSTITUTION_MULTIPLIER, True)
-            self.__fighter.hp.increase_current(heal)
             self.__availablePoints -= 1
 
     #Implementar Buffs

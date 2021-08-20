@@ -1,3 +1,4 @@
+from fighter.main_character.MainCharacter import MainCharacter
 import pygame
 from states.SplashState import Splash
 from states.InitState import Init
@@ -22,6 +23,8 @@ states = {
     "TREASURE_ROOM": TreasureRoom(),
     "END": End(),
 }
+
+main_character = MainCharacter.test_character()
 
 game = Game(screen, states, "SPLASH")
 game.run()

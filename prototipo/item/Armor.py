@@ -1,5 +1,5 @@
-from Item import Item
-from ItemTypes import ItemType
+from .Item import Item
+from .ItemTypes import ItemType
 from skill.BuffEffect import BuffEffect
 from skill.DamageType import DamageType
 

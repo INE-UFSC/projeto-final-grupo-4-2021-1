@@ -1,5 +1,5 @@
 from abc import ABC
-from EffectTarget import EffectTarget
+from .EffectTarget import EffectTarget
 
 class Effect(ABC):
     def __init__(self, target: EffectTarget):

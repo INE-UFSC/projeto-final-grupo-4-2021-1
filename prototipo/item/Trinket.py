@@ -1,5 +1,5 @@
-from Item import Item
-from ItemTypes import ItemType
+from .Item import Item
+from .ItemTypes import ItemType
 from skill.BuffEffect import BuffEffect
 
 class Trinket(Item):

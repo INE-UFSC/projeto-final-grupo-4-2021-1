@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 
 from skill.Skill import Skill
-from Resource import Resource
+from .Resource import Resource
 from skill.DamageType import DamageType
 from skill.DamageEffect import DamageEffect
 from skill.DamageClass import DamageClass
@@ -11,16 +11,16 @@ from skill.EffectTarget import EffectTarget
 from skill.HealingEffect import HealingEffect
 from skill.BuffEffect import BuffEffect
 from item.Equipment import Equipment
-from Stats import Stats
+from .Stats import Stats
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 class Fighter(ABC):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, skills: list = []):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: list = []):
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap
         self.__equipment = equipment
-        self.__buffs = buffs
+        self.__buffs = self.initialize_buffs()
         self.__skills = skills
 
     @property
@@ -44,6 +44,13 @@ class Fighter(ABC):
         if self.__skills:
             self.use_skill(self.__skills[0])
 
+    def initialize_buffs(self):
+        buffs = {}
+        for buffTarget in BuffTarget:
+            buffs[buffTarget] = {}
+            for damageType in DamageType:
+                buffs[buffTarget][damageType] = 1
+        return buffs
 
     def use_skill(self, skill):
         "Returns a copy of the skill with it's values multiplied by the buffs multipliers in self.__buffs"

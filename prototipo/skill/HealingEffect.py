@@ -1,5 +1,5 @@
-from Effect import Effect
-from EffectTarget import EffectTarget
+from .Effect import Effect
+from .EffectTarget import EffectTarget
 
 class HealingEffect(Effect):
     def __init__(self, amount: int, target: EffectTarget):

@@ -1,6 +1,6 @@
-from Armor import Armor
-from Weapon import Weapon
-from Trinket import Trinket
+from .Armor import Armor
+from .Weapon import Weapon
+from .Trinket import Trinket
 
 
 class Equipment:

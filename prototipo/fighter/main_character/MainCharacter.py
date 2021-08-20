@@ -3,6 +3,9 @@ from fighter.Stats import Stats
 from fighter.Resource import Resource
 from item.Inventory import Inventory
 from item.Equipment import Equipment
+from skill.EffectTarget import EffectTarget
+from skill.DamageEffect import DamageEffect
+from skill.Skill import Skill
 #importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
@@ -12,7 +15,11 @@ class MainCharacter(Fighter):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = []):
         self.__inventory = inventory
         self.__exp = exp
-        super().__init__(stats, hp, ap, equipment, buffs, skills)
+        super().__init__(stats, hp, ap, equipment, skills)
+
+    @staticmethod
+    def test_character():
+        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, 0, [Skill([DamageEffect({1, 5}, 100, 0, EffectTarget.ENEMY)], "teste")])
     
     @property
     def inventory(self):

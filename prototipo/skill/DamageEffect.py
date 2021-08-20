@@ -1,11 +1,11 @@
 from typing import Dict
-from Effect import Effect
-from EffectTarget import EffectTarget
-from DamageType import DamageType
+from .Effect import Effect
+from .EffectTarget import EffectTarget
+from .DamageType import DamageType
 
 class DamageEffect(Effect):
     def __init__(self, damage: Dict[DamageType, int], accuracy: int, crit_chance: int, target: EffectTarget):
-        super().init(target)
+        super().__init__(target)
         self.__damage = damage
         self.__accuracy = accuracy
         self.__crit_chance = crit_chance
