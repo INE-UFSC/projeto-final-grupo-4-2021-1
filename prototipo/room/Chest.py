@@ -1,3 +1,6 @@
+from prototipo.item.Item import Item
+
+
 class Chest:
     def __init__(self, items):
         self.__items = items
