@@ -24,25 +24,25 @@ class Menu(BaseState):
             # a ser definido
             pass
         elif self.active_index == 2:
-            self.done = True
-            self.next_state = "MAIN_CHARACTER_PLAYING"
+            return "PREVIOUS"
 
-    def get_event(self, event):
-        if event.type == pygame.QUIT:
-            self.quit = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                if self.active_index > 0:
-                    self.active_index -= 1
-                else:
-                    self.active_index = 0
-            elif event.key == pygame.K_DOWN:
-                if self.active_index < 2:
-                    self.active_index += 1
-                else:
-                    self.active_index = 2
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    if self.active_index > 0:
+                        self.active_index -= 1
+                    else:
+                        self.active_index = 0
+                elif event.key == pygame.K_DOWN:
+                    if self.active_index < 2:
+                        self.active_index += 1
+                    else:
+                        self.active_index = 2
+                elif event.key == pygame.K_RETURN:
+                    return self.handle_action()
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
