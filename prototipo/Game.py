@@ -1,43 +1,41 @@
 import pygame
 
 
+FPS = 60
+FramePerSec = pygame.time.Clock()
+
 class Game:
     def __init__(self, screen, states, start_state):
-        self.done = False
         self.screen = screen
-        self.clock = pygame.time.Clock()
-        self.fps = 60
         self.states = states
-        self.state_name = start_state
-        self.state = self.states[self.state_name]
+        self.current_state = self.states[start_state]
+        self.previous_state = self.current_state
 
-    def event_loop(self):
-        for event in pygame.event.get():
-            self.state.get_event(event)
+    def update_state(self, next_state_key):
+        if next_state_key == None:
+            return
+        if next_state_key == "PREVIOUS":
+            self.current_state, self.previous_state = self.previous_state, self.current_state
+        elif next_state_key == "QUIT":
+            quit()
+        else:
+            self.previous_state = self.current_state
+            self.current_state = self.states[next_state_key]
 
-    def flip_state(self):
-        current_state = self.state_name
-        next_state = self.state.next_state
-        self.state.done = False
-        self.state_name = next_state
-        persistent = self.state.persist
-        self.state = self.states[self.state_name]
-        self.state.startup(persistent)
 
-    def update(self, dt):
-        if self.state.quit:
-            self.done = True
-        elif self.state.done:
-            self.flip_state()
-        self.state.update(dt)
+    def draw_current_state(self):
+        self.current_state.draw(self.screen)
 
-    def draw(self):
-        self.state.draw(self.screen)
+    def run_current_state(self):
+        "Calls the current state's routine. Returns the key to the next state, or None if the state should not be changed."
+        return self.current_state.run()
 
     def run(self):
-        while not self.done:
-            dt = self.clock.tick(self.fps)
-            self.event_loop()
-            self.update(dt)
-            self.draw()
+        while True:
+            next_state_key = self.run_current_state()
+            self.draw_current_state()
+        
             pygame.display.update()
+            FramePerSec.tick(FPS)
+
+            self.update_state(next_state_key)

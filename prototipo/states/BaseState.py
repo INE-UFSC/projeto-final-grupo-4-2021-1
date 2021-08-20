@@ -1,23 +1,27 @@
 import pygame
+from abc import ABC, abstractmethod
 
 
 class BaseState:
     def __init__(self):
-        self.done = False
-        self.quit = False
-        self.next_state = None
+        #self.done = False
+        #self.quit = False
+        #self.next_state = None
         self.screen_rect = pygame.display.get_surface().get_rect()
-        self.persist = {}
+        #self.persist = {}
         self.font = pygame.font.Font(None, 24)
 
-    def startup(self, persistent):
-        self.persist = persistent
+    # def startup(self, persistent):
+    #     self.persist = persistent
 
-    def get_event(self, event):
+    @abstractmethod
+    def run(self):
         pass
 
+    #Colocar dentro do run? Ou pelo menos ser executado dentro dele.
     def update(self, dt):
         pass
 
+    @abstractmethod
     def draw(self, surface):
         pass
