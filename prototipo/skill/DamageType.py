@@ -1,5 +1,4 @@
 from enum import Enum
-from .DamageClass import DamageClass
 
 class DamageType(Enum):
     FIRE = "FIRE"

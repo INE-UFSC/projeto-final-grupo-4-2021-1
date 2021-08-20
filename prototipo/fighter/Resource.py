@@ -27,25 +27,22 @@ class Resource:
         self.__max += amount
         if self.__max < 0:
             self.__max = 0
-        self.increase_current(0)
+        self.increase_current(amount)
 
+    def decrease_current(self, amount: int):
+        "Decrease the current value by the given amount. Ensures that it's not less than 0"
+        self.__current -= amount
+        if self.__current < 0:
+            self.__current = 0
 
-    def set_max(self, max: int):
-        "Sets the value of the max variable. Ensures that it's not less than 0 and updates the current value accordingly"
-        self.__max = max
+    def decrease_max(self, amount: int):
+        "Decrease the max value by the given amount. Ensures that it's not less than 0 and updates the current value accordingly"
+        current_percetange = self.current/self.max
+        self.__max -= amount
         if self.__max < 0:
             self.__max = 0
-
-        self.increase_current(0)
-
-    def set_current(self, current: int):
-        "Sets the value of the current variable. Ensures that it's not less than 0 nor greater than the max"
-        self.__current += current
-        if self.__current > self.__max:
-            self.__current = self.__max
-
-        elif self.__current < 0:
-            self.__current = 0
+        self.__current = current_percetange * self.__max
+    
         
     def is_zero(self):
         return self.__current == 0

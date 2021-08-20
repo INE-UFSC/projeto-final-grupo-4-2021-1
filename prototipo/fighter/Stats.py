@@ -1,7 +1,6 @@
 #Essa classe ainda não adiciona os buffs ao upar os stats.
 #Falta decidir se haverá categorização dos danos ou não.
 from skill.DamageType import DamageType
-from skill.DamageClass import DamageClass
 
 INTELLIGENCE_MULTIPLIER = 1.05
 STRENGTH_MULTIPLIER = 1.05

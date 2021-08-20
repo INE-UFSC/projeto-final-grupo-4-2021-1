@@ -49,7 +49,7 @@ class Fighter(ABC):
         for buffTarget in BuffTarget:
             buffs[buffTarget] = {}
             for damageType in DamageType:
-                buffs[buffTarget][damageType] = 1
+                buffs[buffTarget][damageType] = 0
         return buffs
 
     def use_skill(self, skill):
@@ -60,24 +60,19 @@ class Fighter(ABC):
                 for damageType in effect.damage:
                     #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
 
-                    multiplier = self.__buffs[BuffTarget.DAMAGE][damageType] * self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
-                    a = skill.effects[index]
-                    b = a.damage[DamageType.SLASHING]
-                    skill.effects[index].damage[damageType] *= max(0, multiplier)
+                    multiplier = self.__buffs[BuffTarget.DAMAGE][damageType] + self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
+                    skill.effects[index].damage[damageType] *= max(0, multiplier + 1)
 
                     if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-
-                        #Multiplica o valor do dano por -1 e aplica na vida
-                        self.__hp.increase_current(-1 * effect.damage[damageType])
+                        self.__hp.decrease_current(effect.damage[damageType])
 
                     #Implementar precisão --------------------------------------------------------------------------------------------------------------------
-
-            #Implementar Healing e Buff Effect ---------------------------------------------------------------------------------------------------------------
 
             if isinstance(effect, HealingEffect):
                 if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
                     self.__hp.increase_current(effect.amount)
-
+            
+            #TODO implementação de BuffEffect
             if isinstance(effect, BuffEffect):
                 pass
 
@@ -87,13 +82,13 @@ class Fighter(ABC):
         for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:
-                    multiplier = self.__buffs[BuffTarget.RESISTANCE][damageType] * self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
-                    skill.effects[index].damage[damageType] *= max(0, multiplier)
+                    multiplier = self.__buffs[BuffTarget.RESISTANCE][damageType] + self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
+                    skill.effects[index].damage[damageType] *= max(0, multiplier + 1)
 
                     if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
 
                         #Multiplica o valor do dano por -1 e aplica na vida
-                        self.__hp.increase_current(-1 * effect.damage[damageType])
+                        self.__hp.decrease_current(effect.damage[damageType])
 
             if isinstance(effect, HealingEffect):
                 if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
