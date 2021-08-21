@@ -13,7 +13,7 @@ from states.EndState import End
 from Game import Game
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
-import Singleton
+from Singleton import Singleton
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))

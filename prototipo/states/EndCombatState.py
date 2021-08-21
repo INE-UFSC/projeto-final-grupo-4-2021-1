@@ -1,5 +1,5 @@
 import pygame
-import Singleton
+from Singleton import Singleton
 from .BaseState import BaseState
 
 

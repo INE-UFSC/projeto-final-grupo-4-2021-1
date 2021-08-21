@@ -8,6 +8,7 @@ from fighter.Resource import Resource
 from .OpponentInfo import OpponentInfo
 from .Behavior import Behavior
 from item.Equipment import Equipment
+import pygame
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class Opponent(Fighter):
@@ -27,6 +28,12 @@ class Opponent(Fighter):
     @property
     def behavior(self):
         return self.__behavior
+
+    def draw(self, surface):
+        surf = pygame.Surface(size=(100, 100))
+        surf.fill(pygame.Color("red"))
+        rect = surf.get_rect(center=(400, 300))
+        surface.blit(surf, rect)
 
     #def use_skill(self):
         #super().use_skill(self.__behavior.choose_skill)
