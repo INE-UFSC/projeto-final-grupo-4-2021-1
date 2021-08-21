@@ -1,11 +1,12 @@
 import pygame
 from .BaseState import BaseState
 
+
 class Init(BaseState):
     def __init__(self):
         super(Init, self).__init__()
         self.active_index = 0
-        self.options = ["Start Game", "Quit Game"]
+        self.options = ["New", "Load", "Options", "Exit"]
 
     def render_text(self, index):
         color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
@@ -19,6 +20,12 @@ class Init(BaseState):
         if self.active_index == 0:
             return "START_COMBAT"
         elif self.active_index == 1:
+            # load
+            pass
+        elif self.active_index == 2:
+            self.done = True
+            self.next_state = "MENU"
+        elif self.active_index == 3:
             return "QUIT"
 
     def run(self):
@@ -27,9 +34,15 @@ class Init(BaseState):
                 self.quit = True
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
-                    self.active_index = 1 if self.active_index <= 0 else 0
+                    if self.active_index > 0:
+                        self.active_index -= 1
+                    else:
+                        self.active_index = 0
                 elif event.key == pygame.K_DOWN:
-                    self.active_index = 0 if self.active_index >= 1 else 1
+                    if self.active_index < 3:
+                        self.active_index += 1
+                    else:
+                        self.active_index = 3
                 elif event.key == pygame.K_RETURN:
                     return self.handle_action()
 

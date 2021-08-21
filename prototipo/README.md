@@ -1,3 +1,8 @@
-Nesse diretório, o grupo irá trabalhar em cima do primeiro protótipo do jogo.
+## Instalação
+- Para realizar a instalação das dependências utilizadas é necessário a execução do comando: 
+`pip install -r requirements.txt`.
+- Isso fará com que as dependências utilizadas sejam instaladas.
+- No momento a única dependência é o pygame, na versão 2.0.1.
 
-A ideia do protótipo não é que ele seja uma versão demo do jogo completo, mas sim que o principal mecanismo do jogo esteja implementado com certo grau de sucesso. Exemplo: em um jogo do tipo plataforma 2D, basta mostrar um retângulo colidindo com objetos e saltando/destruindo com alguma comando do usuário. A interface gráfica (com sprites) é opcional nessa etapa.
+## Execução
+- Para realizar a execução do jogo é necessário certificar-se de estar no diretório `prototipo` e executar o comando `python Main.py`.
