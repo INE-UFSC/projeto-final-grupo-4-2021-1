@@ -1,7 +1,7 @@
 import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
-import Singleton
+from Singleton import Singleton
 
 
 class OpponentPlaying(BaseState):
@@ -13,6 +13,7 @@ class OpponentPlaying(BaseState):
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
+        Singleton.opponent.draw(surface)
         for hp in [self.player_hp, self.opponent_hp]:
             surface.blit(hp.surf, hp.rect)
 

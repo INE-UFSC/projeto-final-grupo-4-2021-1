@@ -1,6 +1,5 @@
 from fighter.opponent.Opponent import Opponent
-import pygame
-import Singleton
+from Singleton import Singleton
 from .BaseState import BaseState
 
 
@@ -17,5 +16,6 @@ class StartCombat(BaseState):
             return "MAIN_CHARACTER_PLAYING"
 
     def draw(self, surface):
-        surface.fill(pygame.Color("red"))
+        if (Singleton.opponent):
+            Singleton.opponent.draw(surface)
         # desenhar quadrado como oponente

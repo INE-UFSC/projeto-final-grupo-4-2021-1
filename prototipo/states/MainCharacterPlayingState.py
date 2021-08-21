@@ -1,7 +1,7 @@
 import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
-import Singleton
+from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -92,6 +92,8 @@ class MainCharacterPlaying(BaseState):
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
+        Singleton.opponent.draw(surface)
+
         for option in [*self.options, self.player_hp, self.opponent_hp]:
             # text_render = self.render_text(index)
             surface.blit(option.surf, option.rect)
