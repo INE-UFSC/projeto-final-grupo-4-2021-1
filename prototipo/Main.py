@@ -31,6 +31,7 @@ states = {
 }
 
 Singleton.main_character = MainCharacter.generate_test_character()
+Singleton.background = pygame.image.load("prototipo/Images/Background.png")
 
 game = Game(screen, states, "SPLASH")
 game.run()

@@ -91,7 +91,7 @@ class MainCharacterPlaying(BaseState):
 
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
 
         for option in [*self.options, self.player_hp, self.opponent_hp]:

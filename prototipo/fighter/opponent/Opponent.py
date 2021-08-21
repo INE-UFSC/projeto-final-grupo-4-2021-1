@@ -30,7 +30,7 @@ class Opponent(Fighter):
         return self.__behavior
 
     def draw(self, surface):
-        surf = pygame.Surface(size=(50, 50))
+        surf = pygame.Surface(size=(100, 100))
         surf.fill(pygame.Color("red"))
         rect = surf.get_rect(center=(400, 300))
         surface.blit(surf, rect)
