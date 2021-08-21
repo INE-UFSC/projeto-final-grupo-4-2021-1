@@ -12,7 +12,7 @@ class OpponentPlaying(BaseState):
         self.time_active = 0
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.blit(Singleton.background, (0,0))
         for hp in [self.player_hp, self.opponent_hp]:
             surface.blit(hp.surf, hp.rect)
 
