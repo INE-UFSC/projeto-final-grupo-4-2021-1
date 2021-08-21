@@ -23,8 +23,7 @@ class Init(BaseState):
             # load
             pass
         elif self.active_index == 2:
-            self.done = True
-            self.next_state = "MENU"
+            return "MENU"
         elif self.active_index == 3:
             return "QUIT"
 
