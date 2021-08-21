@@ -1,6 +1,7 @@
 import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
+from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -40,20 +41,23 @@ class MainCharacterPlaying(BaseState):
     #     return text.get_rect(center=center)
 
     def handle_action(self):
-        if self.active_index == 0:
-            # return "HEAL_ROOM"
-            #atacar
-            pass
-        elif self.active_index == 1:
-            # return "TREASURE_ROOM"
-            #efeito
-            pass
-        elif self.active_index == 2:
-            # return "END"
-            #item
-            pass
-        elif self.active_index == 3:
+        if self.active_index == 3:
+            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
+
             return "MENU"
+        else:
+            if self.active_index == 1:
+                Singleton.main_character.use_skill(1)
+
+
+            elif self.active_index == 2:
+                print("You used an item! Wow!")
+            
+            elif self.active_index == 0:
+                Singleton.main_character.basicattack()
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
+            
+            return "OPPONENT PLAYING"
 
     def run(self):
         for event in pygame.event.get():
