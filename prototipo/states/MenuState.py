@@ -6,7 +6,7 @@ class Menu(BaseState):
     def __init__(self):
         super(Menu, self).__init__()
         self.active_index = 0
-        self.options = ["Volume", "Abublublé", "Return"]
+        self.options = ["Volume", "Indefinido", "Return"]
 
     def render_text(self, index):
         color = pygame.Color("red") if index == self.active_index else pygame.Color("white")

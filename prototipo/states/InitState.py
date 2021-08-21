@@ -17,7 +17,7 @@ class Init(BaseState):
 
     def handle_action(self):
         if self.active_index == 0:
-            return "MAIN_CHARACTER_PLAYING"
+            return "START_COMBAT"
         elif self.active_index == 1:
             return "QUIT"
 
