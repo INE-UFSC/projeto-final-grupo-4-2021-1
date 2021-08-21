@@ -18,7 +18,7 @@ class Opponent(Fighter):
 
     @staticmethod
     def generate_test_opponent():
-        return Opponent(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 4}, 100, 0, EffectTarget.ENEMY)], "teste")])
+        return Opponent(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 1}, 100, 0, EffectTarget.ENEMY)], "teste")])
 
     @property
     def info(self):

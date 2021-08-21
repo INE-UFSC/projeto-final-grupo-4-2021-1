@@ -13,6 +13,8 @@ class MainCharacterPlaying(BaseState):
         self.previous_index = 0
 
         self.options = []
+        self.player_hp = None
+        self.opponent_hp = None
         options = ("Attack", "Effect", "Item", "Options")
 
         #Pls correct the gambiarra as soon as possible
@@ -24,8 +26,6 @@ class MainCharacterPlaying(BaseState):
             index += 100
             surface = self.font.render(option, True, pygame.Color("white"))
             self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(index, 500))))
-
-            
 
         # #Incitializes text surfaces
         # self.options_surfaces.append(self.font.render(self.options_texts[self.active_index], True, pygame.Color("red")))
@@ -59,6 +59,14 @@ class MainCharacterPlaying(BaseState):
             return "OPPONENT_PLAYING"
 
     def run(self):
+        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
+
+        surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
+        self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
+
+        surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
+        self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -84,6 +92,6 @@ class MainCharacterPlaying(BaseState):
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
-        for option in self.options:
+        for option in [*self.options, self.player_hp, self.opponent_hp]:
             # text_render = self.render_text(index)
             surface.blit(option.surf, option.rect)
