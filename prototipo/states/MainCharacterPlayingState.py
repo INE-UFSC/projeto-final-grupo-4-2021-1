@@ -42,22 +42,20 @@ class MainCharacterPlaying(BaseState):
 
     def handle_action(self):
         if self.active_index == 3:
-            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
-
             return "MENU"
+        
         else:
             if self.active_index == 1:
                 Singleton.main_character.use_skill(1)
-
 
             elif self.active_index == 2:
                 print("You used an item! Wow!")
             
             elif self.active_index == 0:
-                Singleton.main_character.basicattack()
                 Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
             
-            return "OPPONENT PLAYING"
+            self.is_zero()
+            return "OPPONENT_PLAYING"
 
     def run(self):
         for event in pygame.event.get():
@@ -82,6 +80,10 @@ class MainCharacterPlaying(BaseState):
             self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
             self.previous_index = self.active_index
 
+
+    def is_zero(self):
+        if Singleton.opponent.hp.current == 0:
+            return "END_COMBAT"
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
