@@ -1,7 +1,7 @@
 import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
-from Singleton import Singleton
+import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -54,7 +54,8 @@ class MainCharacterPlaying(BaseState):
             elif self.active_index == 0:
                 Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
             
-            self.is_zero()
+            if Singleton.opponent.hp.is_zero():
+                return "END_COMBAT"
             return "OPPONENT_PLAYING"
 
     def run(self):
@@ -80,10 +81,6 @@ class MainCharacterPlaying(BaseState):
             self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
             self.previous_index = self.active_index
 
-
-    def is_zero(self):
-        if Singleton.opponent.hp.current == 0:
-            return "END_COMBAT"
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))

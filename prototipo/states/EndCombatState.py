@@ -1,4 +1,5 @@
 import pygame
+import Singleton
 from .BaseState import BaseState
 
 
@@ -8,7 +9,14 @@ class EndCombat(BaseState):
         self.time_active = 0
 
     def run(self):
-        pass
+        self.time_active += 1
+        if self.time_active > 50:
+            self.time_active = 0
+            Singleton.opponent = None
+            if Singleton.main_character.hp.is_zero():
+                return "END"
+            else:
+                return "START_COMBAT"
 
     def draw(self, surface):
-        surface.fill(pygame.Color("red"))
+        surface.fill(pygame.Color("blue"))

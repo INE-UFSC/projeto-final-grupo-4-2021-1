@@ -1,6 +1,6 @@
-from prototipo.fighter.main_character import MainCharacter
-from prototipo.fighter.opponent import Opponent
+from fighter.main_character.MainCharacter import MainCharacter
+from fighter.opponent.Opponent import Opponent
 
-class Singleton:
-    main_character = MainCharacter.generate_test_character()
-    opponent = Opponent.generate_test_character()
+class Si1ngleton:
+    main_character: MainCharacter = None
+    opponent : Opponent = None

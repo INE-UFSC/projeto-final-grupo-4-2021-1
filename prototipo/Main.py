@@ -13,6 +13,7 @@ from states.EndState import End
 from Game import Game
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
+import Singleton
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
@@ -29,12 +30,7 @@ states = {
     "END": End(),
 }
 
-main_character = MainCharacter.generate_test_character()
-opponent = Opponent.generate_test_opponent()
-
-opponent.get_attacked(main_character.use_skill(0))
-main_character.get_attacked(opponent.use_skill(0))
-opponent.get_attacked(main_character.use_skill(1))
+Singleton.main_character = MainCharacter.generate_test_character()
 
 game = Game(screen, states, "SPLASH")
 game.run()

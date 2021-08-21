@@ -1,4 +1,6 @@
+from fighter.opponent.Opponent import Opponent
 import pygame
+import Singleton
 from .BaseState import BaseState
 
 
@@ -10,6 +12,8 @@ class StartCombat(BaseState):
     def run(self):
         self.time_active += 1
         if self.time_active > 50:
+            self.time_active = 0
+            Singleton.opponent = Opponent.generate_test_opponent()
             return "MAIN_CHARACTER_PLAYING"
 
     def draw(self, surface):
