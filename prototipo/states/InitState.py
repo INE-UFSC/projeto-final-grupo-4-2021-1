@@ -1,8 +1,8 @@
 import pygame
-from .BaseState import BaseState
+from .BaseMenuState import BaseMenuState
 
 
-class Init(BaseState):
+class Init(BaseMenuState):
     def __init__(self):
         super(Init, self).__init__()
         self.active_index = 0
@@ -23,7 +23,7 @@ class Init(BaseState):
             # load
             pass
         elif self.active_index == 2:
-            return "MENU"
+            return "OPTIONS"
         elif self.active_index == 3:
             return "QUIT"
 
@@ -32,18 +32,7 @@ class Init(BaseState):
             if event.type == pygame.QUIT:
                 self.quit = True
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
-                    if self.active_index > 0:
-                        self.active_index -= 1
-                    else:
-                        self.active_index = 0
-                elif event.key == pygame.K_DOWN:
-                    if self.active_index < 3:
-                        self.active_index += 1
-                    else:
-                        self.active_index = 3
-                elif event.key == pygame.K_RETURN:
-                    return self.handle_action()
+                return self.handle_menu(event.key)
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
