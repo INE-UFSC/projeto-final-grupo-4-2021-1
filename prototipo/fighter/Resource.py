@@ -44,5 +44,8 @@ class Resource:
         self.__current = current_percetange * self.__max
     
         
+    def refill(self):
+        self.__current = self.__max
+
     def is_zero(self):
         return self.__current == 0

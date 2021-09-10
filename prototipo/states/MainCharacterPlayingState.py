@@ -53,10 +53,14 @@ class MainCharacterPlaying(BaseState):
             
             elif self.active_index == 0:
                 Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
-            
+
             if Singleton.opponent.hp.is_zero():
                 return "END_COMBAT"
-            return "OPPONENT_PLAYING"
+            elif Singleton.main_character.ap.is_zero():
+                Singleton.opponent.ap.refill()
+                return "OPPONENT_PLAYING"
+            else:
+                return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
         player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"

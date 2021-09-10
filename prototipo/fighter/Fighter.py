@@ -74,6 +74,7 @@ class Fighter(ABC):
             #TODO implementação de BuffEffect
             if isinstance(effect, BuffEffect):
                 pass
+        self.__ap.decrease_current(skill.cost)
 
         return skill
 

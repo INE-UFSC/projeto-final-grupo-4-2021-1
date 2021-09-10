@@ -28,7 +28,6 @@ states = {
     "HEAL_ROOM": HealRoom(),
     "TREASURE_ROOM": TreasureRoom(),
     "END": End(),
-    
 }
 
 Singleton.main_character = MainCharacter.generate_test_character()

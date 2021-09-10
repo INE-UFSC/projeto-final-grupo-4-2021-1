@@ -21,9 +21,9 @@ class MainCharacter(Fighter):
 
     @staticmethod
     def generate_test_character():
-        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, 0, [
-            Skill([DamageEffect({DamageType.SLASHING: 2}, 100, 0, EffectTarget.ENEMY)], "teste"),
-            Skill([HealingEffect(2, EffectTarget.SELF)], "teste")
+        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(2, 2), None, None, None, 0, [
+            Skill([DamageEffect({DamageType.SLASHING: 2}, 100, 0, EffectTarget.ENEMY)], 1,"teste"),
+            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste")
             ])
     
     @property
