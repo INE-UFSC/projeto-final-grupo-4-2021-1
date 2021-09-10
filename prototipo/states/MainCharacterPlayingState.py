@@ -2,6 +2,7 @@ import pygame
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
+from skill.CombatStatusUpdater import CombatStatusUpdater
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -63,6 +64,8 @@ class MainCharacterPlaying(BaseMenuState):
                 return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
+        Singleton.main_character.update_combat_status()
+
         player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
         opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
 

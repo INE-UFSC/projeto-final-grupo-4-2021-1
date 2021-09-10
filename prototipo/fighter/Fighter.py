@@ -11,16 +11,18 @@ from skill.HealingEffect import HealingEffect
 from skill.BuffEffect import BuffEffect
 from item.Equipment import Equipment
 from .Stats import Stats
-
+from skill.CombatStatus import CombatStatus
+from Singleton import Singleton
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 class Fighter(ABC):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: list = []):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: list = [], combat_status: dict = {}):
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap
         self.__equipment = equipment
         self.__buffs = self.initialize_buffs()
         self.__skills = skills
+        self.__combat_status = combat_status
 
     @property
     def hp(self):
@@ -37,6 +39,10 @@ class Fighter(ABC):
     @property
     def skills(self):
         return self.__skills
+
+    @property
+    def combat_status(self):
+        return self.__combat_status
         
     #Remover?
     def basicattack(self):
@@ -72,11 +78,25 @@ class Fighter(ABC):
                     self.__hp.increase_current(effect.amount)
             
             #TODO implementação de BuffEffect
-            if isinstance(effect, BuffEffect):
-                pass
+            if isinstance(effect, CombatStatus):
+                if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
+                    effect.fighter = self
+                    self.combat_status[effect.id] = effect
+                    Singleton.CombatStatusUpdater.add(effect)
+                    
+                    effect.apply_buff()
+                    effect.update()
+
         self.__ap.decrease_current(skill.cost)
 
         return skill
+
+    def add_combat_status(self, combat_status: CombatStatus):
+        self.__combat_status[combat_status.id]
+
+    def update_combat_status(self):
+        for combat_status in self.__combat_status.items():
+            combat_status.update()
 
     def get_attacked(self, skill: Skill):
         for index, effect in enumerate(skill.effects):
