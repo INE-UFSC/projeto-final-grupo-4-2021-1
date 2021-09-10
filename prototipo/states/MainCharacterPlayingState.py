@@ -1,12 +1,12 @@
 import pygame
-from .BaseState import BaseState
+from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
 
-class MainCharacterPlaying(BaseState):
+class MainCharacterPlaying(BaseMenuState):
     def __init__(self):
         super(MainCharacterPlaying, self).__init__()
         self.active_index = 0
@@ -42,7 +42,7 @@ class MainCharacterPlaying(BaseState):
 
     def handle_action(self):
         if self.active_index == 3:
-            return "MENU"
+            return "OPTIONS"
         
         else:
             if self.active_index == 1:
@@ -75,18 +75,7 @@ class MainCharacterPlaying(BaseState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    if self.active_index > 0:
-                        self.active_index -= 1
-                    else:
-                        self.active_index = 0
-                elif event.key == pygame.K_RIGHT:
-                    if self.active_index < 3:
-                        self.active_index += 1
-                    else:
-                        self.active_index = 3
-                elif event.key == pygame.K_RETURN:
-                    return self.handle_action()
+                return self.handle_menu(event.key)
 
         if self.active_index != self.previous_index:
             self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))

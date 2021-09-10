@@ -1,10 +1,10 @@
 import pygame
-from .BaseState import BaseState
+from .BaseMenuState import BaseMenuState
 
 
-class Menu(BaseState):
+class Options(BaseMenuState):
     def __init__(self):
-        super(Menu, self).__init__()
+        super(Options, self).__init__()
         self.active_index = 0
         self.options = ["Volume", "Indefinido", "Return"]
 
@@ -31,18 +31,7 @@ class Menu(BaseState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
-                    if self.active_index > 0:
-                        self.active_index -= 1
-                    else:
-                        self.active_index = 0
-                elif event.key == pygame.K_DOWN:
-                    if self.active_index < 2:
-                        self.active_index += 1
-                    else:
-                        self.active_index = 2
-                elif event.key == pygame.K_RETURN:
-                    return self.handle_action()
+                return self.handle_menu(event.key)
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))

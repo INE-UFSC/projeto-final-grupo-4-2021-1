@@ -2,7 +2,7 @@ import pygame
 
 from states.SplashState import Splash
 from states.InitState import Init
-from states.MenuState import Menu
+from states.OptionsState import Options
 from states.TreasureRoomState import TreasureRoom
 from states.HealRoomState import HealRoom
 from states.StartCombatState import StartCombat
@@ -20,7 +20,7 @@ screen = pygame.display.set_mode((800, 600))
 states = {
     "SPLASH": Splash(),
     "INIT": Init(),
-    "MENU": Menu(),
+    "OPTIONS": Options(),
     "START_COMBAT": StartCombat(),
     "MAIN_CHARACTER_PLAYING": MainCharacterPlaying(),
     "OPPONENT_PLAYING": OpponentPlaying(),

@@ -1,8 +1,8 @@
 import pygame
-from .BaseState import BaseState
+from .BaseMenuState import BaseMenuState
 
 
-class HealRoom(BaseState):
+class HealRoom(BaseMenuState):
     def __init__(self):
         super(HealRoom, self).__init__()
         self.active_index = 0
@@ -18,22 +18,17 @@ class HealRoom(BaseState):
 
     def handle_action(self):
         if self.active_index == 0:
-            self.done = True
+            return "INIT"
         elif self.active_index == 1:
-            self.done = True
-            self.next_state = "MENU"
+            return "OPTIONS"
 
-    def get_event(self, event):
-        if event.type == pygame.QUIT:
-            self.quit = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.active_index = 1 if self.active_index <= 0 else 0
-            elif event.key == pygame.K_DOWN:
-                self.active_index = 0 if self.active_index >= 1 else 1
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()
-
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            elif event.type == pygame.KEYUP:
+                return self.handle_menu(event.key)
+         
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
         for index, option in enumerate(self.options):
