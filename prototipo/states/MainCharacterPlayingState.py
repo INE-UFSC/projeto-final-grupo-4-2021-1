@@ -6,9 +6,9 @@ from Singleton import Singleton
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
 
-class MainCharacterPlaying(BaseMenuState):
+class MainCharacterPlayingState(BaseMenuState):
     def __init__(self):
-        super(MainCharacterPlaying, self).__init__()
+        super(MainCharacterPlayingState, self).__init__()
         self.active_index = 0
         self.previous_index = 0
         self.__new_round = True

@@ -2,9 +2,9 @@ import pygame
 from .BaseState import BaseState
 
 
-class Splash(BaseState):
+class SplashState(BaseState):
     def __init__(self):
-        super(Splash, self).__init__()
+        super(SplashState, self).__init__()
         self.title = self.font.render("Masmorra", True, pygame.Color("red"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
         self.time_active = 0

@@ -4,9 +4,9 @@ from TextSprite import TextSprite
 from Singleton import Singleton
 
 
-class OpponentPlaying(BaseState):
+class OpponentPlayingState(BaseState):
     def __init__(self):
-        super(OpponentPlaying, self).__init__()
+        super(OpponentPlayingState, self).__init__()
         self.player_hp = None
         self.opponent_hp = None
         self.time_active = 0

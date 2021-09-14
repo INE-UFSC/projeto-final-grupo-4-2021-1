@@ -2,24 +2,25 @@ import pygame
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
+from room.HealRoom import HealRoom
 
 
-class HealRoom(BaseMenuState):
+class HealRoomState(BaseMenuState):
     def __init__(self):
-        super(HealRoom, self).__init__()
+        super(HealRoomState, self).__init__()
         self.active_index = 0
         self.previous_index = 0
         self.options = []
-        options = ["Inventory", "Options", "Combat Room", "Treasure Room"]
-
-        index = 100
+        options = ["Inventory", "Options"]
+        self.menu = []
+        self.index = 100
 
         surface = self.font.render(options[0], True, pygame.Color("red"))
-        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(index, 500))))
+        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(self.index, 500))))
         for option in options[1:]:
-            index += 150
+            self.index += 130
             surface = self.font.render(option, True, pygame.Color("white"))
-            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(index, 500))))
+            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(self.index, 500))))
 
     def handle_action(self):
         if self.active_index == 0:
@@ -56,7 +57,16 @@ class HealRoom(BaseMenuState):
         self.room = (TextSprite(room_text, surface, surface.get_rect(topleft=(670,10))))
 
     def draw(self, surface):
+        print(f"hr {len(self.options)}")
         surface.blit(Singleton.background, (0,0))
+        surface.blit(self.player_hp.surf, self.player_hp.rect)
 
-        for option in [*self.options, self.room, self.player_hp]:
+        for door in Singleton.room.doors():
+            if door.next_room_type.value not in self.menu:
+                self.index += 130
+                self.menu.append(door.next_room_type.value)
+                surface = self.font.render(door.next_room_type.value, True, pygame.Color("white"))
+                self.options.append(TextSprite(door.next_room_type.value, surface, surface.get_rect(topleft=(self.index, 500))))
+
+        for option in [*self.options, self.room]:
             surface.blit(option.surf, option.rect)

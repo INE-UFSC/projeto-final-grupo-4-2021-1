@@ -4,9 +4,9 @@ from .BaseState import BaseState
 from room.CombatRoom import CombatRoom
 
 
-class StartCombat(BaseState):
+class StartCombatState(BaseState):
     def __init__(self):
-        super(StartCombat, self).__init__()
+        super(StartCombatState, self).__init__()
         self.time_active = 0
 
     def run(self):

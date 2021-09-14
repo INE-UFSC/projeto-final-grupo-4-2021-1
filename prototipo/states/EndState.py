@@ -2,9 +2,9 @@ import pygame
 from .BaseState import BaseState
 
 
-class End(BaseState):
+class EndState(BaseState):
     def __init__(self):
-        super(End, self).__init__()
+        super(EndState, self).__init__()
         self.title = self.font.render("End", True, pygame.Color("white"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
         self.time_active = 0
