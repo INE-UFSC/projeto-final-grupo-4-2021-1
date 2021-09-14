@@ -6,7 +6,7 @@ from .DamageType import DamageType
 
 class BuffEffect(Effect):
     def __init__(self, buff: Dict[BuffTarget, Dict[DamageType, float]], target: EffectTarget):
-        super().init(target)
+        super().__init__(target)
         self.__buff = buff
 
     @property

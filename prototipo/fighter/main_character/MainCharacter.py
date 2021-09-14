@@ -8,6 +8,8 @@ from skill.DamageEffect import DamageEffect
 from skill.HealingEffect import HealingEffect
 from skill.DamageType import DamageType
 from skill.Skill import Skill
+from skill.BuffTarget import BuffTarget
+from skill.BuffEffect import BuffEffect
 #importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
@@ -21,11 +23,14 @@ class MainCharacter(Fighter):
 
     @staticmethod
     def generate_test_character():
-        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(2, 2), None, None, None, 0, [
-            Skill([DamageEffect({DamageType.SLASHING: 2}, 100, 0, EffectTarget.ENEMY)], 1,"teste"),
-            Skill([DamageEffect({DamageType.FIRE: 3}, 100, 1, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect({DamageType.FIRE: 1}, 100, 1, EffectTarget.BOTH)], 0, "BURNING DAMAGE"))], 1,"BURNING"),
+        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(2, 2), None, None, None, 0, [
+            Skill([DamageEffect({DamageType.SLASHING: 10}, 100, 0, EffectTarget.ENEMY)], 1,"teste"),
+            Skill([DamageEffect({DamageType.FIRE: 100}, 100, 1, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect({DamageType.FIRE: 10}, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE"))], 1,"BURNING"),
             Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste")            
             ])
+
+        main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
+        return main_char
     
     @property
     def inventory(self):

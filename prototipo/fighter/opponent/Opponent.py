@@ -2,6 +2,8 @@ from skill.DamageEffect import DamageEffect
 from skill.Skill import Skill
 from skill.EffectTarget import  EffectTarget
 from skill.DamageType import DamageType
+from skill.BuffEffect import BuffEffect
+from skill.BuffTarget import BuffTarget
 from fighter.Fighter import Fighter
 from fighter.Stats import Stats
 from fighter.Resource import Resource
@@ -22,7 +24,10 @@ class Opponent(Fighter):
 
     @staticmethod
     def generate_test_opponent():
-        return Opponent(Stats(10, 10, 10, 10), Resource(10, 10), Resource(3, 3), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 1}, 100, 0, EffectTarget.ENEMY)], 1,"teste")])
+        opponent = Opponent(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(3, 3), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 1}, 100, 0, EffectTarget.ENEMY)], 1,"teste")])
+        opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
+        return opponent
+
 
     @property
     def info(self):

@@ -59,9 +59,9 @@ class Fighter(ABC):
                 buffs[buffTarget][damageType] = 0
         return buffs
 
-    def use_skill(self, idx):
+    def use_skill(self, skill):
         "Returns a copy of the skill with it's values multiplied by the buffs multipliers in self.__buffs"
-        skill = deepcopy(self.__skills[idx])
+        skill = deepcopy(skill)
         for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:
@@ -81,8 +81,10 @@ class Fighter(ABC):
             
             #TODO calcular dano com base nos buffs
             if isinstance(effect, CombatStatus):
+                effect.skill = self.use_skill(effect.skill)
                 if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
                     effect.fighter = self
+                    
                     self.add_combat_status(effect)
                     
                     effect.apply_buff()
@@ -114,7 +116,7 @@ class Fighter(ABC):
             if isinstance(effect, DamageEffect):
                 for damageType in effect.damage:
                     multiplier = self.__buffs[BuffTarget.RESISTANCE][damageType] + self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
-                    skill.effects[index].damage[damageType] *= max(0, multiplier + 1)
+                    skill.effects[index].damage[damageType] *= max(0, 1 - multiplier)
 
                     if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
 
@@ -179,6 +181,10 @@ class CombatStatus(Effect, ABC):
     @property
     def skill(self):
         return self.__skill
+    
+    @skill.setter
+    def skill(self, skill):
+        self.__skill = skill
 
     @property
     def buffs(self):

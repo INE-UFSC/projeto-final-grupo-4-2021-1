@@ -49,16 +49,16 @@ class MainCharacterPlaying(BaseMenuState):
         
         else:
             if self.active_index == 1:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(1))
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[1]))
             
             elif self.active_index == 2:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(2))
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[2]))
 
             elif self.active_index == 3:
                 print("You used an item! Wow!")
             
             elif self.active_index == 0:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
 
             if Singleton.opponent.hp.is_zero():
                 return "END_COMBAT"

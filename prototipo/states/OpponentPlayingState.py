@@ -19,7 +19,7 @@ class OpponentPlaying(BaseState):
             surface.blit(hp.surf, hp.rect)
 
     def handle_action(self):
-        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(0))
+        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(Singleton.opponent.skills[0]))
 
         if Singleton.main_character.hp.is_zero():
             return "END"
