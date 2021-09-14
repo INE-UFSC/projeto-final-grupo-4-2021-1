@@ -24,8 +24,9 @@ class Opponent(Fighter):
 
     @staticmethod
     def generate_test_opponent():
-        opponent = Opponent(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(3, 3), None, None, None, [Skill([DamageEffect({DamageType.SLASHING: 1}, 100, 0, EffectTarget.ENEMY)], 1,"teste")])
-        opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
+        opponent = Opponent(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(3, 3), None, None, None, [Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste")])
+        #opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
+        opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
         return opponent
 
 

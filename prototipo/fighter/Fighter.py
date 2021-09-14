@@ -64,16 +64,16 @@ class Fighter(ABC):
         skill = deepcopy(skill)
         for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
-                for damageType in effect.damage:
-                    #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
+                #for damageType in effect.damage:
+                #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
 
-                    multiplier = self.__buffs[BuffTarget.DAMAGE][damageType] + self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
-                    skill.effects[index].damage[damageType] *= max(0, multiplier + 1)
+                multiplier = self.__buffs[BuffTarget.DAMAGE][effect.type] + self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
+                skill.effects[index].value *= max(0, multiplier + 1)
 
-                    if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-                        self.__hp.decrease_current(skill.effects[index].damage[damageType])
+                if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
+                    self.__hp.decrease_current(skill.effects[index].value)
 
-                    #Implementar precisão --------------------------------------------------------------------------------------------------------------------
+                #Implementar precisão --------------------------------------------------------------------------------------------------------------------
 
             if isinstance(effect, HealingEffect):
                 if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
@@ -114,14 +114,14 @@ class Fighter(ABC):
     def get_attacked(self, skill: Skill):
         for index, effect in enumerate(skill.effects):
             if isinstance(effect, DamageEffect):
-                for damageType in effect.damage:
-                    multiplier = self.__buffs[BuffTarget.RESISTANCE][damageType] + self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
-                    skill.effects[index].damage[damageType] *= max(0, 1 - multiplier)
+                #for damageType in effect.damage:
+                multiplier = self.__buffs[BuffTarget.RESISTANCE][effect.type] + self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
+                skill.effects[index].value *= max(0, 1 - multiplier)
 
-                    if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
+                if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
 
-                        #Multiplica o valor do dano por -1 e aplica na vida
-                        self.__hp.decrease_current(skill.effects[index].damage[damageType])
+                    #Multiplica o valor do dano por -1 e aplica na vida
+                    self.__hp.decrease_current(skill.effects[index].value)
 
             if isinstance(effect, HealingEffect):
                 if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
@@ -137,20 +137,22 @@ class Fighter(ABC):
 
         return skill
                      
-    def add_buff(self, buff_effect: BuffEffect):
-        "Adds up the values of the buff effects received by BuffEffect on self.__buffs"
-        for target, damage in buff_effect.buff.items():
-            for damageType, multiplier in damage.items():
-                try:
-                    self.__buffs[target][damageType] += multiplier
-                except:
-                    self.__buffs[target][damageType] = multiplier
+    def add_buff(self, buff: BuffEffect):
+        "Adds up the buff multiplier received by BuffEffect on self.__buffs"
+        self.__buffs[buff.buffTarget][buff.damageType] += buff.multiplier
 
-    def remove_buff(self, buff_effect: BuffEffect):
+        # for target, damage in buff_effect.buff.items():
+        #     for damageType, multiplier in damage.items():
+        #         self.__buffs[target][damageType] += multiplier
+
+
+    def remove_buff(self, buff: BuffEffect):
         "Subtracts the value of the buff effects received by BuffEffect on self.__buffs"
-        for target, damage in buff_effect.buff.items():
-            for damageType, multiplier in damage.items():
-                    self.__buffs[target][damageType] -= multiplier
+        self.__buffs[buff.buffTarget][buff.damageType] -= buff.multiplier
+
+        # for target, damage in buff_effect.buff.items():
+        #     for damageType, multiplier in damage.items():
+        #             self.__buffs[target][damageType] -= multiplier
 
     def add_skill(self, skill):
         "Appends the skill in self.__skills"
