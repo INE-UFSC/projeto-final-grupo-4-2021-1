@@ -16,7 +16,7 @@ from fighter.opponent.Opponent import Opponent
 from Singleton import Singleton
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode(Singleton.screen_size)
 states = {
     "SPLASH": Splash(),
     "INIT": Init(),
@@ -31,7 +31,7 @@ states = {
 }
 
 Singleton.main_character = MainCharacter.generate_test_character()
-Singleton.background = pygame.image.load("prototipo/Images/Background.png")
+Singleton.background = pygame.image.load("prototipo/assets/Background.png")
 
 game = Game(screen, states, "SPLASH")
 game.run()
