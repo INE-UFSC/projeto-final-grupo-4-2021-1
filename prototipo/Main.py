@@ -1,15 +1,15 @@
 import pygame
 
-from states.SplashState import Splash
-from states.InitState import Init
-from states.OptionsState import Options
-from states.TreasureRoomState import TreasureRoom
-from states.HealRoomState import HealRoom
-from states.StartCombatState import StartCombat
-from states.EndCombatState import EndCombat
-from states.MainCharacterPlayingState import MainCharacterPlaying
-from states.OpponentPlayingState import OpponentPlaying
-from states.EndState import End
+from states.SplashState import SplashState
+from states.InitState import InitState
+from states.OptionsState import OptionsState
+from states.TreasureRoomState import TreasureRoomState
+from states.HealRoomState import HealRoomState
+from states.StartCombatState import StartCombatState
+from states.EndCombatState import EndCombatState
+from states.MainCharacterPlayingState import MainCharacterPlayingState
+from states.OpponentPlayingState import OpponentPlayingState
+from states.EndState import EndState
 from Game import Game
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
@@ -18,16 +18,16 @@ from Singleton import Singleton
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 states = {
-    "SPLASH": Splash(),
-    "INIT": Init(),
-    "OPTIONS": Options(),
-    "START_COMBAT": StartCombat(),
-    "MAIN_CHARACTER_PLAYING": MainCharacterPlaying(),
-    "OPPONENT_PLAYING": OpponentPlaying(),
-    "END_COMBAT": EndCombat(),
-    "HEAL_ROOM": HealRoom(),
-    "TREASURE_ROOM": TreasureRoom(),
-    "END": End(),
+    "SPLASH": SplashState(),
+    "INIT": InitState(),
+    "OPTIONS": OptionsState(),
+    "START_COMBAT": StartCombatState(),
+    "MAIN_CHARACTER_PLAYING": MainCharacterPlayingState(),
+    "OPPONENT_PLAYING": OpponentPlayingState(),
+    "END_COMBAT": EndCombatState(),
+    "HEAL_ROOM": HealRoomState(),
+    "TREASURE_ROOM": TreasureRoomState(),
+    "END": EndState(),
 }
 
 Singleton.main_character = MainCharacter.generate_test_character()
