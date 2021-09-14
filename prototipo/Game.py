@@ -22,7 +22,6 @@ class Game:
             self.previous_state = self.current_state
             self.current_state = self.states[next_state_key]
 
-
     def draw_current_state(self):
         self.current_state.draw(self.screen)
 

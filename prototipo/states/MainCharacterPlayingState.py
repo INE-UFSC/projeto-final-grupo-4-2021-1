@@ -2,7 +2,6 @@ import pygame
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
-from skill.CombatStatusUpdater import CombatStatusUpdater
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -12,11 +11,12 @@ class MainCharacterPlaying(BaseMenuState):
         super(MainCharacterPlaying, self).__init__()
         self.active_index = 0
         self.previous_index = 0
+        self.__new_round = True
 
         self.options = []
         self.player_hp = None
         self.opponent_hp = None
-        options = ("Attack", "Effect", "Item", "Options")
+        options = ("Attack","Fire attack", "Effect", "Item", "Options")
 
         #Pls correct the gambiarra as soon as possible
         index = (800/2) - 100*2
@@ -41,15 +41,20 @@ class MainCharacterPlaying(BaseMenuState):
     #     center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))
     #     return text.get_rect(center=center)
 
+    
+    #Selecting the active index and used skill must be corrected
     def handle_action(self):
         if self.active_index == 3:
             return "OPTIONS"
         
         else:
             if self.active_index == 1:
-                Singleton.main_character.use_skill(1)
-
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(1))
+            
             elif self.active_index == 2:
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(2))
+
+            elif self.active_index == 3:
                 print("You used an item! Wow!")
             
             elif self.active_index == 0:
@@ -59,12 +64,13 @@ class MainCharacterPlaying(BaseMenuState):
                 return "END_COMBAT"
             elif Singleton.main_character.ap.is_zero():
                 Singleton.opponent.ap.refill()
+                self.__new_round = True
                 return "OPPONENT_PLAYING"
-            else:
-                return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
-        Singleton.main_character.update_combat_status()
+        if self.__new_round:
+            Singleton.main_character.update_combat_status()
+            self.__new_round = False
 
         player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
         opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
@@ -78,6 +84,7 @@ class MainCharacterPlaying(BaseMenuState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
+                #Corrigir - o menu deve ser atualizado no mesmo ciclo.
                 return self.handle_menu(event.key)
 
         if self.active_index != self.previous_index:

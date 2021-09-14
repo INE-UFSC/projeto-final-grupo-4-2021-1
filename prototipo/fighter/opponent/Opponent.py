@@ -12,13 +12,13 @@ import pygame
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class Opponent(Fighter):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, info: OpponentInfo, behavior: Behavior, skills: list = []):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, info: OpponentInfo, behavior: Behavior, skills: list = [], combat_status = {}):
         self.__info = info
         self.__behavior = behavior
         self.__surf = pygame.Surface(size=(456, 200))
         self.__image = pygame.image.load("prototipo/Images/ShrekSprite.png").convert_alpha()
         self.__rect = self.__surf.get_rect(center=(400, 300))
-        super().__init__(stats, hp, ap, equipment, skills)
+        super().__init__(stats, hp, ap, equipment, skills, combat_status)
 
     @staticmethod
     def generate_test_opponent():

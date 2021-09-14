@@ -10,6 +10,7 @@ class OpponentPlaying(BaseState):
         self.player_hp = None
         self.opponent_hp = None
         self.time_active = 0
+        self.__new_round = True
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
@@ -24,12 +25,15 @@ class OpponentPlaying(BaseState):
             return "END"
         elif Singleton.opponent.ap.is_zero():
             Singleton.main_character.ap.refill()
+            self.__new_round = True
             return "MAIN_CHARACTER_PLAYING"
-        else:
-            return "OPPONENT_PLAYING"
 
     def run(self):
-        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        if self.__new_round:
+            Singleton.opponent.update_combat_status()
+            self.__new_round = False
+
+        player_hp_text = f"Player HP:  {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
         opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
 
         surface = self.font.render(player_hp_text, True, pygame.Color("blue"))

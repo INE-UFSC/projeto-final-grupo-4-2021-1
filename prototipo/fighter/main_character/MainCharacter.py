@@ -1,4 +1,4 @@
-from fighter.Fighter import Fighter
+from fighter.Fighter import Fighter, CombatStatus
 from fighter.Stats import Stats
 from fighter.Resource import Resource
 from item.Inventory import Inventory
@@ -14,16 +14,17 @@ ATRIBUTE_POINTS_PER_LEVEL = 2
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class MainCharacter(Fighter):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = []):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = [], combat_status = {}):
         self.__inventory = inventory
         self.__exp = exp
-        super().__init__(stats, hp, ap, equipment, skills)
+        super().__init__(stats, hp, ap, equipment, skills, combat_status)
 
     @staticmethod
     def generate_test_character():
         return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(2, 2), None, None, None, 0, [
             Skill([DamageEffect({DamageType.SLASHING: 2}, 100, 0, EffectTarget.ENEMY)], 1,"teste"),
-            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste")
+            Skill([DamageEffect({DamageType.FIRE: 3}, 100, 1, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect({DamageType.FIRE: 1}, 100, 1, EffectTarget.BOTH)], 0, "BURNING DAMAGE"))], 1,"BURNING"),
+            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste")            
             ])
     
     @property

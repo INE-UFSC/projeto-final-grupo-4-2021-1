@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 
 from skill.Skill import Skill
+from skill.Effect import Effect
 from .Resource import Resource
 from skill.DamageType import DamageType
 from skill.DamageEffect import DamageEffect
@@ -11,9 +12,10 @@ from skill.HealingEffect import HealingEffect
 from skill.BuffEffect import BuffEffect
 from item.Equipment import Equipment
 from .Stats import Stats
-from skill.CombatStatus import CombatStatus
 from Singleton import Singleton
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
+
+
 class Fighter(ABC):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: list = [], combat_status: dict = {}):
         self.__stats = stats
@@ -69,7 +71,7 @@ class Fighter(ABC):
                     skill.effects[index].damage[damageType] *= max(0, multiplier + 1)
 
                     if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-                        self.__hp.decrease_current(effect.damage[damageType])
+                        self.__hp.decrease_current(skill.effects[index].damage[damageType])
 
                     #Implementar precisão --------------------------------------------------------------------------------------------------------------------
 
@@ -77,26 +79,35 @@ class Fighter(ABC):
                 if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
                     self.__hp.increase_current(effect.amount)
             
-            #TODO implementação de BuffEffect
+            #TODO calcular dano com base nos buffs
             if isinstance(effect, CombatStatus):
                 if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
                     effect.fighter = self
-                    self.combat_status[effect.id] = effect
-                    Singleton.CombatStatusUpdater.add(effect)
+                    self.add_combat_status(effect)
                     
                     effect.apply_buff()
-                    effect.update()
 
         self.__ap.decrease_current(skill.cost)
 
         return skill
 
-    def add_combat_status(self, combat_status: CombatStatus):
-        self.__combat_status[combat_status.id]
+    def add_combat_status(self, combat_status):
+        self.__combat_status[combat_status.id] = combat_status
 
     def update_combat_status(self):
-        for combat_status in self.__combat_status.items():
-            combat_status.update()
+        finished_status = []
+        for combat_status in self.__combat_status.values():
+            if combat_status.update():
+                finished_status.append(combat_status)
+
+        for combat_status in finished_status:
+            self.remove_combat_status(combat_status)
+
+    def remove_combat_status(self, combat_status):
+        for buff in combat_status.buffs:
+            self.__fighter.remove_buff(buff)
+
+        self.__combat_status.pop(combat_status.id)
 
     def get_attacked(self, skill: Skill):
         for index, effect in enumerate(skill.effects):
@@ -108,14 +119,19 @@ class Fighter(ABC):
                     if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
 
                         #Multiplica o valor do dano por -1 e aplica na vida
-                        self.__hp.decrease_current(effect.damage[damageType])
+                        self.__hp.decrease_current(skill.effects[index].damage[damageType])
 
             if isinstance(effect, HealingEffect):
                 if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
                     self.__hp.increase_current(effect.amount) 
 
-            if isinstance(effect, BuffEffect):
-                pass
+            #TODO calcular dano com base nos buffs
+            if isinstance(effect, CombatStatus):
+                if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
+                    effect.fighter = self
+                    self.add_combat_status(effect)
+                    
+                    effect.apply_buff()
 
         return skill
                      
@@ -150,3 +166,55 @@ class Fighter(ABC):
         tmp = self.__skills[newpos]
         self.__skills[newpos] = self.__skills[currentpos]
         self.__skills[currentpos] = tmp
+
+class CombatStatus(Effect, ABC):
+    def __init__(self, id, target, duration, skill, buffs:list = []):
+        self.__id = id
+        self.__skill = skill
+        self.__buffs = buffs
+        self.__fighter = None
+        self.__duration = duration
+        super().__init__(target)
+    
+    @property
+    def skill(self):
+        return self.__skill
+
+    @property
+    def buffs(self):
+        return self.__buffs
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def duration(self):
+        return self.__duration
+
+    @property
+    def fighter(self):
+        return self.__fighter
+    
+    @fighter.setter
+    def fighter(self, fighter: Fighter):
+        self.__fighter = fighter
+        
+    def special_action(self):
+        pass
+
+    def use_skill(self):
+        self.__fighter.get_attacked(self.__skill)
+
+    def apply_buff(self):
+        for buff in self.__buffs:
+            self.__fighter.add_buff(buff)
+
+    def update(self):
+        "Returns True if the status should end"
+        self.__duration -= 1
+        self.use_skill()
+        self.special_action()
+
+        if self.__duration == 0:
+            return True
