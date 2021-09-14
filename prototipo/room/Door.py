@@ -1,4 +1,4 @@
-import RoomType
+from room.RoomType import RoomType
 
 
 class Door:
