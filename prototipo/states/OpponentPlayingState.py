@@ -15,8 +15,8 @@ class OpponentPlaying(BaseState):
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
-        for hp in [self.player_hp, self.opponent_hp]:
-            surface.blit(hp.surf, hp.rect)
+        for option in [self.player_hp, self.opponent_hp, self.room_level]:
+            surface.blit(option.surf, option.rect)
 
     def handle_action(self):
         Singleton.main_character.get_attacked(Singleton.opponent.use_skill(Singleton.opponent.skills[0]))
@@ -29,6 +29,10 @@ class OpponentPlaying(BaseState):
             return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
+        room_level_text = f"Room Level: {str(Singleton.room.number)}"
+        surface = self.font.render(room_level_text, True, pygame.Color("white"))
+        self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
+
         if self.__new_round:
             Singleton.opponent.update_combat_status()
             self.__new_round = False
@@ -41,10 +45,8 @@ class OpponentPlaying(BaseState):
 
         surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
         self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
+
         self.time_active += 1
         if self.time_active > 119:
             self.time_active = 0
             return self.handle_action()
-        
-    
-

@@ -68,6 +68,10 @@ class MainCharacterPlaying(BaseMenuState):
                 return "OPPONENT_PLAYING"
 
     def run(self):
+        room_level_text = f"Room Level: {str(Singleton.room.number)}"
+        surface = self.font.render(room_level_text, True, pygame.Color("white"))
+        self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
+
         if self.__new_round:
             Singleton.main_character.update_combat_status()
             self.__new_round = False
@@ -80,6 +84,7 @@ class MainCharacterPlaying(BaseMenuState):
 
         surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
         self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -97,6 +102,6 @@ class MainCharacterPlaying(BaseMenuState):
         surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
 
-        for option in [*self.options, self.player_hp, self.opponent_hp]:
+        for option in [*self.options, self.player_hp, self.opponent_hp, self.room_level]:
             # text_render = self.render_text(index)
             surface.blit(option.surf, option.rect)
