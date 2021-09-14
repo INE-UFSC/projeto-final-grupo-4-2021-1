@@ -2,9 +2,9 @@ import pygame
 from .BaseMenuState import BaseMenuState
 
 
-class Init(BaseMenuState):
+class InitState(BaseMenuState):
     def __init__(self):
-        super(Init, self).__init__()
+        super(InitState, self).__init__()
         self.active_index = 0
         self.options = ["New", "Load", "Options", "Exit"]
 

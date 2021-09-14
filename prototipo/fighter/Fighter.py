@@ -12,7 +12,6 @@ from skill.HealingEffect import HealingEffect
 from skill.BuffEffect import BuffEffect
 from item.Equipment import Equipment
 from .Stats import Stats
-from Singleton import Singleton
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 
 
