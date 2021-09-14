@@ -16,7 +16,7 @@ from fighter.opponent.Opponent import Opponent
 from Singleton import Singleton
 
 pygame.init()
-screen = pygame.display.set_mode(Singleton.screen_size)
+screen = pygame.display.set_mode((1280, 720))
 states = {
     "SPLASH": Splash(),
     "INIT": Init(),

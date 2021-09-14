@@ -8,16 +8,16 @@ class Splash(BaseState):
     def __init__(self):
         super(Splash, self).__init__()
         self.__title = Text("prototipo/assets/fonts/title.ttf", 200, pygame.Color(255, 30, 30), "Masmorra")
-        self.__title_rect = self.__title.surface().get_rect(center=tuple(size/2 for size in Singleton.screen_size))
-        self.time_active = 0
+        self.__title_rect = self.__title.surface().get_rect(center=(self.screen_rect.width/2, self.screen_rect.height/2))
+        self.__time_active = 0
 
     def run(self):
-        self.time_active += 1
-        self.__title_rect.move_ip(0, -1)
-        if self.time_active > 119:
+        self.__time_active += 1
+        if self.__time_active % 2 and self.__time_active > 60:
+            self.__title_rect.move_ip(0, -1)
+        if self.__time_active > 239:
             return "INIT"
 
     def draw(self, surface: pygame.Surface):
         surface.fill(pygame.Color("black"))
-        surface.blit(self.__title.surface(),
-            self.__title_rect)
+        surface.blit(self.__title.surface(), self.__title_rect)

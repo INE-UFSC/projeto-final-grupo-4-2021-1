@@ -8,3 +8,11 @@ class Text:
 
     def surface(self) -> pygame.Surface:
         return self.__font.render(self.__text, True, self.__color)
+
+    @property
+    def color(self):
+        return self.__color
+
+    @color.setter
+    def color(self, color: pygame.Color):
+        self.__color = color
