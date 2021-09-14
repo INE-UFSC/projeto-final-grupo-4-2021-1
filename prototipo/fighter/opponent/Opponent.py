@@ -1,3 +1,5 @@
+from pygame import sprite
+from display.OpponentSprite import OpponentSprite
 from skill.DamageEffect import DamageEffect
 from skill.Skill import Skill
 from skill.EffectTarget import  EffectTarget
@@ -10,21 +12,22 @@ from fighter.Resource import Resource
 from .OpponentInfo import OpponentInfo
 from .Behavior import Behavior
 from item.Equipment import Equipment
-import pygame
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class Opponent(Fighter):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, info: OpponentInfo, behavior: Behavior, skills: list = [], combat_status = {}):
-        self.__info = info
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = [], combat_status = {}):
         self.__behavior = behavior
-        self.__surf = pygame.Surface(size=(456, 200))
-        self.__image = pygame.image.load("prototipo/Images/ShrekSprite.png").convert_alpha()
-        self.__rect = self.__surf.get_rect(center=(400, 300))
+        self.__sprite = sprite
         super().__init__(stats, hp, ap, equipment, skills, combat_status)
 
     @staticmethod
     def generate_test_opponent():
-        opponent = Opponent(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(3, 3), None, None, None, [Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste")])
+        stats = Stats(10, 10, 10, 10)
+        hp = Resource(1000, 1000)
+        ap = Resource(3, 3)
+        sprite = OpponentSprite("prototipo/Images/Zodiac Creatures Cancer.png")
+        basic_attack = Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste")
+        opponent = Opponent(stats, hp, ap, None, sprite, None, [basic_attack])
         #opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
         opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
         return opponent
@@ -39,7 +42,7 @@ class Opponent(Fighter):
         return self.__behavior
 
     def draw(self, surface):
-        surface.blit(self.__image, self.__rect)
+        self.__sprite.draw(surface)
 
     #def use_skill(self):
         #super().use_skill(self.__behavior.choose_skill)
