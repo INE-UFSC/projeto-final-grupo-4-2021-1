@@ -1,19 +1,19 @@
 from room.RoomType import RoomType
 from room.Room import Room
 from room.Door import Door
-from Chest import Chest
+from room.Chest import Chest
 
 
 class TreasureRoom(Room):
-    def __init__(self, chest: Chest):
-        self.__chest = chest
+    def __init__(self):
+        self.__chest = Chest()
         super().__init__(self.make_room)
 
     def make_room(self):
         return RoomType.RoomType.TREASURE
 
     def make_doors(self):
-        door1 = Door(1, RoomType.RoomType.COMBAT)
-        door2 = Door(2, RoomType.RoomType.HEAL)
+        door1 = Door(1, RoomType.COMBAT)
+        door2 = Door(2, RoomType.HEAL)
 
         return [door1, door2]

@@ -22,7 +22,9 @@ class CombatRoom(Room):
         return RoomType.RoomType.COMBAT
 
     def make_doors(self):
-        door1 = Door(1, RoomType.RoomType.TREASURE)
-        door2 = Door(2, RoomType.RoomType.HEAL)
+        door1 = Door(1, RoomType.TREASURE)
+        door2 = Door(2, RoomType.HEAL)
 
-        return [door1, door2]
+        door_list = [door1, door2]
+
+        return door_list

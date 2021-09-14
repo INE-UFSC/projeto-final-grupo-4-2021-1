@@ -11,7 +11,7 @@ class HealRoom(Room):
         return RoomType.RoomType.HEAL
 
     def make_doors(self):
-        door1 = Door(1, RoomType.RoomType.COMBAT)
-        door2 = Door(2, RoomType.RoomType.TREASURE)
+        door1 = Door(1, RoomType.COMBAT)
+        door2 = Door(2, RoomType.TREASURE)
 
         return [door1, door2]

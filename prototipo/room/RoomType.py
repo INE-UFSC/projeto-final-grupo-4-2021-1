@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class RoomType(Enum):
-    COMBAT = 1
-    TREASURE = 2
-    HEAL = 3
+    COMBAT = "Combat Room"
+    TREASURE = "Treasure Room"
+    HEAL = "Heal Room"
