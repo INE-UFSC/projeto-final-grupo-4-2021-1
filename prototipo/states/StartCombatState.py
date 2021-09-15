@@ -12,7 +12,7 @@ class StartCombat(BaseState):
         self.time_active += 1
         if self.time_active > 50:
             self.time_active = 0
-            Singleton.main_character.ap.refill()
+            Singleton.main_character.ap.increase_current(2)
             Singleton.opponent = Opponent.generate_test_opponent()
             return "MAIN_CHARACTER_PLAYING"
 

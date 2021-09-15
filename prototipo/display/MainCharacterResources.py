@@ -3,10 +3,6 @@ import pygame
 from Singleton import Singleton
 
 class MainCharacterResources:
-    def __init__(self):
-        self.__surface: pygame.Surface = None
-        self.__rect: pygame.Rect = None
-
     @abstractmethod
     def draw(surface):
         current_hp = Singleton.main_character.hp.current

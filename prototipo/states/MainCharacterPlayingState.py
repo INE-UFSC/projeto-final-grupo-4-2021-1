@@ -25,7 +25,7 @@ class MainCharacterPlaying(BaseMenuState):
             50,
             pygame.Color(255, 255, 255),
             option
-        )) for option in ["Attack","Fire Attack", "Effect", "Item", "Options"]]
+        )) for option in ["Attack","Fire Attack", "Effect", "Pass", "Options"]]
 
         menu_width = 0
         for option in self.options:
@@ -44,7 +44,7 @@ class MainCharacterPlaying(BaseMenuState):
             Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[2]))
 
         elif self.active_index == 3:
-            print("You used an item! Wow!")
+            return "OPPONENT_PLAYING"
         
         elif self.active_index == 4:
             return "OPTIONS"
@@ -52,7 +52,7 @@ class MainCharacterPlaying(BaseMenuState):
         if Singleton.opponent.hp.is_zero():
             return "END_COMBAT"
         elif Singleton.main_character.ap.is_zero():
-            Singleton.opponent.ap.refill()
+            Singleton.opponent.ap.increase_current(2)
             self.__new_round = True
             return "OPPONENT_PLAYING"
 
@@ -61,14 +61,6 @@ class MainCharacterPlaying(BaseMenuState):
             Singleton.main_character.update_combat_status()
             self.__new_round = False
 
-        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
-        opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
-
-        surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
-        self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
-
-        surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
-        self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -80,13 +72,10 @@ class MainCharacterPlaying(BaseMenuState):
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
+        MainCharacterResources.draw(surface)
 
         for index, option in enumerate(self.options):
             option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
             option.draw(surface)
 
-        MainCharacterResources.draw(surface)
 
-        #for option in [self.player_hp, self.opponent_hp]:
-            # text_render = self.render_text(index)
-         #   surface.blit(option.surf, option.rect)
