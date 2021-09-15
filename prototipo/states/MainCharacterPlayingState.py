@@ -10,9 +10,9 @@ from Singleton import Singleton
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
 
-class MainCharacterPlaying(BaseMenuState):
+class MainCharacterPlayingState(BaseMenuState):
     def __init__(self):
-        super(MainCharacterPlaying, self).__init__()
+        super(MainCharacterPlayingState, self).__init__()
         self.active_index = 0
         self.previous_index = 0
         self.__new_round = True
@@ -57,6 +57,10 @@ class MainCharacterPlaying(BaseMenuState):
             return "OPPONENT_PLAYING"
 
     def run(self):
+        room_level_text = f"Room Level: {str(Singleton.room.number)}"
+        surface = self.font.render(room_level_text, True, pygame.Color("white"))
+        self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
+
         if self.__new_round:
             Singleton.main_character.update_combat_status()
             self.__new_round = False
@@ -77,5 +81,3 @@ class MainCharacterPlaying(BaseMenuState):
         for index, option in enumerate(self.options):
             option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
             option.draw(surface)
-
-

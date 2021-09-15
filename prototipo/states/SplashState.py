@@ -4,9 +4,9 @@ import pygame
 from .BaseState import BaseState
 
 
-class Splash(BaseState):
+class SplashState(BaseState):
     def __init__(self):
-        super(Splash, self).__init__()
+        super(SplashState, self).__init__()
         self.__title = Text("prototipo/assets/fonts/title.ttf", 200, pygame.Color(255, 30, 30), "Masmorra")
         self.__title.rect = self.__title.surface.get_rect(center=(self.screen_rect.width/2, self.screen_rect.height/2))
         self.__time_active = 0

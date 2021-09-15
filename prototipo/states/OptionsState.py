@@ -3,9 +3,9 @@ from .BaseMenuState import BaseMenuState
 from display.Text import Text
 
 
-class Options(BaseMenuState):
+class OptionsState(BaseMenuState):
     def __init__(self):
-        super(Options, self).__init__()
+        super(OptionsState, self).__init__()
         self.active_index = 0
         self.options = [Text(
             "prototipo/assets/fonts/menu_option.ttf",

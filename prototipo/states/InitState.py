@@ -2,9 +2,9 @@ import pygame
 from .BaseMenuState import BaseMenuState
 from display.Text import Text
 
-class Init(BaseMenuState):
+class InitState(BaseMenuState):
     def __init__(self):
-        super(Init, self).__init__()
+        super(InitState, self).__init__()
         self.active_index = 0
 
         self.__title = Text("prototipo/assets/fonts/title.ttf", 200, pygame.Color(255, 30, 30), "Masmorra")
