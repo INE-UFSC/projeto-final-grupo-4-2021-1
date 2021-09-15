@@ -1,12 +1,24 @@
 import pygame
 from .BaseMenuState import BaseMenuState
+from display.Text import Text
 
 
 class Options(BaseMenuState):
     def __init__(self):
         super(Options, self).__init__()
         self.active_index = 0
-        self.options = ["Volume", "Indefinido", "Return"]
+        self.options = [Text(
+            "prototipo/assets/fonts/menu_option.ttf",
+            50,
+            pygame.Color(255, 255, 255),
+            option
+        ) for option in ["Option1", "Option2", "Return"]]
+
+        menu_height = 0
+        for option in self.options:
+            option.rect = option.surface.get_rect(center=(self.screen_rect.center[0], self.screen_rect.center[1] + menu_height))
+            menu_height += (option.surface.get_height() + 10)
+
 
     def render_text(self, index):
         color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
@@ -36,5 +48,5 @@ class Options(BaseMenuState):
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
         for index, option in enumerate(self.options):
-            text_render = self.render_text(index)
-            surface.blit(text_render, self.get_text_position(text_render, index))
+            option.color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)
+            surface.blit(option.surface, option.rect)

@@ -1,6 +1,10 @@
 import pygame
+from typing import List
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
+from display.Text import Text
+from display.Button import Button
+from display.MainCharacterResources import MainCharacterResources
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
@@ -13,59 +17,44 @@ class MainCharacterPlaying(BaseMenuState):
         self.previous_index = 0
         self.__new_round = True
 
-        self.options = []
         self.player_hp = None
         self.opponent_hp = None
-        options = ("Attack","Fire attack", "Effect", "Item", "Options")
+    
+        self.options: List["Button"] = [Button("prototipo/assets/combatMenuButton.png", Text(
+            "prototipo/assets/fonts/menu_option.ttf",
+            50,
+            pygame.Color(255, 255, 255),
+            option
+        )) for option in ["Attack","Fire Attack", "Effect", "Item", "Options"]]
 
-        #Pls correct the gambiarra as soon as possible
-        index = (800/2) - 100*2
-
-        surface = self.font.render(options[0], True, pygame.Color("red"))
-        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(index, 500))))
-        for option in options[1:]:
-            index += 100
-            surface = self.font.render(option, True, pygame.Color("white"))
-            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(index, 500))))
-
-        # #Incitializes text surfaces
-        # self.options_surfaces.append(self.font.render(self.options_texts[self.active_index], True, pygame.Color("red")))
-        # for option in self.options_texts[1:]:
-        #     self.options_surfaces.append(self.font.render(option, True, pygame.Color("white")))
-
-    # def render_text(self, index):
-    #     color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
-    #     return self.font.render(self.options[index], True, color)
-
-    # def get_text_position(self, text, index):
-    #     center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))
-    #     return text.get_rect(center=center)
-
+        menu_width = 0
+        for option in self.options:
+            option.rect = option.surface.get_rect(topleft=(50 + menu_width, self.screen_rect.height - option.surface.get_height() - 10))
+            menu_width += (option.surface.get_width() + 20)
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
-        if self.active_index == 3:
-            return "OPTIONS"
+        if self.active_index == 0:
+            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
+
+        elif self.active_index == 1:
+            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[1]))
+            
+        elif self.active_index == 2:
+            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[2]))
+
+        elif self.active_index == 3:
+            print("You used an item! Wow!")
         
-        else:
-            if self.active_index == 1:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[1]))
-            
-            elif self.active_index == 2:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[2]))
+        elif self.active_index == 4:
+            return "OPTIONS"
 
-            elif self.active_index == 3:
-                print("You used an item! Wow!")
-            
-            elif self.active_index == 0:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
-
-            if Singleton.opponent.hp.is_zero():
-                return "END_COMBAT"
-            elif Singleton.main_character.ap.is_zero():
-                Singleton.opponent.ap.refill()
-                self.__new_round = True
-                return "OPPONENT_PLAYING"
+        if Singleton.opponent.hp.is_zero():
+            return "END_COMBAT"
+        elif Singleton.main_character.ap.is_zero():
+            Singleton.opponent.ap.refill()
+            self.__new_round = True
+            return "OPPONENT_PLAYING"
 
     def run(self):
         if self.__new_round:
@@ -87,16 +76,17 @@ class MainCharacterPlaying(BaseMenuState):
                 #Corrigir - o menu deve ser atualizado no mesmo ciclo.
                 return self.handle_menu(event.key)
 
-        if self.active_index != self.previous_index:
-            self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))
-            self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
-            self.previous_index = self.active_index
-
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
 
-        for option in [*self.options, self.player_hp, self.opponent_hp]:
+        for index, option in enumerate(self.options):
+            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+            option.draw(surface)
+
+        MainCharacterResources.draw(surface)
+
+        #for option in [self.player_hp, self.opponent_hp]:
             # text_render = self.render_text(index)
-            surface.blit(option.surf, option.rect)
+         #   surface.blit(option.surf, option.rect)

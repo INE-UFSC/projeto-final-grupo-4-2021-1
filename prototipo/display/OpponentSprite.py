@@ -6,7 +6,7 @@ class OpponentSprite:
         sprite_height = self.__sprite.get_height()
         sprite_width = self.__sprite.get_width()
 
-        self.__rect = pygame.Surface(size=(sprite_width, sprite_height)).get_rect(center=(400, 300))
+        self.__rect = pygame.Surface(size=(sprite_width, sprite_height)).get_rect(center=(640, 360))
 
     def draw(self, surface: pygame.Surface):
         surface.blit(self.__sprite, self.__rect)
