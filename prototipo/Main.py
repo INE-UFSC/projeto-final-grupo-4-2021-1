@@ -17,6 +17,10 @@ from Singleton import Singleton
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
+
+Singleton.main_character = MainCharacter.generate_test_character()
+Singleton.background = pygame.image.load("prototipo/assets/Background.png")
+
 states = {
     "SPLASH": SplashState(),
     "INIT": InitState(),
@@ -29,9 +33,6 @@ states = {
     "TREASURE_ROOM": TreasureRoomState(),
     "END": EndState(),
 }
-
-Singleton.main_character = MainCharacter.generate_test_character()
-Singleton.background = pygame.image.load("prototipo/assets/Background.png")
 
 game = Game(screen, states, "SPLASH")
 game.run()

@@ -26,7 +26,7 @@ class Opponent(Fighter):
         hp = Resource(1000, 1000)
         ap = Resource(3, 3)
         sprite = OpponentSprite("prototipo/assets/Zodiac Creatures Cancer.png")
-        basic_attack = Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste")
+        basic_attack = Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
         opponent = Opponent(stats, hp, ap, None, sprite, None, [basic_attack])
         #opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
         opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 0.5, EffectTarget.BOTH))

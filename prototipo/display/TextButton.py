@@ -9,9 +9,7 @@ class TextButton(Button):
         self.__blit_text()
 
     def __blit_text(self):
-        height = self._surface.get_height()
-        width = self._surface.get_width()
-        self.__text.rect = self.__text.surface.get_rect(center=(width/2, height/2))
+        self.__text.rect = self.__text.surface.get_rect(center = self._surface.get_rect().center)
         self._surface.blit(self.__text.surface, self.__text.rect)
 
     def change_text_color(self, color: pygame.Color):

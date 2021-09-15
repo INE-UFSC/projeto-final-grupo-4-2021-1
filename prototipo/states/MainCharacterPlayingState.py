@@ -3,6 +3,7 @@ from typing import List
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from display.Text import Text
+from display.IconButton import IconButton
 from display.TextButton import TextButton
 from display.MainCharacterResources import MainCharacterResources
 from Singleton import Singleton
@@ -19,18 +20,28 @@ class MainCharacterPlayingState(BaseMenuState):
 
         self.player_hp = None
         self.opponent_hp = None
+
+        skills_menu: List["IconButton"] = [IconButton("prototipo/assets/icon_shadow.png", skill.icon_path) for skill in Singleton.main_character.skills]
+
+        adder = self.screen_rect.center[0] - (5 * skills_menu[0].background.get_width())
+        for skill_icon in skills_menu:
+            skill_icon.rect = skill_icon.surface.get_rect(topleft = (adder, self.screen_rect.height - skill_icon.surface.get_height() - 20))
+            adder += (skill_icon.surface.get_width() + 20)
+
     
-        self.options: List["TextButton"] = [TextButton("prototipo/assets/combatMenuButton.png", Text(
+        options_menu: List["TextButton"] = [TextButton("prototipo/assets/combatMenuButton.png", Text(
             "prototipo/assets/fonts/menu_option.ttf",
             50,
             pygame.Color(255, 255, 255),
             option
-        )) for option in ["Attack","Fire Attack", "Effect", "Pass", "Options"]]
+        )) for option in ["Pass", "Options"]]
 
-        menu_width = 0
-        for option in self.options:
-            option.rect = option.surface.get_rect(topleft=(50 + menu_width, self.screen_rect.height - option.surface.get_height() - 10))
-            menu_width += (option.surface.get_width() + 20)
+        adder = self.screen_rect.width - (len(options_menu) * (options_menu[0].surface.get_width() + 20))
+        for option in options_menu:
+            option.rect = option.surface.get_rect(topleft=(adder, self.screen_rect.height - option.surface.get_height() - 150))
+            adder += (option.surface.get_width() + 20)
+
+        self.options = skills_menu + options_menu
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
@@ -78,5 +89,10 @@ class MainCharacterPlayingState(BaseMenuState):
         MainCharacterResources.draw(surface)
 
         for index, option in enumerate(self.options):
-            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+            if isinstance(option, TextButton):
+                option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+
+            elif isinstance(option, IconButton):
+                option.change_background("prototipo/assets/red_circle.png" if index == self.active_index else "prototipo/assets/icon_shadow.png")
+            
             option.draw(surface)

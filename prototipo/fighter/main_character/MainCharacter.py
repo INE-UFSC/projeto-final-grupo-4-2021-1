@@ -24,9 +24,9 @@ class MainCharacter(Fighter):
     @staticmethod
     def generate_test_character():
         main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), None, None, None, 0, [
-            Skill([DamageEffect(10, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste"),
-            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect(10, DamageType.FIRE, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE"))], 1,"BURNING"),
-            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste")            
+            Skill([DamageEffect(10, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png"),
+            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect(10, DamageType.FIRE, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE", None))], 1,"BURNING", "prototipo/assets/fire_icon.png"),
+            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png")            
             ])
 
         #main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
