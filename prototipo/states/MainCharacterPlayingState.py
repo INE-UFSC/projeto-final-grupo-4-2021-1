@@ -3,7 +3,7 @@ from typing import List
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from display.Text import Text
-from display.Button import Button
+from display.TextButton import TextButton
 from display.MainCharacterResources import MainCharacterResources
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
@@ -20,7 +20,7 @@ class MainCharacterPlayingState(BaseMenuState):
         self.player_hp = None
         self.opponent_hp = None
     
-        self.options: List["Button"] = [Button("prototipo/assets/combatMenuButton.png", Text(
+        self.options: List["TextButton"] = [TextButton("prototipo/assets/combatMenuButton.png", Text(
             "prototipo/assets/fonts/menu_option.ttf",
             50,
             pygame.Color(255, 255, 255),
@@ -69,7 +69,6 @@ class MainCharacterPlayingState(BaseMenuState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                #Corrigir - o menu deve ser atualizado no mesmo ciclo.
                 return self.handle_menu(event.key)
 
 
