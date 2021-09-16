@@ -22,7 +22,9 @@ class OpponentPlayingState(BaseState):
 
 
     def handle_action(self):
-        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(Singleton.opponent.skills[0]))
+        skill = Singleton.opponent.skills[0]
+        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(skill))
+        Singleton.opponent.ap.decrease_current(skill.cost)
 
         if Singleton.main_character.hp.is_zero():
             return "END"
@@ -36,11 +38,15 @@ class OpponentPlayingState(BaseState):
         surface = self.font.render(room_level_text, True, pygame.Color("white"))
         self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+
         if self.__new_round:
             Singleton.opponent.update_combat_status()
             self.__new_round = False
 
         self.time_active += 1
-        if self.time_active > 119:
+        if self.time_active > 29:
             self.time_active = 0
             return self.handle_action()

@@ -45,7 +45,6 @@ class Fighter(ABC):
     def combat_status(self):
         return self.__combat_status
     
-
     def initialize_buffs(self):
         buffs = {}
         for buffTarget in BuffTarget:
@@ -57,7 +56,6 @@ class Fighter(ABC):
     def use_skill(self, skill):
         "Returns the list of effects with it's values multiplied by the buffs multipliers in self.__buffs"
         if isinstance(skill, Skill):
-            self.__ap.decrease_current(skill.cost)
             effects = deepcopy(skill.effects)
         else:
             effects = deepcopy(skill)

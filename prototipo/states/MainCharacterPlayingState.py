@@ -51,17 +51,18 @@ class MainCharacterPlayingState(BaseMenuState):
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
         if self.active_index < 10:
-            Singleton.main_character.skills[self.active_index].main_char_animation.reset()
-            self.__active_skills.append(Singleton.main_character.skills[self.active_index])
-            #Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
+            skill = Singleton.main_character.skills[self.active_index]
+
+            if skill not in self.__active_skills:
+                skill.main_char_animation.reset()
+                self.__active_skills.append(skill)
+                Singleton.main_character.ap.decrease_current(skill.cost)
 
         elif self.active_index == 3:
             return "OPPONENT_PLAYING"
         
         elif self.active_index == 4:
             return "OPTIONS"
-
-
 
     def run(self):
         room_level_text = f"Room Level: {str(Singleton.room.number)}"
