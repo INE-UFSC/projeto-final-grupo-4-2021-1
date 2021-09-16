@@ -1,11 +1,15 @@
 import pygame
 
 class Text:
-    def __init__(self, font_path: str, size: int, color: pygame.Color, text: str):
+    def __init__(self, font_path: str, size: int, color: pygame.Color, text: str, topleft: tuple = None):
         self.__font = pygame.font.Font(font_path, size)
         self.__text = text
         self.__color = color
-        self.__rect: pygame.Rect = None
+        
+        if topleft:
+            self.__rect = pygame.Rect(self.surface.get_rect(topleft = topleft))
+        else:
+            self.__rect = None
 
     @property
     def surface(self) -> pygame.Surface:
@@ -14,6 +18,14 @@ class Text:
     @property
     def color(self):
         return self.__color
+
+    @property
+    def text(self):
+        return self.__text
+
+    @text.setter
+    def text(self, text):
+        self.__text = text
 
     @color.setter
     def color(self, color: pygame.Color):

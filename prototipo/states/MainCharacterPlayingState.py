@@ -5,6 +5,8 @@ from TextSprite import TextSprite
 from display.Text import Text
 from display.IconButton import IconButton
 from display.TextButton import TextButton
+from display.Animation import Animation
+from skill.Skill import Skill
 from display.MainCharacterResources import MainCharacterResources
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
@@ -20,6 +22,8 @@ class MainCharacterPlayingState(BaseMenuState):
 
         self.player_hp = None
         self.opponent_hp = None
+
+        self.__active_skills: List["Skill"] = []
 
         skills_menu: List["IconButton"] = [IconButton("prototipo/assets/icon_shadow.png", skill.icon_path) for skill in Singleton.main_character.skills]
 
@@ -45,14 +49,10 @@ class MainCharacterPlayingState(BaseMenuState):
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
-        if self.active_index == 0:
-            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
-
-        elif self.active_index == 1:
-            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[1]))
-            
-        elif self.active_index == 2:
-            Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[2]))
+        if self.active_index < 10:
+            Singleton.main_character.skills[self.active_index].main_char_animation.reset()
+            self.__active_skills.append(Singleton.main_character.skills[self.active_index])
+            #Singleton.opponent.get_attacked(Singleton.main_character.use_skill(Singleton.main_character.skills[0]))
 
         elif self.active_index == 3:
             return "OPPONENT_PLAYING"
@@ -60,18 +60,23 @@ class MainCharacterPlayingState(BaseMenuState):
         elif self.active_index == 4:
             return "OPTIONS"
 
-        if Singleton.opponent.hp.is_zero():
-            return "END_COMBAT"
-        elif Singleton.main_character.ap.is_zero():
-            Singleton.opponent.ap.increase_current(2)
-            self.__new_round = True
-            return "OPPONENT_PLAYING"
+
 
     def run(self):
         room_level_text = f"Room Level: {str(Singleton.room.number)}"
         surface = self.font.render(room_level_text, True, pygame.Color("white"))
         self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
 
+        if Singleton.opponent.hp.is_zero():
+            return "END_COMBAT"
+
+        if Singleton.main_character.ap.is_zero() and not self.__active_skills:
+            Singleton.opponent.ap.increase_current(2)
+            self.__new_round = True
+            return "OPPONENT_PLAYING"
+
+        self.apply_skills()
+        
         if self.__new_round:
             Singleton.main_character.update_combat_status()
             self.__new_round = False
@@ -82,11 +87,22 @@ class MainCharacterPlayingState(BaseMenuState):
             elif event.type == pygame.KEYUP:
                 return self.handle_menu(event.key)
 
+    def apply_skills(self):
+        for index, skill in enumerate(self.__active_skills):
+            if skill.main_char_animation.finished:
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(skill))
+                self.__active_skills.pop(index)
+            else:
+                skill.main_char_animation.update()
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
+
         Singleton.opponent.draw(surface)
         MainCharacterResources.draw(surface)
+
+        for skill in self.__active_skills:
+            skill.main_char_animation.draw(surface)
 
         for index, option in enumerate(self.options):
             if isinstance(option, TextButton):

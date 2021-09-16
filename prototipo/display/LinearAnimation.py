@@ -1,6 +1,7 @@
 import pygame
 from copy import copy
-from Animation import Animation
+
+from .Animation import Animation
 
 class LinearAnimation(Animation):
     def __init__(self, surface, start_rect: pygame.Rect, end_rect: pygame.Rect, duration):
@@ -14,9 +15,7 @@ class LinearAnimation(Animation):
         if not self._finished:
             self.__x += self.__speed[0]
             self.__y += self.__speed[1]
-
-            print(self.__x, self.__y)
-
+            
             self._rect.topleft = (int(round(self.__x)), int(round(self.__y)))
 
             if self._rect == self.end_rect:
