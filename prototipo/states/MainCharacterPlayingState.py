@@ -8,6 +8,7 @@ from display.TextButton import TextButton
 from display.Animation import Animation
 from skill.Skill import Skill
 from display.MainCharacterResources import MainCharacterResources
+from display.OpponentResources import OpponentResources
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
@@ -100,6 +101,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
         Singleton.opponent.draw(surface)
         MainCharacterResources.draw(surface)
+        OpponentResources.draw(surface)
 
         for skill in self.__active_skills:
             skill.main_char_animation.draw(surface)

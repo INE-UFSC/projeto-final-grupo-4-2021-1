@@ -2,6 +2,7 @@ import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
 from display.MainCharacterResources import MainCharacterResources
+from display.OpponentResources import OpponentResources
 from Singleton import Singleton
 
 
@@ -17,6 +18,7 @@ class OpponentPlayingState(BaseState):
         surface.blit(Singleton.background, (0,0))
         Singleton.opponent.draw(surface)
         MainCharacterResources.draw(surface)
+        OpponentResources.draw(surface)
 
 
     def handle_action(self):
