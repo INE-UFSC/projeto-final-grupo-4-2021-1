@@ -21,10 +21,7 @@ class Game:
         else:
             self.previous_state = self.current_state
             self.current_state = self.states[next_state_key]
-
-    def draw_current_state(self):
-        self.current_state.draw(self.screen)
-
+            
     def run_current_state(self):
         "Calls the current state's routine. Returns the key to the next state, or None if the state should not be changed."
         return self.current_state.run()
@@ -32,7 +29,7 @@ class Game:
     def run(self):
         while True:
             next_state_key = self.run_current_state()
-            self.draw_current_state()
+            self.current_state.draw(self.screen)
         
             pygame.display.update()
             FramePerSec.tick(FPS)

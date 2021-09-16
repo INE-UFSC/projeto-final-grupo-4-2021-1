@@ -12,6 +12,10 @@ class SplashState(BaseState):
         self.__time_active = 0
 
     def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
         self.__time_active += 1
         if self.__time_active % 2 and self.__time_active > 60:
             self.__title.rect.move_ip(0, -1)
