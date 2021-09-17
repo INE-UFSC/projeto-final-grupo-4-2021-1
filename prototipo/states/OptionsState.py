@@ -12,7 +12,7 @@ class OptionsState(BaseMenuState):
             50,
             pygame.Color(255, 255, 255),
             option
-        ) for option in ["Option1", "Option2", "Return"]]
+        ) for option in ["Option1", "Equipment", "Option3", "Return"]]
 
         menu_height = 0
         for option in self.options:
@@ -33,8 +33,7 @@ class OptionsState(BaseMenuState):
             # aumentar/baixar volume
             pass
         elif self.active_index == 1:
-            # a ser definido
-            pass
+            return "EQUIPMENT"
         elif self.active_index == 2:
             return "PREVIOUS"
 
