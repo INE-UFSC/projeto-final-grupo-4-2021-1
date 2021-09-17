@@ -50,7 +50,7 @@ class MainCharacterPlayingState(BaseMenuState):
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
-        if self.active_index < 10:
+        if self.active_index < 10 and not Singleton.main_character.ap.is_zero():
             skill = Singleton.main_character.skills[self.active_index]
 
             if skill not in self.__active_skills:
