@@ -1,5 +1,9 @@
 import pygame
 
+from item.Weapon import Weapon
+from item.Armor import Armor
+from item.ItemTypes import ItemType
+from item.Trinket import Trinket
 from fighter.Fighter import Fighter, CombatStatus
 from fighter.Stats import Stats
 from fighter.Resource import Resource
@@ -21,6 +25,7 @@ ATRIBUTE_POINTS_PER_LEVEL = 2
 class MainCharacter(Fighter):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = [], combat_status = {}):
         self.__inventory = inventory
+        self.__equipment = equipment
         self.__exp = exp
         super().__init__(stats, hp, ap, equipment, skills, combat_status)
 
@@ -35,7 +40,11 @@ class MainCharacter(Fighter):
         animation2 = LinearAnimation(surface2, surface2.get_rect(topright = (screen.width, screen.height)), surface2.get_rect(center = (screen.center)), 60)
         animation3 = LinearAnimation(surface3, surface3.get_rect(topright = (screen.width, screen.height)), surface3.get_rect(center = (screen.center)), 60)
         
-        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), None, None, None, 0, [
+        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), Equipment(
+                Weapon("Default Sword", "Just your default sword.", 10, ItemType.WEAPON, None, None),
+                Armor("Default Armor", "Just your default armor.", 20, ItemType.ARMOR, None, None),
+                Trinket("Default Trinket", "Just your default trinket", 0, ItemType.TRINKET, None)
+                ), None, None, 0, [
             Skill([DamageEffect(10, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
             Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect(10, DamageType.FIRE, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE", None))], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
             Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation3)            
@@ -50,13 +59,12 @@ class MainCharacter(Fighter):
         return self.__inventory
 
     @property
+    def equipment(self):
+        return self.__equipment
+
+    @property
     def exp(self):
         return self.__exp
-
-    #@inventory.setter
-    #def inventory(self, inventory):
-    #    self.__inventory = inventory
-
 
     def increase_exp(self, amount):
         "Increases the current EXP by the specified amount"

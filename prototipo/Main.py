@@ -1,5 +1,6 @@
 import pygame
 
+from states.EquipmentState import EquipmentState
 from states.SplashState import SplashState
 from states.InitState import InitState
 from states.OptionsState import OptionsState
@@ -26,6 +27,7 @@ states = {
     "SPLASH": SplashState(),
     "INIT": InitState(),
     "OPTIONS": OptionsState(),
+    "EQUIPMENT": EquipmentState(),
     "START_COMBAT": StartCombatState(),
     "MAIN_CHARACTER_PLAYING": MainCharacterPlayingState(),
     "OPPONENT_PLAYING": OpponentPlayingState(),
