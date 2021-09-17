@@ -65,10 +65,6 @@ class MainCharacterPlayingState(BaseMenuState):
             return "OPTIONS"
 
     def run(self):
-        room_level_text = f"Room Level: {str(Singleton.room.number)}"
-        surface = self.font.render(room_level_text, True, pygame.Color("white"))
-        self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
-
         if Singleton.opponent.hp.is_zero():
             return "END_COMBAT"
 
@@ -115,3 +111,6 @@ class MainCharacterPlayingState(BaseMenuState):
                 option.change_background("prototipo/assets/red_circle.png" if index == self.active_index else "prototipo/assets/icon_shadow.png")
             
             option.draw(surface)
+
+        room_level = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), f"Room Level: {str(Singleton.room.number)}", (1100, 25))
+        room_level.draw(surface)

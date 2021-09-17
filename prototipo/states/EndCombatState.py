@@ -2,6 +2,9 @@ import pygame
 from Singleton import Singleton
 from TextSprite import TextSprite
 from states.BaseMenuState import BaseMenuState
+from display.Text import Text
+from display.TextButton import TextButton
+from display.MainCharacterResources import MainCharacterResources
 
 
 class EndCombatState(BaseMenuState):
@@ -13,8 +16,6 @@ class EndCombatState(BaseMenuState):
         self.options = []
         self.player_hp = None
         self.opponent_hp = None
-
-        self.index = 100
 
     def handle_action(self):
         if self.active_index == 0:
@@ -42,28 +43,24 @@ class EndCombatState(BaseMenuState):
             elif event.type == pygame.KEYUP:
                 return self.handle_menu(event.key)
 
-        if self.active_index != self.previous_index:
-            self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))
-            self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
-            self.previous_index = self.active_index
-
     def draw(self, surface):
-        print(f"ec {len(self.options)}")
         surface.blit(Singleton.background, (0,0))
 
+        adder = 300
         for i in range(len(Singleton.room.doors())):
             if Singleton.room.doors()[i].next_room_type.value not in self.menu:
                 self.menu.append(Singleton.room.doors()[i].next_room_type.value)
-                self.index += 150
                 if i == 0:
-                    surface = self.font.render(Singleton.room.doors()[i].next_room_type.value, True, pygame.Color("red"))
-                    self.options.append(TextSprite(Singleton.room.doors()[i].next_room_type.value, surface, surface.get_rect(topleft=(self.index, 500))))
-
+                    option = TextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 0, 0), Singleton.room.doors()[i].next_room_type.value))
+                    option.rect = option.surface.get_rect(topleft=(adder, 600))
+                    adder += (option.surface.get_width() + 200)
+                    self.options.append(option)
                 else:
-                    surface = self.font.render(Singleton.room.doors()[i].next_room_type.value, True, pygame.Color("white"))
-                    self.options.append(TextSprite(Singleton.room.doors()[i].next_room_type.value, surface, surface.get_rect(topleft=(self.index, 500))))
+                    option = TextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), Singleton.room.doors()[i].next_room_type.value))
+                    option.rect = option.surface.get_rect(topleft=(adder, 600))
+                    adder += (option.surface.get_width() + 200)
+                    self.options.append(option)
 
-
-
-        for option in [*self.options]:
-            surface.blit(option.surf, option.rect)
+        for index, option in enumerate(self.options):
+            option.draw(surface)
+            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))

@@ -3,6 +3,9 @@ from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
 from room.HealRoom import HealRoom
+from display.TextButton import TextButton
+from display.MainCharacterResources import MainCharacterResources
+from display.Text import Text
 
 
 class HealRoomState(BaseMenuState):
@@ -11,16 +14,20 @@ class HealRoomState(BaseMenuState):
         self.active_index = 0
         self.previous_index = 0
         self.options = []
-        options = ["Inventory", "Options"]
         self.menu = []
-        self.index = 100
 
-        surface = self.font.render(options[0], True, pygame.Color("red"))
-        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(self.index, 500))))
-        for option in options[1:]:
-            self.index += 130
-            surface = self.font.render(option, True, pygame.Color("white"))
-            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(self.index, 500))))
+        self.adder = 150
+        for option in ["Inventory", "Options"]:
+            option = TextButton("prototipo/assets/combatMenuButton.png", Text(
+                "prototipo/assets/fonts/menu_option.ttf",
+                25,
+                pygame.Color(255, 255, 255),
+                option
+            ))
+            option.rect = option.surface.get_rect(topleft=(self.adder, 600))
+            self.adder += (option.surface.get_width() + 25)
+
+            self.options.append(option)
 
     def handle_action(self):
         if self.active_index == 0:
@@ -43,30 +50,26 @@ class HealRoomState(BaseMenuState):
             elif event.type == pygame.KEYUP:
                 return self.handle_menu(event.key)
 
-        if self.active_index != self.previous_index:
-            self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))
-            self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
-            self.previous_index = self.active_index
-
-        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
-        surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
-        self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
-
-        room_text = "Heal Room"
-        surface = self.font.render(room_text, True, pygame.Color("green"))
-        self.room = (TextSprite(room_text, surface, surface.get_rect(topleft=(670,10))))
-
     def draw(self, surface):
-        print(f"hr {len(self.options)}")
         surface.blit(Singleton.background, (0,0))
-        surface.blit(self.player_hp.surf, self.player_hp.rect)
+        MainCharacterResources.draw(surface)
 
         for door in Singleton.room.doors():
             if door.next_room_type.value not in self.menu:
-                self.index += 130
                 self.menu.append(door.next_room_type.value)
-                surface = self.font.render(door.next_room_type.value, True, pygame.Color("white"))
-                self.options.append(TextSprite(door.next_room_type.value, surface, surface.get_rect(topleft=(self.index, 500))))
+                option = TextButton("prototipo/assets/combatMenuButton.png", Text(
+                    "prototipo/assets/fonts/menu_option.ttf",
+                    25,
+                    pygame.Color(255, 255, 255),
+                    door.next_room_type.value
+                ))
+                option.rect = option.surface.get_rect(topleft=(self.adder, 600))
+                self.adder += (option.surface.get_width() + 25)
+                self.options.append(option)
 
-        for option in [*self.options, self.room]:
-            surface.blit(option.surf, option.rect)
+        for index, option in enumerate(self.options):
+            option.draw(surface)
+            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+
+        heal_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Heal Room", (1100, 25))
+        heal_room.draw(surface)

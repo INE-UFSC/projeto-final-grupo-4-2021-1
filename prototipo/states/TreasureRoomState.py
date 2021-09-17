@@ -1,8 +1,9 @@
 import pygame
 from .BaseMenuState import BaseMenuState
-from TextSprite import TextSprite
 from Singleton import Singleton
 from room.TreasureRoom import TreasureRoom
+from display.Text import Text
+from display.TextButton import TextButton
 
 
 class TreasureRoomState(BaseMenuState):
@@ -13,15 +14,19 @@ class TreasureRoomState(BaseMenuState):
         self.active_index = 0
         self.previous_index = 0
         self.options = []
-        options = ["Inventory", "Select Item", "Options"]
-        self.index = 100
 
-        surface = self.font.render(options[0], True, pygame.Color("red"))
-        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(self.index, 500))))
-        for option in options[1:]:
-            self.index += 130
-            surface = self.font.render(option, True, pygame.Color("white"))
-            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(self.index, 500))))
+        self.adder = 50
+        for option in ["Inventory", "Select Item", "Options"]:
+            option = TextButton("prototipo/assets/combatMenuButton.png", Text(
+                "prototipo/assets/fonts/menu_option.ttf",
+                25,
+                pygame.Color(255, 255, 255),
+                option
+            ))
+            option.rect = option.surface.get_rect(topleft=(self.adder, 600))
+            self.adder += (option.surface.get_width() + 20)
+
+            self.options.append(option)
 
     def handle_action(self):
         if self.active_index == 0:
@@ -49,25 +54,25 @@ class TreasureRoomState(BaseMenuState):
             elif event.type == pygame.KEYUP:
                 return self.handle_menu(event.key)
 
-        if self.active_index != self.previous_index:
-            self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))
-            self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
-            self.previous_index = self.active_index
-
-        room_text = "Treasure Room"
-        surface = self.font.render(room_text, True, pygame.Color("yellow"))
-        self.room = (TextSprite(room_text, surface, surface.get_rect(topleft=(640,10))))
-
     def draw(self, surface):
-        print(f"tr {len(self.options)}")
         surface.blit(Singleton.background, (0,0))
 
         for door in Singleton.room.doors():
             if door.next_room_type.value not in self.menu:
-                self.index += 130
                 self.menu.append(door.next_room_type.value)
-                surface = self.font.render(door.next_room_type.value, True, pygame.Color("white"))
-                self.options.append(TextSprite(door.next_room_type.value, surface, surface.get_rect(topleft=(self.index, 500))))
+                option = TextButton("prototipo/assets/combatMenuButton.png", Text(
+                    "prototipo/assets/fonts/menu_option.ttf",
+                    25,
+                    pygame.Color(255, 255, 255),
+                    door.next_room_type.value
+                ))
+                option.rect = option.surface.get_rect(topleft=(self.adder, 600))
+                self.adder += (option.surface.get_width() + 20)
+                self.options.append(option)
 
-        for option in [*self.options, self.room]:
-            surface.blit(option.surf, option.rect)
+        for index, option in enumerate(self.options):
+            option.draw(surface)
+            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+
+        treasure_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Treasure Room", (1100, 25))
+        treasure_room.draw(surface)
