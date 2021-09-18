@@ -1,4 +1,3 @@
-from pygame import sprite
 from display.OpponentSprite import OpponentSprite
 from skill.DamageEffect import DamageEffect
 from skill.Skill import Skill
@@ -12,9 +11,11 @@ from fighter.Resource import Resource
 from .OpponentInfo import OpponentInfo
 from .Behavior import Behavior
 from item.Equipment import Equipment
+from helpers.SingletonMeta import ABCSingletonMeta
+
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
-class Opponent(Fighter):
+class Opponent(Fighter, metaclass=ABCSingletonMeta):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = [], combat_status = {}):
         self.__behavior = behavior
         self.__sprite = sprite
@@ -30,8 +31,6 @@ class Opponent(Fighter):
         opponent = Opponent(stats, hp, ap, None, sprite, None, [basic_attack])
         #opponent.add_buff(BuffEffect({BuffTarget.RESISTANCE: {DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
         opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
-        return opponent
-
 
     @property
     def info(self):

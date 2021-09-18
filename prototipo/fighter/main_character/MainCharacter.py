@@ -1,3 +1,4 @@
+from helpers.SingletonMeta import ABCSingletonMeta
 import pygame
 
 from fighter.Fighter import Fighter, CombatStatus
@@ -18,7 +19,7 @@ from display.LinearAnimation import LinearAnimation
 ATRIBUTE_POINTS_PER_LEVEL = 2
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
-class MainCharacter(Fighter):
+class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = [], combat_status = {}):
         self.__inventory = inventory
         self.__exp = exp
@@ -43,7 +44,6 @@ class MainCharacter(Fighter):
 
         #main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
         main_char.add_buff(BuffEffect(BuffTarget.DAMAGE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
-        return main_char
     
     @property
     def inventory(self):

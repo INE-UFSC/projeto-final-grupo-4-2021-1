@@ -1,6 +1,8 @@
 import pygame
 from .BaseState import BaseState
 from TextSprite import TextSprite
+from fighter.opponent.Opponent import Opponent
+from fighter.main_character.MainCharacter import MainCharacter
 from display.MainCharacterResources import MainCharacterResources
 from display.OpponentResources import OpponentResources
 from Singleton import Singleton
@@ -16,20 +18,20 @@ class OpponentPlayingState(BaseState):
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
-        Singleton.opponent.draw(surface)
+        Opponent().draw(surface)
         MainCharacterResources.draw(surface)
         OpponentResources.draw(surface)
 
 
     def handle_action(self):
-        skill = Singleton.opponent.skills[0]
-        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(skill))
-        Singleton.opponent.ap.decrease_current(skill.cost)
+        skill = Opponent().skills[0]
+        MainCharacter().get_attacked(Opponent().use_skill(skill))
+        Opponent().ap.decrease_current(skill.cost)
 
-        if Singleton.main_character.hp.is_zero():
+        if MainCharacter().hp.is_zero():
             return "END"
-        elif Singleton.opponent.ap.is_zero():
-            Singleton.main_character.ap.increase_current(2)
+        elif Opponent().ap.is_zero():
+            MainCharacter().ap.increase_current(2)
             self.__new_round = True
             return "MAIN_CHARACTER_PLAYING"
 
@@ -43,7 +45,7 @@ class OpponentPlayingState(BaseState):
                 return "QUIT"
 
         if self.__new_round:
-            Singleton.opponent.update_combat_status()
+            Opponent().update_combat_status()
             self.__new_round = False
 
         self.time_active += 1

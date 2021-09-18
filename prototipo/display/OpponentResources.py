@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from fighter.opponent.Opponent import Opponent
 import pygame
 from Singleton import Singleton
 from .Text import Text
@@ -6,8 +7,8 @@ from .Text import Text
 class OpponentResources:
     @abstractmethod
     def draw(surface, midtop = None):
-        current_hp = Singleton.opponent.hp.current
-        max_hp = Singleton.opponent.hp.max
+        current_hp = Opponent().hp.current
+        max_hp = Opponent().hp.max
 
         if not midtop:
             midtop = Singleton.screen_rect.midtop

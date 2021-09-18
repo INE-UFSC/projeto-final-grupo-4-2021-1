@@ -2,6 +2,8 @@ import pygame
 from typing import List
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
+from fighter.main_character.MainCharacter import MainCharacter
+from fighter.opponent.Opponent import Opponent
 from display.Text import Text
 from display.IconButton import IconButton
 from display.TextButton import TextButton
@@ -26,7 +28,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
         self.__active_skills: List["Skill"] = []
 
-        skills_menu: List["IconButton"] = [IconButton("prototipo/assets/icon_shadow.png", skill.icon_path) for skill in Singleton.main_character.skills]
+        skills_menu: List["IconButton"] = [IconButton("prototipo/assets/icon_shadow.png", skill.icon_path) for skill in MainCharacter().skills]
 
         adder = self.screen_rect.center[0] - (5 * skills_menu[0].background.get_width())
         for skill_icon in skills_menu:
@@ -50,13 +52,13 @@ class MainCharacterPlayingState(BaseMenuState):
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
-        if self.active_index < 10 and not Singleton.main_character.ap.is_zero():
-            skill = Singleton.main_character.skills[self.active_index]
+        if self.active_index < 10 and not MainCharacter().ap.is_zero():
+            skill = MainCharacter().skills[self.active_index]
 
             if skill not in self.__active_skills:
                 skill.main_char_animation.reset()
                 self.__active_skills.append(skill)
-                Singleton.main_character.ap.decrease_current(skill.cost)
+                MainCharacter().ap.decrease_current(skill.cost)
 
         elif self.active_index == 3:
             return "OPPONENT_PLAYING"
@@ -69,18 +71,18 @@ class MainCharacterPlayingState(BaseMenuState):
         surface = self.font.render(room_level_text, True, pygame.Color("white"))
         self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
 
-        if Singleton.opponent.hp.is_zero():
+        if Opponent().hp.is_zero():
             return "END_COMBAT"
 
-        if Singleton.main_character.ap.is_zero() and not self.__active_skills:
-            Singleton.opponent.ap.increase_current(2)
+        if MainCharacter().ap.is_zero() and not self.__active_skills:
+            Opponent().ap.increase_current(2)
             self.__new_round = True
             return "OPPONENT_PLAYING"
 
         self.apply_skills()
         
         if self.__new_round:
-            Singleton.main_character.update_combat_status()
+            MainCharacter().update_combat_status()
             self.__new_round = False
 
         for event in pygame.event.get():
@@ -92,7 +94,7 @@ class MainCharacterPlayingState(BaseMenuState):
     def apply_skills(self):
         for index, skill in enumerate(self.__active_skills):
             if skill.main_char_animation.finished:
-                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(skill))
+                Opponent().get_attacked(MainCharacter().use_skill(skill))
                 self.__active_skills.pop(index)
             else:
                 skill.main_char_animation.update()
@@ -100,7 +102,7 @@ class MainCharacterPlayingState(BaseMenuState):
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
 
-        Singleton.opponent.draw(surface)
+        Opponent().draw(surface)
         MainCharacterResources.draw(surface)
         OpponentResources.draw(surface)
 

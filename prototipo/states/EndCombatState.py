@@ -1,3 +1,4 @@
+from fighter.main_character.MainCharacter import MainCharacter
 import pygame
 from Singleton import Singleton
 from TextSprite import TextSprite
@@ -27,11 +28,10 @@ class EndCombatState(BaseMenuState):
             return "END_COMBAT"
 
     def run(self):
-        Singleton.opponent = None
-        if Singleton.main_character.hp.is_zero():
+        if MainCharacter().hp.is_zero():
             return "END"
 
-        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        player_hp_text = f"Player HP: {MainCharacter().hp.current}/{MainCharacter().hp.max}"
 
         surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
         self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))

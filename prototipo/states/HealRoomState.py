@@ -1,3 +1,4 @@
+from fighter.main_character.MainCharacter import MainCharacter
 import pygame
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
@@ -48,7 +49,7 @@ class HealRoomState(BaseMenuState):
             self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
             self.previous_index = self.active_index
 
-        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        player_hp_text = f"Player HP: {MainCharacter().hp.current}/{MainCharacter().hp.max}"
         surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
         self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
 

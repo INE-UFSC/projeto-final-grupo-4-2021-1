@@ -5,8 +5,6 @@ import pygame
 
 class Singleton:
     room: Room = None
-    main_character: MainCharacter = None
-    opponent: Opponent = None
     background = None
     screen_rect: pygame.Rect = None
 
