@@ -1,3 +1,4 @@
+from helpers.SingletonMeta import ABCSingletonMeta
 import pygame
 
 from item.Weapon import Weapon
@@ -22,7 +23,7 @@ from display.LinearAnimation import LinearAnimation
 ATRIBUTE_POINTS_PER_LEVEL = 2
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
-class MainCharacter(Fighter):
+class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = [], combat_status = {}):
         self.__inventory = inventory
         self.__equipment = equipment
@@ -45,14 +46,13 @@ class MainCharacter(Fighter):
                 Armor("Default Armor", "Just your default armor.", 20, ItemType.ARMOR, None, None),
                 Trinket("Default Trinket", "Just your default trinket", 0, ItemType.TRINKET, None)
                 ), None, None, 0, [
-            Skill([DamageEffect(10, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
+            Skill([DamageEffect(1000, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
             Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect(10, DamageType.FIRE, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE", None))], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
             Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation3)            
             ])
 
         #main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
         main_char.add_buff(BuffEffect(BuffTarget.DAMAGE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
-        return main_char
     
     @property
     def inventory(self):

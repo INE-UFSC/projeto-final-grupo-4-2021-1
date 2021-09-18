@@ -1,16 +1,15 @@
+from fighter.main_character.MainCharacter import MainCharacter
 from pygame.key import name
-from Singleton import Singleton
 import pygame
 from .BaseMenuState import BaseMenuState
 from display.Text import Text
 import pygame
-from Singleton import Singleton
 from item.Equipment import Equipment
 
 class EquipmentState(BaseMenuState):
     def __init__(self):
         super(EquipmentState, self).__init__()
-        mc = Singleton.main_character
+        mc = MainCharacter()
         self.active_index = 0
 
         font = "prototipo/assets/fonts/menu_option.ttf"

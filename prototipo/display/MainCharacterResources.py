@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from fighter.main_character.MainCharacter import MainCharacter
 import pygame
 from Singleton import Singleton
 from .Text import Text
@@ -6,15 +7,15 @@ from .Text import Text
 class MainCharacterResources:
     @abstractmethod
     def draw(surface, topleft = (108, 530)):
-        current_hp = Singleton.main_character.hp.current
-        max_hp = Singleton.main_character.hp.max
+        current_hp = MainCharacter().hp.current
+        max_hp = MainCharacter().hp.max
 
         pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(topleft, (500, 20)), 5) 
         pygame.draw.rect(surface, (255, 0, 0), pygame.Rect(topleft, (500, 20))) 
         pygame.draw.rect(surface, (0, 255, 0), pygame.Rect(topleft, (500*current_hp/max_hp, 20)))
 
-        current_ap = Singleton.main_character.ap.current
-        max_ap = Singleton.main_character.ap.max
+        current_ap = MainCharacter().ap.current
+        max_ap = MainCharacter().ap.max
         for index in range(max_ap):
             pygame.draw.circle(surface, (150, 150, 150), ((20 * (index)) + topleft[0] + 8, topleft[1] + 35), 8)
             if index < current_ap:

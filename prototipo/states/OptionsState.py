@@ -12,7 +12,7 @@ class OptionsState(BaseMenuState):
             50,
             pygame.Color(255, 255, 255),
             option
-        ) for option in ["Option1", "Equipment", "Option3", "Return"]]
+        ) for option in ["Option1", "Equipment", "Return"]]
 
         menu_height = 0
         for option in self.options:

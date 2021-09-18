@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from copy import deepcopy
 
+from helpers.SingletonMeta import ABCSingletonMeta
+
 from skill.Skill import Skill
 from skill.Effect import Effect
 from .Resource import Resource

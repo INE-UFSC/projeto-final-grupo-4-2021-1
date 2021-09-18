@@ -19,7 +19,7 @@ from Singleton import Singleton
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 
-Singleton.main_character = MainCharacter.generate_test_character()
+MainCharacter.generate_test_character()
 Singleton.background = pygame.image.load("prototipo/assets/Background.png")
 Singleton.screen_rect = pygame.display.get_surface().get_rect()
 
