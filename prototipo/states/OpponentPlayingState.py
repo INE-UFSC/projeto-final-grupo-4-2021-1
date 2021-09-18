@@ -25,7 +25,7 @@ class OpponentPlayingState(BaseState):
 
     def handle_action(self):
         skill = Opponent().skills[0]
-        MainCharacter().get_attacked(Opponent().use_skill(skill))
+        Opponent().use_skill(skill, MainCharacter())
         Opponent().ap.decrease_current(skill.cost)
 
         if MainCharacter().hp.is_zero():

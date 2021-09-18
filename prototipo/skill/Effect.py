@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from .EffectTarget import EffectTarget
 
 class Effect(ABC):
@@ -8,3 +8,7 @@ class Effect(ABC):
     @property
     def target(self):
         return self.__target
+
+    @abstractmethod
+    def apply_effect(self, user, target):
+        pass

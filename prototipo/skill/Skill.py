@@ -1,9 +1,8 @@
-from .Effect import Effect
 from display.Animation import Animation
 from typing import List
 
 class Skill:
-    def __init__(self, effects: List["Effect"], cost: int, category: str, icon_path: str, main_char_animation: Animation = None, opponent_animation: Animation = None):
+    def __init__(self, effects: list, cost: int, category: str, icon_path: str, main_char_animation: Animation = None, opponent_animation: Animation = None):
         self.__effects = effects
         self.__cost = cost
         self.__category = category
@@ -35,3 +34,7 @@ class Skill:
     @property
     def opponent_animation(self):
         return self.__opponent_animation
+
+    def use(self, user, enemy):
+        for effect in self.__effects:
+            effect.apply_effect(user, enemy)

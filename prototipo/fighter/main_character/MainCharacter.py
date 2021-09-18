@@ -47,7 +47,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
                 Trinket("Default Trinket", "Just your default trinket", 0, ItemType.TRINKET, None)
                 ), None, None, 0, [
             Skill([DamageEffect(1000, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
-            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY), CombatStatus(1, EffectTarget.ENEMY, 2, Skill([DamageEffect(10, DamageType.FIRE, 100, 1, EffectTarget.ENEMY)], 0, "BURNING DAMAGE", None))], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
+            Skill([DamageEffect(100, DamageType.FIRE, 100, 100, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
             Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation3)            
             ])
 

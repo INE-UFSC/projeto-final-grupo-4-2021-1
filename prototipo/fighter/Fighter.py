@@ -1,24 +1,19 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from copy import deepcopy
-
-from helpers.SingletonMeta import ABCSingletonMeta
-
+from typing import List
 from skill.Skill import Skill
-from skill.Effect import Effect
 from .Resource import Resource
 from skill.DamageType import DamageType
-from skill.DamageEffect import DamageEffect
 from skill.BuffTarget import BuffTarget
-from skill.EffectTarget import EffectTarget
-from skill.HealingEffect import HealingEffect
-from skill.BuffEffect import BuffEffect
 from item.Equipment import Equipment
 from .Stats import Stats
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 
 
 class Fighter(ABC):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: list = [], combat_status: dict = {}):
+    from skill.BuffEffect import BuffEffect
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = [], combat_status: dict = {}):
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap
@@ -44,6 +39,10 @@ class Fighter(ABC):
         return self.__skills
 
     @property
+    def buffs(self):
+        return self.__buffs
+
+    @property
     def combat_status(self):
         return self.__combat_status
     
@@ -55,43 +54,8 @@ class Fighter(ABC):
                 buffs[buffTarget][damageType] = 0
         return buffs
 
-    def use_skill(self, skill):
-        "Returns the list of effects with it's values multiplied by the buffs multipliers in self.__buffs"
-        if isinstance(skill, Skill):
-            effects = deepcopy(skill.effects)
-        else:
-            effects = deepcopy(skill)
-        
-        for effect in effects:
-            if isinstance(effect, DamageEffect):
-                #for damageType in effect.damage:
-                #Multiplica o dano pelo multiplicador do elemento somado com o multiplicador de dano geral, em self.__buffs
-
-                multiplier = self.__buffs[BuffTarget.DAMAGE][effect.type] + self.__buffs[BuffTarget.DAMAGE][DamageType.ALL]
-                effect.value *= max(0, multiplier + 1)
-
-                if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-                    self.__hp.decrease_current(effect.value)
-
-                #Implementar precisão --------------------------------------------------------------------------------------------------------------------
-
-            if isinstance(effect, HealingEffect):
-                if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-                    self.__hp.increase_current(effect.amount)
-            
-            #TODO calcular dano com base nos buffs
-            if isinstance(effect, CombatStatus):
-                effect.effects = self.use_skill(effect.effects)
-                if effect.target == EffectTarget.SELF or effect.target == EffectTarget.BOTH:
-                    effect.fighter = self
-                    
-                    self.add_combat_status(effect)
-                    
-                    effect.apply_buff()
-
-        
-
-        return effects
+    def use_skill(self, skill, target):
+        skill.use(self, target)
 
     def add_combat_status(self, combat_status):
         self.__combat_status[combat_status.id] = combat_status
@@ -110,32 +74,6 @@ class Fighter(ABC):
             self.__fighter.remove_buff(buff)
 
         self.__combat_status.pop(combat_status.id)
-
-    def get_attacked(self, effects: Effect):
-        for effect in effects:
-            if isinstance(effect, DamageEffect):
-                #for damageType in effect.damage:
-                multiplier = self.__buffs[BuffTarget.RESISTANCE][effect.type] + self.__buffs[BuffTarget.RESISTANCE][DamageType.ALL]
-                effect.value *= max(0, 1 - multiplier)
-
-                if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
-
-                    #Multiplica o valor do dano por -1 e aplica na vida
-                    self.__hp.decrease_current(effect.value)
-
-            if isinstance(effect, HealingEffect):
-                if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
-                    self.__hp.increase_current(effect.amount) 
-
-            #TODO calcular dano com base nos buffs
-            if isinstance(effect, CombatStatus):
-                if effect.target == EffectTarget.ENEMY or effect.target == EffectTarget.BOTH:
-                    effect.fighter = self
-                    self.add_combat_status(effect)
-                    
-                    effect.apply_buff()
-
-        return effects
                      
     def add_buff(self, buff: BuffEffect):
         "Adds up the buff multiplier received by BuffEffect on self.__buffs"
@@ -171,6 +109,7 @@ class Fighter(ABC):
         self.__skills[newpos] = self.__skills[currentpos]
         self.__skills[currentpos] = tmp
 
+from skill.Effect import Effect
 class CombatStatus(Effect, ABC):
     def __init__(self, id, target, duration, effects, buffs:list = []):
         self.__id = id

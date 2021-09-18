@@ -26,3 +26,6 @@ class BuffEffect(Effect):
     @property
     def multiplier(self):
         return self.__multiplier
+
+    def apply_effect(self, user, target):
+        pass

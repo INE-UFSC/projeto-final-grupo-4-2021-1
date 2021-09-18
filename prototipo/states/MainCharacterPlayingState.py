@@ -90,7 +90,7 @@ class MainCharacterPlayingState(BaseMenuState):
     def apply_skills(self):
         for index, skill in enumerate(self.__active_skills):
             if skill.main_char_animation.finished:
-                Opponent().get_attacked(MainCharacter().use_skill(skill))
+                MainCharacter().use_skill(skill, Opponent())
                 self.__active_skills.pop(index)
             else:
                 skill.main_char_animation.update()
