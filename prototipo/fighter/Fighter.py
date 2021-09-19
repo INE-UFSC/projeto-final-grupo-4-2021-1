@@ -1,16 +1,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from copy import deepcopy
 from skill.LingeringEffect import LingeringEffect
 from typing import List
 from skill.Skill import Skill
 from .Resource import Resource
-from skill.DamageType import DamageType
-from skill.BuffTarget import BuffTarget
 from skill.Buff import Buff
 from item.Equipment import Equipment
 from .Stats import Stats
-#buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 
 
 class Fighter(ABC):
@@ -40,6 +36,10 @@ class Fighter(ABC):
         return self.__skills
 
     @property
+    def equipment(self):
+        return self.__equipment
+
+    @property
     def buffs(self):
         return self.__buffs
 
@@ -63,9 +63,8 @@ class Fighter(ABC):
         self.__lingering_effects.remove(effect)
 
     def update_lingering_effects(self):
-        teste = list(filter(lambda effect: effect.update(self), self.__lingering_effects))
-        self.__lingering_effects = teste
-
+        self.__lingering_effects = list(filter(lambda effect: effect.update(self), self.__lingering_effects))
+        
     def add_skill(self, skill):
         "Appends the skill in self.__skills"
         self.__skills.append(skill)

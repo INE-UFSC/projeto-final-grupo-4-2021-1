@@ -1,19 +1,19 @@
 from .Item import Item
 from .ItemTypes import ItemType
-from skill.BuffEffect import BuffEffect
+from skill.Buff import Buff
 
 class Trinket(Item):
-    def __init__(self, name, description, weight, type, buff_effect):
+    def __init__(self, name, description, weight, type, buff: Buff):
         super().__init__(name, description, weight, type)
-        self.__buff_effect = buff_effect
+        self.__buff = buff
 
     @property
-    def buff_effect(self):
-        return self.__buff_effect
+    def buff(self):
+        return self.__buff
     
-    @buff_effect.setter
-    def buff_effect(self, buff_effect):
-        self.__buff_effect = buff_effect
+    @buff.setter
+    def buff(self, buff_effect):
+        self.__buff = buff_effect
 
 
 

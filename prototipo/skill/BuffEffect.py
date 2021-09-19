@@ -2,7 +2,7 @@ from typing import Dict
 from .LingeringEffect import LingeringEffect
 from .EffectTarget import EffectTarget
 from .Buff import Buff
-#from fighter.Fighter import Fighter
+from fighter.Fighter import Fighter
 
 
 class BuffEffect(LingeringEffect):

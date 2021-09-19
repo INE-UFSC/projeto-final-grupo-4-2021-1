@@ -1,3 +1,6 @@
+from abc import abstractmethod
+from skill.DamageType import DamageType
+from item.ItemTypes import ItemType
 from .Armor import Armor
 from .Weapon import Weapon
 from .Trinket import Trinket
@@ -8,6 +11,12 @@ class Equipment:
         self.__weapon = weapon
         self.__armor = armor
         self.__trinket = trinket
+
+    @abstractmethod
+    def default_equipment():
+        return Equipment(Weapon("Default", "Default", 0, ItemType.WEAPON, {DamageType.ALL: 0}, None),
+                        Armor("Default", "Default", 0, ItemType.ARMOR, {DamageType.ALL: 0}, None),
+                        Trinket("Default", "Default", 0, ItemType.TRINKET, None))
 
     @property
     def weapon(self):
@@ -32,3 +41,6 @@ class Equipment:
     @trinket.setter
     def trinket(self, trinket: Trinket):
         self.__trinket = trinket
+
+    def equipment_buffs(self):
+        return [self.__weapon.buff, self.__armor.buff, self.__trinket.buff]

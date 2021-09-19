@@ -7,6 +7,12 @@ class Buff:
         self.__target = target
         self.__type = type
 
+    def __eq__(self, other):
+        if not isinstance(other, Buff):
+            return NotImplemented
+
+        return self.multiplier == other.multiplier and self.target == other.target and self.type == other.type
+
     @property
     def multiplier(self):
         return self.__multiplier

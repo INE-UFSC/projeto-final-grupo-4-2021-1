@@ -1,9 +1,10 @@
 from random import randint
 
-from skill.BuffTarget import BuffTarget
+from fighter.Fighter import Fighter
 from typing import List
 from .Effect import Effect
 from .EffectTarget import EffectTarget
+from .BuffTarget import BuffTarget
 from .DamageType import DamageType
 from .Buff import Buff
 
@@ -39,19 +40,19 @@ class DamageEffect(Effect):
     def type(self):
         return self.__type
 
-    from fighter.Fighter import Fighter
     def apply_effect(self, user: 'Fighter', enemy: 'Fighter'):
-        damage = self.__apply_damage_buffs(self.__value, filter(lambda buff: buff.target == BuffTarget.DAMAGE, user.buffs))
+        damage = self.__value + user.equipment.weapon.base_damage[self.__type]
+        damage = self.__apply_damage_buffs(self.__value , filter(lambda buff: self.__is_damage_buff(buff), user.buffs))
         damage = self.__calculate_crit(damage)
         damage = self.__calculate_hit(damage)
 
         if self.target == EffectTarget.SELF:
-            user.hp.decrease_current(self.__apply_resistance_buffs(damage, filter(lambda buff: buff.target == BuffTarget.RESISTANCE, user.buffs)))
+            user.hp.decrease_current(self.__calculate_final_damage(damage, user))
         elif self.target == EffectTarget.ENEMY:
-            enemy.hp.decrease_current(self.__apply_resistance_buffs(damage, filter(lambda buff: buff.target == BuffTarget.RESISTANCE, enemy.buffs)))
+            enemy.hp.decrease_current(self.__calculate_final_damage(damage, enemy))
         else:
-            user.hp.decrease_current(self.__apply_resistance_buffs(damage, filter(lambda buff: buff.target == BuffTarget.RESISTANCE, user.buffs)))
-            enemy.hp.decrease_current(self.__apply_resistance_buffs(damage, filter(lambda buff: buff.target == BuffTarget.RESISTANCE, enemy.buffs)))
+            user.hp.decrease_current(self.__calculate_final_damage(damage, user))
+            enemy.hp.decrease_current(self.__calculate_final_damage(damage, enemy))
 
     def __apply_damage_buffs(self, damage: int, buffs: List["Buff"]):
         buffs = filter(lambda buff: buff.type == self.__type or buff.type == DamageType.ALL, buffs)
@@ -64,8 +65,15 @@ class DamageEffect(Effect):
     def __calculate_hit(self, damage: int):
         return damage if randint(1, 100) <= self.__accuracy else 0
 
-    def __apply_resistance_buffs(self, damage: int, buffs: List["Buff"]):
-        buffs = filter(lambda buff: buff.type == self.__type or buff.type == DamageType.ALL, buffs)
+    def __calculate_final_damage(self, damage, receiver: 'Fighter'):
+        buffs = filter(lambda buff: self.__is_resistance_buff(buff), receiver.buffs)
         multiplier = sum(buff.multiplier for buff in buffs)
-        return damage * max(0, 1 - multiplier)
+        return (damage - receiver.equipment.armor.base_armor[self.type]) * max(0, 1 - multiplier)
+
+
+    def __is_damage_buff(self, buff: Buff):
+        return buff.target == BuffTarget.DAMAGE and (buff.type == self.__type or buff.type == DamageType.ALL)
+
+    def __is_resistance_buff(self, buff: Buff):
+        return buff.target == BuffTarget.RESISTANCE and (buff.type == self.__type or buff.type == DamageType.ALL)
 

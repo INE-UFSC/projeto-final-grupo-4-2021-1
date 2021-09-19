@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 from .EffectTarget import EffectTarget
 from .Effect import Effect
 
@@ -21,13 +22,13 @@ class LingeringEffect(Effect, ABC):
 
     @abstractmethod
     def update(self, attached_to):
-        return self.__duration != 0
+        return not self.__duration == 0
 
     def attach(self, user, enemy):
         if self.target == EffectTarget.SELF:
-            user.add_lingering_effect(self)
+            user.add_lingering_effect(deepcopy(self))
         elif self.target == EffectTarget.ENEMY:
-            enemy.add_lingering_effect(self)
+            enemy.add_lingering_effect(deepcopy(self))
         else:
-            user.add_lingering_effect(self)
-            enemy.add_lingering_effect(self)
+            user.add_lingering_effect(deepcopy(self))
+            enemy.add_lingering_effect(deepcopy(self))

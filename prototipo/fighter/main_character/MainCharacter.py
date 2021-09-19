@@ -43,19 +43,19 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
         animation2 = LinearAnimation(surface2, surface2.get_rect(topright = (screen.width, screen.height)), surface2.get_rect(center = (screen.center)), 60)
         animation3 = LinearAnimation(surface3, surface3.get_rect(topright = (screen.width, screen.height)), surface3.get_rect(center = (screen.center)), 60)
         
-        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), Equipment(
-                Weapon("Default Sword", "Just your default sword.", 10, ItemType.WEAPON, None, None),
-                Armor("Default Armor", "Just your default armor.", 20, ItemType.ARMOR, None, None),
+        equipment = Equipment(
+                Weapon("Default Sword", "Just your default sword.", 10, ItemType.WEAPON, {DamageType.FIRE: 10}, None),
+                Armor("Default Armor", "Just your default armor.", 20, ItemType.ARMOR, {DamageType.PIERCING: 10}, None),
                 Trinket("Default Trinket", "Just your default trinket", 0, ItemType.TRINKET, None)
-                ), None, None, 0, [
+                )
+
+        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), equipment, None, None, 0, [
             Skill([DamageEffect(0, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY), BuffEffect(Buff(1, BuffTarget.DAMAGE, DamageType.FIRE), 2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
             Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
             Skill([PoisonEffect(0.1, 5, EffectTarget.ENEMY)], 1,"veneno", "prototipo/assets/fire_icon.png", animation3)            
             ])
 
-        #main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
-        #main_char.add_buff(BuffEffect(BuffTarget.DAMAGE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
-        main_char.buffs.append(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))
+        main_char.add_buff(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))
 
     
     @property

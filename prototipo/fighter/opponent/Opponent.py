@@ -27,10 +27,9 @@ class Opponent(Fighter, metaclass=ABCSingletonMeta):
         hp = Resource(1000, 1000)
         ap = Resource(3, 3)
         sprite = OpponentSprite("prototipo/assets/Zodiac Creatures Cancer.png")
-        basic_attack = Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
-        opponent = Opponent(stats, hp, ap, None, sprite, None, [basic_attack])
-        #opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 1, EffectTarget.BOTH))
-        opponent.buffs.append(Buff(0.5, BuffTarget.RESISTANCE, DamageType.FIRE))
+        basic_attack = Skill([DamageEffect(12, DamageType.PIERCING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
+        opponent = Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_attack])
+        opponent.add_buff(Buff(0.5, BuffTarget.RESISTANCE, DamageType.FIRE))
 
     @property
     def info(self):
