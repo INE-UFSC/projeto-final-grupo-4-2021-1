@@ -1,12 +1,12 @@
-from abc import abstractmethod
-from fighter.main_character.MainCharacter import MainCharacter
 import pygame
-from Singleton import Singleton
-from .Text import Text
+from .Compound import Compound
+from display.components.Text import Text
+from fighter.main_character.MainCharacter import MainCharacter
 
-class MainCharacterResources:
-    @abstractmethod
-    def draw(surface, topleft = (108, 530)):
+class MainCharacterResources(Compound):
+
+    def draw(surface: pygame.Surface):
+        topleft = (20, 20)
         current_hp = MainCharacter().hp.current
         max_hp = MainCharacter().hp.max
 

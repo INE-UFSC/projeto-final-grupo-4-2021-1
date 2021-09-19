@@ -1,4 +1,4 @@
-from display.Text import Text
+from .Text import Text
 from .Button import Button
 import pygame
 
@@ -11,7 +11,11 @@ class TextButton(Button):
     def __blit_text(self):
         self.__text.rect = self.__text.surface.get_rect(center = self._surface.get_rect().center)
         self._surface.blit(self.__text.surface, self.__text.rect)
+    
+    def _blit_selected(self):
+        self.__text.color = pygame.Color("red")
+        self.__blit_text()
 
-    def change_text_color(self, color: pygame.Color):
-        self.__text.color = color
+    def _blit_unselected(self):
+        self.__text.color = pygame.Color("white")
         self.__blit_text()

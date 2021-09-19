@@ -3,9 +3,9 @@ import pygame
 from Singleton import Singleton
 from TextSprite import TextSprite
 from states.BaseMenuState import BaseMenuState
-from display.Text import Text
-from display.TextButton import TextButton
-from display.MainCharacterResources import MainCharacterResources
+from display.components.Text import Text
+from display.components.TextButton import TextButton
+from display.compounds.MainCharacterResources import MainCharacterResources
 
 
 class EndCombatState(BaseMenuState):

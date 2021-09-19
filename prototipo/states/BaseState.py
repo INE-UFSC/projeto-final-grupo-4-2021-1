@@ -2,7 +2,7 @@ import pygame
 from abc import ABC, abstractmethod
 
 
-class BaseState:
+class BaseState(ABC):
     def __init__(self):
         #self.done = False
         #self.quit = False

@@ -3,9 +3,10 @@ from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from Singleton import Singleton
 from room.HealRoom import HealRoom
-from display.TextButton import TextButton
-from display.MainCharacterResources import MainCharacterResources
-from display.Text import Text
+from display.components.TextButton import TextButton
+from display.components.Text import Text
+from display.compounds.MainCharacterResources import MainCharacterResources
+
 
 
 class HealRoomState(BaseMenuState):

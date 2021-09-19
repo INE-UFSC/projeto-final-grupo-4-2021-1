@@ -3,7 +3,7 @@ from .BaseState import BaseState
 from abc import ABC, abstractmethod
 
 
-class BaseMenuState(BaseState):
+class BaseMenuState(BaseState, ABC):
     def __init__(self):
         super(BaseMenuState, self).__init__()
         self.active_index = int()

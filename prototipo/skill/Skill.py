@@ -1,4 +1,4 @@
-from display.Animation import Animation
+from display.components.Animation import Animation
 from typing import List
 
 class Skill:

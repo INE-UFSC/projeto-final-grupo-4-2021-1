@@ -1,5 +1,5 @@
 from Singleton import Singleton
-from display.Text import Text
+from display.components.Text import Text
 import pygame
 from .BaseState import BaseState
 

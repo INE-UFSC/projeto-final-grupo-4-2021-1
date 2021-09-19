@@ -4,13 +4,13 @@ from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
-from display.Text import Text
-from display.IconButton import IconButton
-from display.TextButton import TextButton
-from display.Animation import Animation
+from display.components.Text import Text
+from display.components.IconButton import IconButton
+from display.components.TextButton import TextButton
+from display.components.Animation import Animation
 from skill.Skill import Skill
-from display.MainCharacterResources import MainCharacterResources
-from display.OpponentResources import OpponentResources
+from display.compounds.MainCharacterResources import MainCharacterResources
+from display.compounds.OpponentResources import OpponentResources
 from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
@@ -28,9 +28,9 @@ class MainCharacterPlayingState(BaseMenuState):
 
         self.__active_skills: List["Skill"] = []
 
-        skills_menu: List["IconButton"] = [IconButton("prototipo/assets/icon_shadow.png", skill.icon_path) for skill in MainCharacter().skills]
+        skills_menu: List["IconButton"] = [IconButton(skill.icon_path) for skill in MainCharacter().skills]
 
-        adder = self.screen_rect.center[0] - (5 * skills_menu[0].background.get_width())
+        adder = 40
         for skill_icon in skills_menu:
             skill_icon.rect = skill_icon.surface.get_rect(topleft = (adder, self.screen_rect.height - skill_icon.surface.get_height() - 20))
             adder += (skill_icon.surface.get_width() + 20)
@@ -43,9 +43,9 @@ class MainCharacterPlayingState(BaseMenuState):
             option
         )) for option in ["Pass", "Options"]]
 
-        adder = self.screen_rect.width - (len(options_menu) * (options_menu[0].surface.get_width() + 20))
+        adder = self.screen_rect.width - (len(options_menu) * (options_menu[0].surface.get_width() + 30))
         for option in options_menu:
-            option.rect = option.surface.get_rect(topleft=(adder, self.screen_rect.height - option.surface.get_height() - 150))
+            option.rect = option.surface.get_rect(topleft=(adder, self.screen_rect.height - option.surface.get_height() - 20))
             adder += (option.surface.get_width() + 20)
 
         self.options = skills_menu + options_menu
@@ -110,10 +110,10 @@ class MainCharacterPlayingState(BaseMenuState):
 
         for index, option in enumerate(self.options):
             if isinstance(option, TextButton):
-                option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))
+                option.select() if index == self.active_index else option.unselect()
 
             elif isinstance(option, IconButton):
-                option.change_background("prototipo/assets/red_circle.png" if index == self.active_index else "prototipo/assets/icon_shadow.png")
+                option.select() if index == self.active_index else option.unselect()
             
             option.draw(surface)
 

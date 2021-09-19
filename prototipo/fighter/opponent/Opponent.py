@@ -1,5 +1,5 @@
 from skill.Buff import Buff
-from display.OpponentSprite import OpponentSprite
+from display.components.OpponentSprite import OpponentSprite
 from skill.DamageEffect import DamageEffect
 from skill.Skill import Skill
 from skill.EffectTarget import  EffectTarget
@@ -26,8 +26,8 @@ class Opponent(Fighter, metaclass=ABCSingletonMeta):
         stats = Stats(10, 10, 10, 10)
         hp = Resource(1000, 1000)
         ap = Resource(3, 3)
-        sprite = OpponentSprite("prototipo/assets/Zodiac Creatures Cancer.png")
-        basic_attack = Skill([DamageEffect(12, DamageType.PIERCING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
+        sprite = OpponentSprite("prototipo/assets/enemy_sprites/slime3.png")
+        basic_attack = Skill([DamageEffect(15, DamageType.PIERCING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
         opponent = Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_attack])
         opponent.add_buff(Buff(0.5, BuffTarget.RESISTANCE, DamageType.FIRE))
 
@@ -38,6 +38,10 @@ class Opponent(Fighter, metaclass=ABCSingletonMeta):
     @property
     def behavior(self):
         return self.__behavior
+
+    @property
+    def sprite(self):
+        return self.__sprite
 
     def draw(self, surface):
         self.__sprite.draw(surface)

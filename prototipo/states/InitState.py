@@ -1,6 +1,6 @@
 import pygame
 from .BaseMenuState import BaseMenuState
-from display.Text import Text
+from display.components.Text import Text
 
 class InitState(BaseMenuState):
     def __init__(self):

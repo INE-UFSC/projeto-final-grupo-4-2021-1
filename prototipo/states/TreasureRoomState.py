@@ -2,8 +2,8 @@ import pygame
 from .BaseMenuState import BaseMenuState
 from Singleton import Singleton
 from room.TreasureRoom import TreasureRoom
-from display.Text import Text
-from display.TextButton import TextButton
+from display.components.Text import Text
+from display.components.TextButton import TextButton
 
 
 class TreasureRoomState(BaseMenuState):

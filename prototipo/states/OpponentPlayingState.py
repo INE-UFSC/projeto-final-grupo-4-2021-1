@@ -3,8 +3,8 @@ from .BaseState import BaseState
 from TextSprite import TextSprite
 from fighter.opponent.Opponent import Opponent
 from fighter.main_character.MainCharacter import MainCharacter
-from display.MainCharacterResources import MainCharacterResources
-from display.OpponentResources import OpponentResources
+from display.compounds.MainCharacterResources import MainCharacterResources
+from display.compounds.OpponentResources import OpponentResources
 from Singleton import Singleton
 
 

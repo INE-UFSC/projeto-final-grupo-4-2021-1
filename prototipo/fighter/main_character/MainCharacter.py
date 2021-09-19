@@ -19,7 +19,7 @@ from skill.DamageType import DamageType
 from skill.Skill import Skill
 from skill.BuffTarget import BuffTarget
 from skill.BuffEffect import BuffEffect
-from display.LinearAnimation import LinearAnimation
+from display.components.LinearAnimation import LinearAnimation
 #importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
@@ -35,7 +35,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     @staticmethod
     def generate_test_character():
         screen = pygame.display.get_surface().get_rect()
-        surface = pygame.image.load("prototipo/assets/fire_ball.png").convert_alpha()
+        surface = pygame.image.load("prototipo/assets/skill_icons/enchant-orange-1.png").convert_alpha()
         surface2 = pygame.image.load("prototipo/assets/fire_ball.png").convert_alpha()
         surface3 = pygame.image.load("prototipo/assets/fire_ball.png").convert_alpha()
 
@@ -50,9 +50,11 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
                 )
 
         main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), equipment, None, None, 0, [
-            Skill([DamageEffect(0, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY), BuffEffect(Buff(1, BuffTarget.DAMAGE, DamageType.FIRE), 2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
-            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
-            Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1,"veneno", "prototipo/assets/fire_icon.png", animation3)            
+            Skill([DamageEffect(10, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1,"Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
+            Skill([DamageEffect(50, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
+            Skill([HealingEffect(5, EffectTarget.SELF)], 1, "Heal", "prototipo/assets/skill_icons/heal-jade-1.png", animation),
+            Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1,"Poison", "prototipo/assets/skill_icons/rip-acid-1.png", animation3),              
+            Skill([BuffEffect(Buff(0.5, BuffTarget.RESISTANCE, DamageType.ALL), 1, EffectTarget.SELF)], 1,"Block", "prototipo/assets/skill_icons/protect-orange-1.png", animation3),            
             ])
 
         main_char.add_buff(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))

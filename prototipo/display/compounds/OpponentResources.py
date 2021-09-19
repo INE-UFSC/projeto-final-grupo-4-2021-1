@@ -1,23 +1,21 @@
-from abc import abstractmethod
-from fighter.opponent.Opponent import Opponent
 import pygame
-from Singleton import Singleton
-from .Text import Text
+from .Compound import Compound
+from display.components.Text import Text
+from fighter.opponent.Opponent import Opponent
 
-class OpponentResources:
-    @abstractmethod
-    def draw(surface, midtop = None):
+class OpponentResources(Compound):
+    
+    def draw(surface: pygame.Surface):
         current_hp = Opponent().hp.current
         max_hp = Opponent().hp.max
 
-        if not midtop:
-            midtop = Singleton.screen_rect.midtop
-            midtop = (midtop[0], midtop[1] + 20)
+        midtop = (Opponent().sprite.rect.midtop[0], Opponent().sprite.rect.top - 40)
+        bar_width = 750
 
-        red_bar_rect = pygame.Rect((0,0), (750, 30))
+        red_bar_rect = pygame.Rect((0,0), (bar_width, 30))
         red_bar_rect.midtop = midtop
 
-        green_bar_rect = pygame.Rect((0,0), (750*current_hp/max_hp, 30))
+        green_bar_rect = pygame.Rect((0,0), (bar_width*current_hp/max_hp, 30))
         green_bar_rect.midtop = midtop
         
         pygame.draw.rect(surface, (0, 0, 0), red_bar_rect, 8) 
