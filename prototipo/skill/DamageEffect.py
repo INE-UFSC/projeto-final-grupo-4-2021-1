@@ -42,7 +42,7 @@ class DamageEffect(Effect):
 
     def apply_effect(self, user: 'Fighter', enemy: 'Fighter'):
         damage = self.__value + user.equipment.weapon.base_damage[self.__type]
-        damage = self.__apply_damage_buffs(self.__value , filter(lambda buff: self.__is_damage_buff(buff), user.buffs))
+        damage = self.__apply_damage_buffs(damage, filter(lambda buff: self.__is_damage_buff(buff), user.buffs))
         damage = self.__calculate_crit(damage)
         damage = self.__calculate_hit(damage)
 

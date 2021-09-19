@@ -52,7 +52,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
         main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), equipment, None, None, 0, [
             Skill([DamageEffect(0, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY), BuffEffect(Buff(1, BuffTarget.DAMAGE, DamageType.FIRE), 2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
             Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
-            Skill([PoisonEffect(0.1, 5, EffectTarget.ENEMY)], 1,"veneno", "prototipo/assets/fire_icon.png", animation3)            
+            Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1,"veneno", "prototipo/assets/fire_icon.png", animation3)            
             ])
 
         main_char.add_buff(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))

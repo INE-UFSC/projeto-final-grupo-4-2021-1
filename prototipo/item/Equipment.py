@@ -43,4 +43,4 @@ class Equipment:
         self.__trinket = trinket
 
     def equipment_buffs(self):
-        return [self.__weapon.buff, self.__armor.buff, self.__trinket.buff]
+        return list(filter(None, [self.__weapon.buff, self.__armor.buff, self.__trinket.buff]))

@@ -68,6 +68,9 @@ class MainCharacterPlayingState(BaseMenuState):
 
     def run(self):
         if Opponent().hp.is_zero():
+            Opponent().hp.increase_current(1000)
+            Opponent().clear_buffs()
+            Opponent().clear_lingering_effects()
             return "END_COMBAT"
 
         if MainCharacter().ap.is_zero() and not self.__active_skills:

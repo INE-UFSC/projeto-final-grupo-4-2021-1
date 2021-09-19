@@ -15,7 +15,7 @@ class Fighter(ABC):
         self.__hp = hp
         self.__ap = ap
         self.__equipment = equipment
-        self.__buffs: List["Buff"] = []
+        self.__buffs: List["Buff"] = self.__equipment.equipment_buffs()
         self.__skills = skills
         self.__lingering_effects: List["LingeringEffect"] = []
 
@@ -56,15 +56,21 @@ class Fighter(ABC):
     def remove_buff(self, buff: Buff):
         self.__buffs.remove(buff)
 
+    def clear_buffs(self):
+        self.__buffs = self.__equipment.equipment_buffs()
+
     def add_lingering_effect(self, effect: LingeringEffect):
         self.__lingering_effects.append(effect)
 
     def remove_lingering_effect(self, effect: LingeringEffect):
         self.__lingering_effects.remove(effect)
 
+    def clear_lingering_effects(self):
+        self.__lingering_effects.clear()
+
     def update_lingering_effects(self):
         self.__lingering_effects = list(filter(lambda effect: effect.update(self), self.__lingering_effects))
-        
+
     def add_skill(self, skill):
         "Appends the skill in self.__skills"
         self.__skills.append(skill)
