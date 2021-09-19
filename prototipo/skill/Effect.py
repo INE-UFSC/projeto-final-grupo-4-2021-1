@@ -10,5 +10,5 @@ class Effect(ABC):
         return self.__target
 
     @abstractmethod
-    def apply_effect(self, user, target):
+    def apply_effect(self, user, enemy):
         pass

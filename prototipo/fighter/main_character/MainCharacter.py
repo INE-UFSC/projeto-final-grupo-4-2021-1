@@ -1,3 +1,5 @@
+from skill.PosionEffect import PoisonEffect
+from skill.Buff import Buff
 from helpers.SingletonMeta import ABCSingletonMeta
 import pygame
 
@@ -5,7 +7,7 @@ from item.Weapon import Weapon
 from item.Armor import Armor
 from item.ItemTypes import ItemType
 from item.Trinket import Trinket
-from fighter.Fighter import Fighter, CombatStatus
+from fighter.Fighter import Fighter
 from fighter.Stats import Stats
 from fighter.Resource import Resource
 from item.Inventory import Inventory
@@ -24,11 +26,11 @@ ATRIBUTE_POINTS_PER_LEVEL = 2
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = [], combat_status = {}):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = []):
         self.__inventory = inventory
         self.__equipment = equipment
         self.__exp = exp
-        super().__init__(stats, hp, ap, equipment, skills, combat_status)
+        super().__init__(stats, hp, ap, equipment, skills)
 
     @staticmethod
     def generate_test_character():
@@ -46,13 +48,15 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
                 Armor("Default Armor", "Just your default armor.", 20, ItemType.ARMOR, None, None),
                 Trinket("Default Trinket", "Just your default trinket", 0, ItemType.TRINKET, None)
                 ), None, None, 0, [
-            Skill([DamageEffect(1000, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
-            Skill([DamageEffect(100, DamageType.FIRE, 100, 100, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
-            Skill([HealingEffect(2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation3)            
+            Skill([DamageEffect(0, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY), BuffEffect(Buff(1, BuffTarget.DAMAGE, DamageType.FIRE), 2, EffectTarget.SELF)], 1,"teste", "prototipo/assets/fire_icon.png", animation),
+            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"BURNING", "prototipo/assets/fire_icon.png", animation2),
+            Skill([PoisonEffect(0.1, 5, EffectTarget.ENEMY)], 1,"veneno", "prototipo/assets/fire_icon.png", animation3)            
             ])
 
         #main_char.add_buff(BuffEffect({BuffTarget.DAMAGE: {DamageType.SLASHING: 0.1, DamageType.FIRE: 0.5}}, EffectTarget.BOTH))
-        main_char.add_buff(BuffEffect(BuffTarget.DAMAGE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
+        #main_char.add_buff(BuffEffect(BuffTarget.DAMAGE, DamageType.FIRE, 0.5, EffectTarget.BOTH))
+        main_char.buffs.append(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))
+
     
     @property
     def inventory(self):

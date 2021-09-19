@@ -78,7 +78,7 @@ class MainCharacterPlayingState(BaseMenuState):
         self.apply_skills()
         
         if self.__new_round:
-            MainCharacter().update_combat_status()
+            MainCharacter().update_lingering_effects()
             self.__new_round = False
 
         for event in pygame.event.get():

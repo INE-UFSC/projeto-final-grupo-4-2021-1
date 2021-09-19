@@ -37,7 +37,7 @@ states = {
     "END": EndState(),
 }
 
-game = Game(screen, states, "SPLASH")
+game = Game(screen, states, "START_COMBAT")
 game.run()
 
 pygame.quit()

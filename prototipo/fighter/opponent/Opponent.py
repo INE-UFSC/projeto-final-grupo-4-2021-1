@@ -1,9 +1,9 @@
+from skill.Buff import Buff
 from display.OpponentSprite import OpponentSprite
 from skill.DamageEffect import DamageEffect
 from skill.Skill import Skill
 from skill.EffectTarget import  EffectTarget
 from skill.DamageType import DamageType
-from skill.BuffEffect import BuffEffect
 from skill.BuffTarget import BuffTarget
 from fighter.Fighter import Fighter
 from fighter.Stats import Stats
@@ -16,10 +16,10 @@ from helpers.SingletonMeta import ABCSingletonMeta
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class Opponent(Fighter, metaclass=ABCSingletonMeta):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = [], combat_status = {}):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = []):
         self.__behavior = behavior
         self.__sprite = sprite
-        super().__init__(stats, hp, ap, equipment, skills, combat_status)
+        super().__init__(stats, hp, ap, equipment, skills)
 
     @staticmethod
     def generate_test_opponent():
@@ -29,7 +29,8 @@ class Opponent(Fighter, metaclass=ABCSingletonMeta):
         sprite = OpponentSprite("prototipo/assets/Zodiac Creatures Cancer.png")
         basic_attack = Skill([DamageEffect(1, DamageType.SLASHING, 100, 0, EffectTarget.ENEMY)], 1,"teste", "prototipo/assets/fire_icon.png")
         opponent = Opponent(stats, hp, ap, None, sprite, None, [basic_attack])
-        opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 1, EffectTarget.BOTH))
+        #opponent.add_buff(BuffEffect(BuffTarget.RESISTANCE, DamageType.FIRE, 1, EffectTarget.BOTH))
+        opponent.buffs.append(Buff(0.5, BuffTarget.RESISTANCE, DamageType.FIRE))
 
     @property
     def info(self):

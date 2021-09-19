@@ -45,7 +45,7 @@ class OpponentPlayingState(BaseState):
                 return "QUIT"
 
         if self.__new_round:
-            Opponent().update_combat_status()
+            Opponent().update_lingering_effects()
             self.__new_round = False
 
         self.time_active += 1

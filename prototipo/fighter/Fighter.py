@@ -1,26 +1,27 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from copy import deepcopy
+from skill.LingeringEffect import LingeringEffect
 from typing import List
 from skill.Skill import Skill
 from .Resource import Resource
 from skill.DamageType import DamageType
 from skill.BuffTarget import BuffTarget
+from skill.Buff import Buff
 from item.Equipment import Equipment
 from .Stats import Stats
 #buffs: dict[bufftarget, dict[DamageType, multiplier: float]]
 
 
 class Fighter(ABC):
-    from skill.BuffEffect import BuffEffect
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = [], combat_status: dict = {}):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = []):
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap
         self.__equipment = equipment
-        self.__buffs = self.initialize_buffs()
+        self.__buffs: List["Buff"] = []
         self.__skills = skills
-        self.__combat_status = combat_status
+        self.__lingering_effects: List["LingeringEffect"] = []
 
     @property
     def hp(self):
@@ -43,54 +44,27 @@ class Fighter(ABC):
         return self.__buffs
 
     @property
-    def combat_status(self):
-        return self.__combat_status
-    
-    def initialize_buffs(self):
-        buffs = {}
-        for buffTarget in BuffTarget:
-            buffs[buffTarget] = {}
-            for damageType in DamageType:
-                buffs[buffTarget][damageType] = 0
-        return buffs
+    def lingering_effects(self):
+        return self.__lingering_effects
 
     def use_skill(self, skill, target):
         skill.use(self, target)
-
-    def add_combat_status(self, combat_status):
-        self.__combat_status[combat_status.id] = combat_status
-
-    def update_combat_status(self):
-        finished_status = []
-        for combat_status in self.__combat_status.values():
-            if combat_status.update():
-                finished_status.append(combat_status)
-
-        for combat_status in finished_status:
-            self.remove_combat_status(combat_status)
-
-    def remove_combat_status(self, combat_status):
-        for buff in combat_status.buffs:
-            self.__fighter.remove_buff(buff)
-
-        self.__combat_status.pop(combat_status.id)
                      
-    def add_buff(self, buff: BuffEffect):
-        "Adds up the buff multiplier received by BuffEffect on self.__buffs"
-        self.__buffs[buff.buffTarget][buff.damageType] += buff.multiplier
+    def add_buff(self, buff: Buff):
+        self.__buffs.append(buff)
 
-        # for target, damage in buff_effect.buff.items():
-        #     for damageType, multiplier in damage.items():
-        #         self.__buffs[target][damageType] += multiplier
+    def remove_buff(self, buff: Buff):
+        self.__buffs.remove(buff)
 
+    def add_lingering_effect(self, effect: LingeringEffect):
+        self.__lingering_effects.append(effect)
 
-    def remove_buff(self, buff: BuffEffect):
-        "Subtracts the value of the buff effects received by BuffEffect on self.__buffs"
-        self.__buffs[buff.buffTarget][buff.damageType] -= buff.multiplier
+    def remove_lingering_effect(self, effect: LingeringEffect):
+        self.__lingering_effects.remove(effect)
 
-        # for target, damage in buff_effect.buff.items():
-        #     for damageType, multiplier in damage.items():
-        #             self.__buffs[target][damageType] -= multiplier
+    def update_lingering_effects(self):
+        teste = list(filter(lambda effect: effect.update(self), self.__lingering_effects))
+        self.__lingering_effects = teste
 
     def add_skill(self, skill):
         "Appends the skill in self.__skills"
@@ -108,60 +82,3 @@ class Fighter(ABC):
         tmp = self.__skills[newpos]
         self.__skills[newpos] = self.__skills[currentpos]
         self.__skills[currentpos] = tmp
-
-from skill.Effect import Effect
-class CombatStatus(Effect, ABC):
-    def __init__(self, id, target, duration, effects, buffs:list = []):
-        self.__id = id
-        self.__effects = effects
-        self.__buffs = buffs
-        self.__fighter = None
-        self.__duration = duration
-        super().__init__(target)
-    
-    @property
-    def effects(self):
-        return self.__effects
-    
-    @effects.setter
-    def effects(self, effects):
-        self.__effects = effects
-
-    @property
-    def buffs(self):
-        return self.__buffs
-
-    @property
-    def id(self):
-        return self.__id
-
-    @property
-    def duration(self):
-        return self.__duration
-
-    @property
-    def fighter(self):
-        return self.__fighter
-    
-    @fighter.setter
-    def fighter(self, fighter: Fighter):
-        self.__fighter = fighter
-        
-    def special_action(self):
-        pass
-
-    def apply_effects(self):
-        self.__fighter.get_attacked(self.__effects)
-
-    def apply_buff(self):
-        for buff in self.__buffs:
-            self.__fighter.add_buff(buff)
-
-    def update(self):
-        "Returns True if the status should end"
-        self.__duration -= 1
-        self.apply_effects()
-        self.special_action()
-
-        if self.__duration == 0:
-            return True

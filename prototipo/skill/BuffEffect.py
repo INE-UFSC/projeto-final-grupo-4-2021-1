@@ -1,31 +1,27 @@
 from typing import Dict
-from .Effect import Effect
+from .LingeringEffect import LingeringEffect
 from .EffectTarget import EffectTarget
-from .BuffTarget import BuffTarget
-from .DamageType import DamageType
+from .Buff import Buff
+#from fighter.Fighter import Fighter
 
-class BuffEffect(Effect):
-    def __init__(self, buffTarget: BuffTarget, damageType: DamageType, multiplier: float, target: EffectTarget):
-        super().__init__(target)
-        self.__buffTarget = buffTarget
-        self.__damageType = damageType
-        self.__multiplier = multiplier
 
-    @property
-    def buff(self):
-        return self.__buff
+class BuffEffect(LingeringEffect):
+    def __init__(self, buff: Buff, duration: int, target: EffectTarget):
+        super().__init__(duration, target)
+        self.__buff = buff
 
-    @property
-    def buffTarget(self):
-        return self.__buffTarget
+    def apply_effect(self, user: 'Fighter', enemy: 'Fighter'):
+        if self.target == EffectTarget.SELF:
+            user.add_buff(self.__buff)
+        elif self.target == EffectTarget.ENEMY:
+            enemy.add_buff(self.__buff)
+        else:
+            user.add_buff(self.__buff)
+            enemy.add_buff(self.__buff)
+        super().attach(user, enemy)
 
-    @property
-    def damageType(self):
-        return self.__damageType
-
-    @property
-    def multiplier(self):
-        return self.__multiplier
-
-    def apply_effect(self, user, target):
-        pass
+    def update(self, attached_to: 'Fighter'):
+        self.duration -= 1
+        if (self.duration == 0):
+            attached_to.remove_buff(self.__buff)
+        return super().update(attached_to)
