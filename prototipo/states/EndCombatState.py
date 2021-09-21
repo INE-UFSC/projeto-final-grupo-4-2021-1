@@ -4,7 +4,7 @@ from Singleton import Singleton
 from TextSprite import TextSprite
 from states.BaseMenuState import BaseMenuState
 from display.components.Text import Text
-from display.components.TextButton import TextButton
+from display.components.MenuTextButton import MenuTextButton
 from display.compounds.MainCharacterResources import MainCharacterResources
 
 
@@ -51,16 +51,16 @@ class EndCombatState(BaseMenuState):
             if Singleton.room.doors()[i].next_room_type.value not in self.menu:
                 self.menu.append(Singleton.room.doors()[i].next_room_type.value)
                 if i == 0:
-                    option = TextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 0, 0), Singleton.room.doors()[i].next_room_type.value))
+                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 0, 0), Singleton.room.doors()[i].next_room_type.value[0]), Singleton.room.doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)
                 else:
-                    option = TextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), Singleton.room.doors()[i].next_room_type.value))
+                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), Singleton.room.doors()[i].next_room_type.value[0]), Singleton.room.doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)
 
         for index, option in enumerate(self.options):
+            option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
-            option.change_text_color(pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255))

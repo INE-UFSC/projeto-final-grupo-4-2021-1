@@ -1,12 +1,11 @@
 import pygame
 from typing import List
 from .BaseMenuState import BaseMenuState
-from TextSprite import TextSprite
 from fighter.main_character.MainCharacter import MainCharacter
 from fighter.opponent.Opponent import Opponent
 from display.components.Text import Text
-from display.components.IconButton import IconButton
-from display.components.TextButton import TextButton
+from display.components.SkillIconButton import SkillIconButton
+from display.components.MenuTextButton import MenuTextButton
 from display.components.Animation import Animation
 from skill.Skill import Skill
 from display.compounds.MainCharacterResources import MainCharacterResources
@@ -28,7 +27,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
         self.__active_skills: List["Skill"] = []
 
-        skills_menu: List["IconButton"] = [IconButton(skill.icon_path) for skill in MainCharacter().skills]
+        skills_menu: List["SkillIconButton"] = [SkillIconButton(skill) for skill in MainCharacter().skills]
 
         adder = 40
         for skill_icon in skills_menu:
@@ -36,12 +35,12 @@ class MainCharacterPlayingState(BaseMenuState):
             adder += (skill_icon.surface.get_width() + 20)
 
     
-        options_menu: List["TextButton"] = [TextButton("prototipo/assets/combatMenuButton.png", Text(
+        options_menu: List["MenuTextButton"] = [MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
             "prototipo/assets/fonts/menu_option.ttf",
             50,
             pygame.Color(255, 255, 255),
-            option
-        )) for option in ["Pass", "Options"]]
+            option[0]
+        ), option[1]) for option in [("Pass", "OPPONENT_PLAYING"), ("Options", "OPTIONS")]]
 
         adder = self.screen_rect.width - (len(options_menu) * (options_menu[0].surface.get_width() + 30))
         for option in options_menu:
@@ -52,19 +51,16 @@ class MainCharacterPlayingState(BaseMenuState):
     
     #Selecting the active index and used skill must be corrected
     def handle_action(self):
-        if self.active_index < 10 and not MainCharacter().ap.is_zero():
-            skill = MainCharacter().skills[self.active_index]
+        if isinstance(self.options[self.active_index], SkillIconButton) and not MainCharacter().ap.is_zero():
+            skill = self.options[self.active_index].skill
 
             if skill not in self.__active_skills:
                 skill.main_char_animation.reset()
                 self.__active_skills.append(skill)
                 MainCharacter().ap.decrease_current(skill.cost)
 
-        elif self.active_index == 3:
-            return "OPPONENT_PLAYING"
-        
-        elif self.active_index == 4:
-            return "OPTIONS"
+        else:
+            return self.options[self.active_index].on_pressed()
 
     def run(self):
         if Opponent().hp.is_zero():
@@ -109,12 +105,7 @@ class MainCharacterPlayingState(BaseMenuState):
             skill.main_char_animation.draw(surface)
 
         for index, option in enumerate(self.options):
-            if isinstance(option, TextButton):
-                option.select() if index == self.active_index else option.unselect()
-
-            elif isinstance(option, IconButton):
-                option.select() if index == self.active_index else option.unselect()
-            
+            option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
 
         room_level = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), f"Room Level: {str(Singleton.room.number)}", (1100, 25))

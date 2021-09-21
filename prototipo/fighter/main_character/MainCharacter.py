@@ -50,7 +50,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
                 )
 
         main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), equipment, None, None, 0, [
-            Skill([DamageEffect(10, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1,"Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
+            Skill([DamageEffect(1000, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1,"Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
             Skill([DamageEffect(50, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
             Skill([HealingEffect(5, EffectTarget.SELF)], 1, "Heal", "prototipo/assets/skill_icons/heal-jade-1.png", animation),
             Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1,"Poison", "prototipo/assets/skill_icons/rip-acid-1.png", animation3),              

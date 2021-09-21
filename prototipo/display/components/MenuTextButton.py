@@ -1,10 +1,12 @@
 from .Text import Text
 from .Button import Button
+from .Pressable import Pressable
 import pygame
 
-class TextButton(Button):
-    def __init__(self, path: str, text: Text, rect = None):
+class MenuTextButton(Button, Pressable):
+    def __init__(self, path: str, text: Text, next_state: str, rect = None):
         self.__text = text
+        self.__next_state = next_state
         super().__init__(pygame.image.load(path).convert_alpha(), rect)
         self.__blit_text()
 
@@ -19,3 +21,6 @@ class TextButton(Button):
     def _blit_unselected(self):
         self.__text.color = pygame.Color("white")
         self.__blit_text()
+
+    def on_pressed(self):
+        return self.__next_state
