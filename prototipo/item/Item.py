@@ -24,3 +24,7 @@ class Item(ABC):
     @property
     def type(self):
         return self.__type
+
+    @abstractmethod
+    def use(self):
+        pass

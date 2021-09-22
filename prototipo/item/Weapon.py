@@ -4,11 +4,12 @@ from .ItemTypes import ItemType
 from typing import Dict
 from skill.Buff import Buff
 from skill.DamageType import DamageType
+from fighter.main_character.MainCharacter import MainCharacter
 
 
 class Weapon(Item):
-    def __init__(self, name: str, description: str, weight: float, type: ItemType, base_damage: Dict["DamageType", int], buff: Buff):
-        super().__init__(name, description, weight, type)
+    def __init__(self, name: str, description: str, weight: float, base_damage: Dict["DamageType", int], buff: Buff):
+        super().__init__(name, description, weight, ItemType.WEAPON)
         self.__base_damage = defaultdict(int, base_damage)
         self.__buff = buff
 
@@ -27,3 +28,9 @@ class Weapon(Item):
     @buff.setter
     def buff(self, buff):
         self.__buff = buff
+
+    def use(self):
+        mc = MainCharacter()
+        mc.inventory.remove_item(self)
+        mc.inventory.add_item(mc.equipment.weapon)
+        mc.equipment.weapon = self

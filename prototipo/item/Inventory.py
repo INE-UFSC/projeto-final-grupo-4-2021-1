@@ -1,4 +1,3 @@
-#from typing import ItemsView
 #from Armor import Armor
 #from Weapon import Weapon
 #from Trinket import Trinket
