@@ -15,7 +15,7 @@ class TreasureRoomState(BaseMenuState):
         self.options = []
 
         self.adder = 50
-        for option in [("Inventory", "EQUIPMENT"), ("Select Item", None), ("Options", "OPTIONS")]:
+        for option in [("Inventory", "INVENTORY"), ("Select Item", None), ("Options", "OPTIONS")]:
             option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
                 50,

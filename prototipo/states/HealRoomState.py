@@ -18,7 +18,7 @@ class HealRoomState(BaseMenuState):
         self.menu = []
 
         self.adder = 150
-        for option in [("Inventory", "EQUIPMENT"), ("Options", "OPTIONS")]:
+        for option in [("Inventory", "INVENTORY"), ("Options", "OPTIONS")]:
             option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
                 25,

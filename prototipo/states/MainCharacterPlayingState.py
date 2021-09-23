@@ -19,11 +19,7 @@ class MainCharacterPlayingState(BaseMenuState):
     def __init__(self):
         super(MainCharacterPlayingState, self).__init__()
         self.active_index = 0
-        self.previous_index = 0
         self.__new_round = True
-
-        self.player_hp = None
-        self.opponent_hp = None
 
         self.__active_skills: List["Skill"] = []
 

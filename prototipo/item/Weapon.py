@@ -4,7 +4,6 @@ from .ItemTypes import ItemType
 from typing import Dict
 from skill.Buff import Buff
 from skill.DamageType import DamageType
-from fighter.main_character.MainCharacter import MainCharacter
 
 
 class Weapon(Item):
@@ -29,8 +28,7 @@ class Weapon(Item):
     def buff(self, buff):
         self.__buff = buff
 
-    def use(self):
-        mc = MainCharacter()
+    def use(self, mc):
         mc.inventory.remove_item(self)
         mc.inventory.add_item(mc.equipment.weapon)
         mc.equipment.weapon = self

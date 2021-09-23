@@ -6,20 +6,20 @@ from states.InitState import InitState
 from states.OptionsState import OptionsState
 from states.TreasureRoomState import TreasureRoomState
 from states.HealRoomState import HealRoomState
+from states.InventoryState import InventoryState
 from states.StartCombatState import StartCombatState
 from states.EndCombatState import EndCombatState
 from states.MainCharacterPlayingState import MainCharacterPlayingState
 from states.OpponentPlayingState import OpponentPlayingState
 from states.EndState import EndState
+from creators.MainCharacterCreator import MainCharacterCreator
 from Game import Game
-from fighter.main_character.MainCharacter import MainCharacter
-from fighter.opponent.Opponent import Opponent
 from Singleton import Singleton
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 
-MainCharacter.generate_test_character()
+MainCharacterCreator.generate_test_character()
 Singleton.background = pygame.image.load("prototipo/assets/Background.png")
 Singleton.screen_rect = pygame.display.get_surface().get_rect()
 
@@ -34,6 +34,7 @@ states = {
     "END_COMBAT": EndCombatState(),
     "HEAL_ROOM": HealRoomState(),
     "TREASURE_ROOM": TreasureRoomState(),
+    "INVENTORY": InventoryState(),
     "END": EndState(),
 }
 

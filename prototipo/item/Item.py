@@ -26,5 +26,5 @@ class Item(ABC):
         return self.__type
 
     @abstractmethod
-    def use(self):
+    def use(self, mc):
         pass

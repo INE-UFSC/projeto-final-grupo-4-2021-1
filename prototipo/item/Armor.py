@@ -2,7 +2,6 @@ from collections import defaultdict
 from .Item import Item
 from .ItemTypes import ItemType
 from skill.Buff import Buff
-from fighter.main_character.MainCharacter import MainCharacter
 
 class Armor(Item):
     def __init__(self, name: str, description: str, weight: float, base_armor: dict, buff: Buff):
@@ -26,8 +25,7 @@ class Armor(Item):
     def buff(self, buff: Buff):
         self.__buff = buff
 
-    def use(self):
-        mc = MainCharacter()
+    def use(self, mc):
         mc.inventory.remove_item(self)
         mc.inventory.add_item(mc.equipment.armor)
         mc.equipment.armor = self

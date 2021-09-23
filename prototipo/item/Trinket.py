@@ -1,7 +1,6 @@
 from .Item import Item
 from .ItemTypes import ItemType
 from skill.Buff import Buff
-from fighter.main_character.MainCharacter import MainCharacter
 
 class Trinket(Item):
     def __init__(self, name, description, weight, buff: Buff):
@@ -16,8 +15,7 @@ class Trinket(Item):
     def buff(self, buff_effect):
         self.__buff = buff_effect
 
-    def use(self):
-        mc = MainCharacter()
+    def use(self, mc):
         mc.inventory.remove_item(self)
         mc.inventory.add_item(mc.equipment.trinket)
         mc.equipment.trinket = self

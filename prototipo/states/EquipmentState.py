@@ -1,5 +1,4 @@
 from fighter.main_character.MainCharacter import MainCharacter
-from pygame.key import name
 import pygame
 from .BaseMenuState import BaseMenuState
 from display.components.Text import Text

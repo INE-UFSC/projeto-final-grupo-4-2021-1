@@ -14,9 +14,9 @@ class Equipment:
 
     @abstractmethod
     def default_equipment():
-        return Equipment(Weapon("Default", "Default", 0, ItemType.WEAPON, {DamageType.ALL: 0}, None),
-                        Armor("Default", "Default", 0, ItemType.ARMOR, {DamageType.ALL: 0}, None),
-                        Trinket("Default", "Default", 0, ItemType.TRINKET, None))
+        return Equipment(Weapon("Default", "Default", 0, {DamageType.ALL: 0}, None),
+                        Armor("Default", "Default", 0, {DamageType.ALL: 0}, None),
+                        Trinket("Default", "Default", 0, None))
 
     @property
     def weapon(self):
