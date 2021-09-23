@@ -69,7 +69,7 @@ class EquipmentState(BaseMenuState):
             menu_height += (info.surface.get_height() + 10)
 
     def render_text(self, index):
-        color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
+        color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)
         return self.font.render(self.options[index], True, color)
 
     def get_text_position(self, text, index):
@@ -95,7 +95,7 @@ class EquipmentState(BaseMenuState):
                 return self.handle_menu(event.key)
     
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.fill(pygame.Color(0, 0, 0))
         for index, option in enumerate(self.options):
             option.color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)
             surface.blit(option.surface, option.rect)

@@ -48,7 +48,7 @@ class TreasureRoomState(BaseMenuState):
                 self.menu.append(door.next_room_type.value)
                 option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                     "prototipo/assets/fonts/menu_option.ttf",
-                    25,
+                    35,
                     pygame.Color(255, 255, 255),
                     door.next_room_type.value[0]
                 ), door.next_room_type.value[1])

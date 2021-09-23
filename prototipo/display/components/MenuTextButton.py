@@ -15,11 +15,11 @@ class MenuTextButton(Button, Pressable):
         self._surface.blit(self.__text.surface, self.__text.rect)
     
     def _blit_selected(self):
-        self.__text.color = pygame.Color("red")
+        self.__text.color = pygame.Color(255, 0, 0)
         self.__blit_text()
 
     def _blit_unselected(self):
-        self.__text.color = pygame.Color("white")
+        self.__text.color = pygame.Color(255, 255, 255)
         self.__blit_text()
 
     def on_pressed(self):

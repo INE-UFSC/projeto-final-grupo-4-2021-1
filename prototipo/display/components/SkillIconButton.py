@@ -1,8 +1,7 @@
 from skill.Skill import Skill
 from .IconButton import IconButton
 from fighter.main_character.MainCharacter import MainCharacter
-from fighter.opponent.Opponent import Opponent
-
+from creators.OpponentCreator import OpponentCreator
 
 class SkillIconButton(IconButton):
     def __init__(self, skill: Skill):
@@ -14,4 +13,4 @@ class SkillIconButton(IconButton):
         return self.__skill
 
     def on_pressed(self):
-        MainCharacter().use_skill(self.__skill, Opponent())
+        MainCharacter().use_skill(self.__skill, OpponentCreator.current)

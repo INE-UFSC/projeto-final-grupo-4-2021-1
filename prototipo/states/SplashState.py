@@ -23,5 +23,5 @@ class SplashState(BaseState):
             return "INIT"
 
     def draw(self, surface: pygame.Surface):
-        surface.fill(pygame.Color("black"))
+        surface.fill(pygame.Color(0, 0, 0))
         self.__title.draw(surface)

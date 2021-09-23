@@ -1,5 +1,6 @@
 from fighter.main_character.MainCharacter import MainCharacter
-from fighter.opponent.Opponent import Opponent
+from creators.OpponentCreator import OpponentCreator
+
 from Singleton import Singleton
 from .BaseState import BaseState
 from room.CombatRoom import CombatRoom
@@ -17,11 +18,11 @@ class StartCombatState(BaseState):
             Singleton.room = CombatRoom()
 
             MainCharacter().ap.increase_current(2)
-            Opponent.generate_test_opponent()
+            OpponentCreator.generate_test_opponent()
 
             return "MAIN_CHARACTER_PLAYING"
 
     def draw(self, surface):
         if self.time_active > 50:
-            Opponent().draw(surface)
+            OpponentCreator.current.draw(surface)
         # desenhar quadrado como oponente

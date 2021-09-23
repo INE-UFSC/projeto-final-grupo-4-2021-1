@@ -1,7 +1,7 @@
 from .Item import Item
 from .ItemTypes import ItemType
 from skill.Skill import Skill
-from fighter.opponent.Opponent import Opponent
+from creators.OpponentCreator import OpponentCreator
 
 class Consumable(Item):
     def __init__(self, name: str, description: str, weight: float, skill: Skill):
@@ -13,5 +13,5 @@ class Consumable(Item):
         return self.__skill
 
     def use(self, mc):
-        mc.use_skill(self.__skill, Opponent())
+        mc.use_skill(self.__skill, OpponentCreator.create_dummy())
         mc.inventory.remove_item(self)

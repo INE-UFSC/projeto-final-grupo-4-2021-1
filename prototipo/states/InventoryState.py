@@ -10,6 +10,8 @@ from fighter.main_character.MainCharacter import MainCharacter
 class InventoryState(BaseMenuState):
     def __init__(self):
         self.active_index = 0
+        self.__title = Text("prototipo/assets/fonts/menu_option.ttf", 40, pygame.Color(255, 255, 255), "Inventory (Enter - Use / Backspace - Drop)")
+        self.__title.rect = self.__title.surface.get_rect(topleft=(10, 10))
         self.options: List["TextPressable"] = []
         self.__item_descriptions: List["Text"] = []
         self.__item_weights: List["Text"] = []
@@ -24,7 +26,11 @@ class InventoryState(BaseMenuState):
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                return self.handle_menu(event.key)
+                if event.key == pygame.K_BACKSPACE and isinstance(self.options[self.active_index], ItemTextPressable):
+                    MainCharacter().inventory.remove_item(MainCharacter().inventory.items[self.active_index])
+                    self.__update_item_list()
+                else:
+                    return self.handle_menu(event.key)
 
     def handle_action(self):
         self.__should_update = True
@@ -41,7 +47,7 @@ class InventoryState(BaseMenuState):
         
         self.options.append(MenuTextPressable("prototipo/assets/fonts/description.ttf", 30, "Return", "PREVIOUS"))
         
-        adder = 20
+        adder = 40
         for option, desc, weight in zip(self.options, self.__item_descriptions, self.__item_weights):
             option.rect = option.surface.get_rect(topleft = (20, adder))
             desc.rect = desc.surface.get_rect(topleft= (400, adder))
@@ -53,11 +59,12 @@ class InventoryState(BaseMenuState):
 
     def draw(self, surface: pygame.Surface):
         surface.fill(pygame.Color(0,0,0))
+        self.__title.draw(surface)
+
         for index, option in enumerate(self.options):
             option.select() if index == self.active_index else option.unselect()
-            surface.blit(option.surface, option.rect)
+            option.draw(surface)
 
-        for desc, weight in zip(self.__item_descriptions, self.__item_weights):
-            surface.blit(desc.surface, desc.rect)
-            surface.blit(weight.surface, weight.rect)
+        for text in [*self.__item_descriptions, *self.__item_weights]:
+            text.draw(surface)
     

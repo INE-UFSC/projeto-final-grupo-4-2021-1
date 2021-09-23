@@ -13,14 +13,14 @@ class IconButton(Button, Pressable, ABC):
 
     def _blit_selected(self):
         self.__blit_icon()
-        pygame.draw.rect(self._surface, pygame.Color("red"), pygame.Rect((0, 0), self._surface.get_size()), 8)
-        pygame.draw.rect(self._surface, pygame.Color("black"), pygame.Rect((0, 0), self._surface.get_size()), 4)
+        pygame.draw.rect(self._surface, pygame.Color(255, 0, 0), pygame.Rect((0, 0), self._surface.get_size()), 8)
+        pygame.draw.rect(self._surface, pygame.Color(0, 0, 0), pygame.Rect((0, 0), self._surface.get_size()), 4)
 
 
     def _blit_unselected(self):
         self.__blit_icon()
-        pygame.draw.rect(self._surface, pygame.Color("white"), pygame.Rect((0, 0), self._surface.get_size()), 8)
-        pygame.draw.rect(self._surface, pygame.Color("black"), pygame.Rect((0, 0), self._surface.get_size()), 4)
+        pygame.draw.rect(self._surface, pygame.Color(255, 255, 255), pygame.Rect((0, 0), self._surface.get_size()), 8)
+        pygame.draw.rect(self._surface, pygame.Color(0, 0, 0), pygame.Rect((0, 0), self._surface.get_size()), 4)
 
     @abstractmethod
     def on_pressed(self):

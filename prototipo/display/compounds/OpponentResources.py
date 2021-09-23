@@ -1,15 +1,15 @@
 import pygame
 from .Compound import Compound
 from display.components.Text import Text
-from fighter.opponent.Opponent import Opponent
+from creators.OpponentCreator import OpponentCreator
 
 class OpponentResources(Compound):
     
     def draw(surface: pygame.Surface):
-        current_hp = Opponent().hp.current
-        max_hp = Opponent().hp.max
+        current_hp =  OpponentCreator.current.hp.current
+        max_hp =  OpponentCreator.current.hp.max
 
-        midtop = (Opponent().sprite.rect.midtop[0], Opponent().sprite.rect.top - 40)
+        midtop = (OpponentCreator.current.sprite.rect.midtop[0],  OpponentCreator.current.sprite.rect.top - 40)
         bar_width = 750
 
         red_bar_rect = pygame.Rect((0,0), (bar_width, 30))

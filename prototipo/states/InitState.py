@@ -1,6 +1,7 @@
 import pygame
 from .BaseMenuState import BaseMenuState
 from display.components.Text import Text
+from display.components.MenuTextPressable import MenuTextPressable
 
 class InitState(BaseMenuState):
     def __init__(self):
@@ -10,28 +11,20 @@ class InitState(BaseMenuState):
         self.__title = Text("prototipo/assets/fonts/title.ttf", 200, pygame.Color(255, 30, 30), "Masmorra")
         self.__title.rect = self.__title.surface.get_rect(center=(self.screen_rect.width/2, self.screen_rect.height/2 - 90))
 
-        self.options = [Text(
+        self.options = [MenuTextPressable(
             "prototipo/assets/fonts/menu_option.ttf",
             50,
-            pygame.Color(255, 255, 255),
-            option
-        ) for option in ["New", "Load", "Options", "Exit"]]
+            option[0],
+            option[1]
+        ) for option in [("New", "START_COMBAT"), ("Options", "OPTIONS"), ("Exit", "QUIT")]]
 
-        menu_height = 0
+        adder = self.screen_rect.center[1] + 100
         for option in self.options:
-            option.rect = option.surface.get_rect(center=(self.screen_rect.center[0], self.screen_rect.center[1] + menu_height + 50))
-            menu_height += (option.surface.get_height() + 10)
+            option.rect = option.surface.get_rect(center=(self.screen_rect.center[0], adder))
+            adder += (option.surface.get_height() + 10)
 
     def handle_action(self):
-        if self.active_index == 0:
-            return "START_COMBAT"
-        elif self.active_index == 1:
-            # load
-            pass
-        elif self.active_index == 2:
-            return "OPTIONS"
-        elif self.active_index == 3:
-            return "QUIT"
+        return self.options[self.active_index].on_pressed()
 
     def run(self):
         for event in pygame.event.get():
@@ -41,7 +34,7 @@ class InitState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.fill(pygame.Color(0, 0, 0))
         self.__title.draw(surface)
         for index, option in enumerate(self.options):
             option.color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)
