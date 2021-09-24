@@ -10,7 +10,7 @@ class Game:
     def __init__(self, screen, states: List["BaseState"], start_state):
         self.screen = screen
         self.states = states
-        self.current_state = self.states[start_state]
+        self.current_state = self.states[start_state]()
         self.previous_state = self.current_state
 
     def update_state(self, next_state_key):
@@ -22,7 +22,7 @@ class Game:
             quit()
         else:
             self.previous_state = self.current_state
-            self.current_state = self.states[next_state_key]
+            self.current_state = self.states[next_state_key]()
             
     def run_current_state(self):
         "Calls the current state's routine. Returns the key to the next state, or None if the state should not be changed."

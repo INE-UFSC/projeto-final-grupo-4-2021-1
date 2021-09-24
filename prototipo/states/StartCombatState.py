@@ -17,7 +17,6 @@ class StartCombatState(BaseState):
             self.time_active = 0
             Singleton.room = CombatRoom()
 
-            MainCharacter().ap.increase_current(2)
             OpponentCreator().generate_enemy()
 
             return "MAIN_CHARACTER_PLAYING"

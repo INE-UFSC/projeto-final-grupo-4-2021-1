@@ -26,19 +26,19 @@ Singleton.background = pygame.image.load("prototipo/assets/Background.png")
 Singleton.screen_rect = pygame.display.get_surface().get_rect()
 
 states = {
-    "SPLASH": SplashState(),
-    "INIT": InitState(),
-    "OPTIONS": OptionsState(),
-    "EQUIPMENT": EquipmentState(),
-    "START_COMBAT": StartCombatState(),
-    "MAIN_CHARACTER_PLAYING": MainCharacterPlayingState(),
-    "OPPONENT_PLAYING": OpponentPlayingState(),
-    "END_COMBAT": EndCombatState(),
-    "HEAL_ROOM": HealRoomState(),
-    "TREASURE_ROOM": TreasureRoomState(),
-    "INVENTORY": InventoryState(),
-    "END": EndState(),
-    "LEVEL_UP": LevelUpState()
+    "SPLASH": SplashState,
+    "INIT": InitState,
+    "OPTIONS": OptionsState,
+    "EQUIPMENT": EquipmentState,
+    "START_COMBAT": StartCombatState,
+    "MAIN_CHARACTER_PLAYING": MainCharacterPlayingState,
+    "OPPONENT_PLAYING": OpponentPlayingState,
+    "END_COMBAT": EndCombatState,
+    "HEAL_ROOM": HealRoomState,
+    "TREASURE_ROOM": TreasureRoomState,
+    "INVENTORY": InventoryState,
+    "END": EndState,
+    "LEVEL_UP": LevelUpState
 }
 
 game = Game(screen, states, "SPLASH")

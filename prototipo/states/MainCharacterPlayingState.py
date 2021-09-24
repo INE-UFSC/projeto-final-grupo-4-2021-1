@@ -18,7 +18,10 @@ class MainCharacterPlayingState(BaseMenuState):
     def __init__(self):
         super(MainCharacterPlayingState, self).__init__()
         self.active_index = 0
-        self.__new_round = True
+
+        MainCharacter().ap.increase_current(2)
+        MainCharacter().update_skills_cooldown()
+        MainCharacter().update_lingering_effects()
 
         self.__build_options()
         self.__active_skills: List["Skill"] = []
@@ -53,17 +56,9 @@ class MainCharacterPlayingState(BaseMenuState):
                 
         else:
             next_state = self.options[self.active_index].on_pressed()
-            if next_state == "OPPONENT_PLAYING":
-                self.__new_round = True
             return next_state
 
     def run(self):
-        if self.__new_round:
-            MainCharacter().ap.increase_current(2)
-            MainCharacter().update_skills_cooldown()
-            MainCharacter().update_lingering_effects()
-            self.__new_round = False
-
         if OpponentCreator.current.hp.is_zero():
             MainCharacter().add_xp(OpponentCreator.current.xp)
             if MainCharacter().leveled_up:
@@ -76,7 +71,6 @@ class MainCharacterPlayingState(BaseMenuState):
             return "END_COMBAT"
 
         if MainCharacter().ap.is_zero() and not self.__active_skills:
-            self.__new_round = True
             return "OPPONENT_PLAYING"
 
         self.apply_skills()

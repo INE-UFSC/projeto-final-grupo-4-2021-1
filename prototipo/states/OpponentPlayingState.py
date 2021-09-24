@@ -15,7 +15,10 @@ class OpponentPlayingState(BaseState):
         self.player_hp = None
         self.opponent_hp = None
         self.time_active = 0
-        self.__new_round = True
+
+        OpponentCreator.current.ap.increase_current(2)
+        OpponentCreator.current.update_lingering_effects()
+        OpponentCreator.current.update_skills_cooldown()
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
@@ -32,7 +35,6 @@ class OpponentPlayingState(BaseState):
         if MainCharacter().hp.is_zero():
             return "END"
         elif OpponentCreator.current.ap.is_zero():
-            self.__new_round = True
             return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
@@ -43,12 +45,6 @@ class OpponentPlayingState(BaseState):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
-
-        if self.__new_round:
-            OpponentCreator.current.ap.increase_current(2)
-            OpponentCreator.current.update_lingering_effects()
-            OpponentCreator.current.update_skills_cooldown()
-            self.__new_round = False
 
         self.time_active += 1
         if self.time_active > 29:
