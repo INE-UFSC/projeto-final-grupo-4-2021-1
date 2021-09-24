@@ -59,6 +59,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
     def run(self):
         if self.__new_round:
+            MainCharacter().ap.increase_current(2)
             MainCharacter().update_skills_cooldown()
             MainCharacter().update_lingering_effects()
             self.__new_round = False
@@ -75,7 +76,6 @@ class MainCharacterPlayingState(BaseMenuState):
             return "END_COMBAT"
 
         if MainCharacter().ap.is_zero() and not self.__active_skills:
-            OpponentCreator.current.ap.increase_current(2)
             self.__new_round = True
             return "OPPONENT_PLAYING"
 
