@@ -29,7 +29,7 @@ class MainCharacterPlayingState(BaseMenuState):
         for skill in MainCharacter().skills:
             self.options.append(SkillIconButton(skill))
 
-        for option in [("Pass", "OPPONENT_PLAYING"), ("Inventory", "INVENTORY")]:
+        for option in [("Pass", "OPPONENT_PLAYING"), ("Inventory", "INVENTORY"), ("Equipment", "EQUIPMENT")]:
             self.options.append(MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
                 50,
@@ -61,19 +61,23 @@ class MainCharacterPlayingState(BaseMenuState):
     def run(self):
         if self.__new_round:
             CombatRoom()
+            MainCharacter().ap.increase_current(2)
             MainCharacter().update_skills_cooldown()
             MainCharacter().update_lingering_effects()
             self.__new_round = False
 
         if OpponentCreator.current.hp.is_zero():
-            MainCharacter().level_up()
+            MainCharacter().add_xp(OpponentCreator.current.xp)
+            if MainCharacter().leveled_up:
+                return "LEVEL_UP"
+            
+            
             self.__active_skills.clear()
             for skill in MainCharacter().skills:
                 skill.cooldown_reset()
             return "END_COMBAT"
 
         if MainCharacter().ap.is_zero() and not self.__active_skills:
-            OpponentCreator.current.ap.increase_current(2)
             self.__new_round = True
             return "OPPONENT_PLAYING"
 

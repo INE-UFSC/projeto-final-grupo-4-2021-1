@@ -36,7 +36,6 @@ class OpponentPlayingState(BaseState):
         if MainCharacter().hp.is_zero():
             return "END"
         elif OpponentCreator.current.ap.is_zero():
-            MainCharacter().ap.increase_current(2)
             self.__new_round = True
             return "MAIN_CHARACTER_PLAYING"
 
@@ -46,6 +45,7 @@ class OpponentPlayingState(BaseState):
                 return "QUIT"
 
         if self.__new_round:
+            OpponentCreator.current.ap.increase_current(2)
             OpponentCreator.current.update_lingering_effects()
             OpponentCreator.current.update_skills_cooldown()
             self.__new_round = False

@@ -12,8 +12,10 @@ from states.EndCombatState import EndCombatState
 from states.MainCharacterPlayingState import MainCharacterPlayingState
 from states.OpponentPlayingState import OpponentPlayingState
 from states.EndState import EndState
+from states.LevelUpState import LevelUpState
 from creators.MainCharacterCreator import MainCharacterCreator
 from Game import Game
+
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -33,6 +35,7 @@ states = {
     "INVENTORY": InventoryState(),
     "END": EndState(),
     "MAIN_CHARACTER_PLAYING": MainCharacterPlayingState(),
+    "LEVEL_UP": LevelUpState()
 }
 
 game = Game(screen, states, "SPLASH")

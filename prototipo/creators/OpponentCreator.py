@@ -24,18 +24,26 @@ class OpponentCreator:
     current: Opponent = None
 
     def generate_enemy(self):
-        OpponentCreator.current = self.__generate_rare_enemy()
+        OpponentCreator.current = self.create_dummy()
 
     @staticmethod
     def create_dummy():
-        stats = Stats()
-        hp = Resource(1, 1)
-        ap = Resource(1, 1)
-        sprite = OpponentSprite("prototipo/assets/enemy_sprites/shrek.png")
-        return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, None)
+        level = 1
+        xp = 600
+        stats = Stats(0,0,0,0)
+        hp = Resource(1000)
+        ap = Resource(2)
+        sprite_path = "prototipo/assets/enemy_sprites/common/" + random.choice(os.listdir("prototipo/assets/enemy_sprites/common/"))
+        sprite = OpponentSprite(sprite_path)
+        basic_skill = Skill(
+            [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+            1, 0, "Basic attack", None)
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
         
     @staticmethod
     def __generate_common_enemy():
+        level = 1
+        xp = 600
         stats = Stats(*[random.randrange(5, 15) for i in range(4)])
         hp = Resource(random.randrange(800, 1200))
         ap = Resource(2)
@@ -44,10 +52,12 @@ class OpponentCreator:
         basic_skill = Skill(
             [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
             1, 0, "Basic attack", None)
-        return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
 
     @staticmethod
     def __generate_rare_enemy():
+        level = 2
+        xp = 1000
         stats = Stats(*[random.randrange(10, 20) for i in range(4)])
         hp = Resource(random.randrange(1200, 1500))
         ap = Resource(2)
@@ -63,10 +73,12 @@ class OpponentCreator:
             [HealingEffect(30, EffectTarget.SELF)], 
             1, 2, "Healing effect", None
         )
-        return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill])
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill])
 
     @staticmethod
     def __generate_mythic_enemy():
+        level = 1
+        xp = 800
         stats = Stats(*[random.randrange(15, 30) for i in range(4)])
         hp = Resource(random.randrange(1500, 2000))
         ap = Resource(2)
@@ -86,4 +98,4 @@ class OpponentCreator:
             [BuffEffect(Buff(0.2, BuffTarget.DAMAGE, DamageType.ALL))],
             1, 3, "Damage buff", None
         )
-        return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill, buff_skill])
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill, buff_skill])

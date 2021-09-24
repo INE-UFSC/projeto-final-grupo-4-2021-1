@@ -10,7 +10,9 @@ from .Stats import Stats
 
 
 class Fighter(ABC):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = []):
+    def __init__(self, level: int, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = []):
+        self._level = level
+        self._xp = 0
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap
@@ -18,6 +20,7 @@ class Fighter(ABC):
         self.__buffs: List["Buff"] = self.__equipment.equipment_buffs() + self.__stats.buffs
         self.__skills = skills
         self.__lingering_effects: List["LingeringEffect"] = []
+        
 
     @property
     def hp(self):
@@ -30,6 +33,10 @@ class Fighter(ABC):
     @property
     def ap(self):
         return self.__ap
+
+    @property
+    def level(self):
+        return self._level
 
     @property
     def stats(self):
@@ -50,6 +57,10 @@ class Fighter(ABC):
     @property
     def lingering_effects(self):
         return self.__lingering_effects
+
+    @property
+    def xp(self):
+        return self._xp
 
     def use_skill(self, skill, target):
         skill.use(self, target)

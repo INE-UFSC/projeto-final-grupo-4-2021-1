@@ -40,6 +40,7 @@ class Stats:
     def upgrade_stat(self, stat: str, amount = 1):
         if stat in self.__stats:
             self.__stats[stat] += amount
+        self.__availablePoints -= 1 
 
     def add_availablePoints(self, amount):
         self.__availablePoints += amount
