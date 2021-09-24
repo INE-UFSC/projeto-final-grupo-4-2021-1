@@ -45,7 +45,7 @@ class MainCharacterCreator:
 
         main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(5, 0), Equipment.default_equipment(), inventory, 0, [
             Skill([DamageEffect(1000, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1, 2, "Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
-            Skill([DamageEffect(50, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1, 1, "Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
+            Skill([DamageEffect(100, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1, 1, "Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
             Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1, 2, "Poison", "prototipo/assets/skill_icons/rip-acid-1.png", animation3),              
             Skill([BuffEffect(Buff(0.5, BuffTarget.RESISTANCE, DamageType.ALL), 1, EffectTarget.SELF)], 1, 3, "Block", "prototipo/assets/skill_icons/protect-orange-1.png", animation3),            
             healing_skill

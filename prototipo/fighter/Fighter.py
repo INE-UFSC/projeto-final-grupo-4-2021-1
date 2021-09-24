@@ -15,7 +15,7 @@ class Fighter(ABC):
         self.__hp = hp
         self.__ap = ap
         self.__equipment = equipment
-        self.__buffs: List["Buff"] = self.__equipment.equipment_buffs()
+        self.__buffs: List["Buff"] = self.__equipment.equipment_buffs() + self.__stats.buffs
         self.__skills = skills
         self.__lingering_effects: List["LingeringEffect"] = []
 
@@ -57,7 +57,7 @@ class Fighter(ABC):
         self.__buffs.remove(buff)
 
     def clear_buffs(self):
-        self.__buffs = self.__equipment.equipment_buffs()
+        self.__buffs = self.__equipment.equipment_buffs() + self.__stats.buffs
 
     def add_lingering_effect(self, effect: LingeringEffect):
         self.__lingering_effects.append(effect)

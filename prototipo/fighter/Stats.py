@@ -1,73 +1,45 @@
 #Essa classe ainda não adiciona os buffs ao upar os stats.
 #Falta decidir se haverá categorização dos danos ou não.
 from skill.DamageType import DamageType
+from skill.StatBuff import StatBuff
+from skill.BuffTarget import BuffTarget
+from skill.DamageType import DamageType
 
-INTELLIGENCE_MULTIPLIER = 1.05
-STRENGTH_MULTIPLIER = 1.05
-CONSTITUTION_MULTIPLIER = 1.05
-WITS_MULTIPLIER = 1.05
+INTELLIGENCE_MULTIPLIER = 0.05
+STRENGTH_MULTIPLIER = 0.05
 
 class Stats:
     def __init__(self, strengh: int = 0, intelligence: int = 0,
-                 constitution: int = 0, wits: int = 0):
-        self.__intelligence = intelligence
-        self.__strength = strengh
-        self.__constitution = constitution
-        self.__wits = wits
-        self.__availablePoints = 2
+                 constitution: int = 0, wits: int = 0, availablePoints = 0):
+        self.__stats = {
+            "INTELLIGENCE": intelligence,
+            "STRENGTH": strengh,
+            "CONSTITUTION": constitution,
+            "WITS": wits
+        }
+
+        self.__buffs = [
+            StatBuff(self, "INTELLIGENCE", INTELLIGENCE_MULTIPLIER, BuffTarget.DAMAGE, DamageType.ALL),
+            StatBuff(self, "STRENGTH", STRENGTH_MULTIPLIER, BuffTarget.RESISTANCE, DamageType.ALL)
+        ]
+
+        self.__availablePoints = availablePoints
 
     @property
-    def intelligence(self):
-        return self.__intelligence
+    def buffs(self):
+        return self.__buffs
 
     @property
-    def strengh(self):
-        return self.__strength
-    
-    @property
-    def constitution(self):
-        return self.__constitution
-
-    @property
-    def wits(self):
-        return self.__wits
+    def stats(self):
+        return self.__stats
 
     @property
     def availablePoints(self):
         return self.__availablePoints
 
-    def increase_intelligence(self):
-        if self.__availablePoints:
-            self.__intelligence += 1
-            #Criar um BuffEffect vazio
-            for damagetype in DamageType:
-                if damagetype.value == DamageClass.magical:
-                    pass
-                    #Adicionar o buff correspondente ao BuffEffect criado
-
-            self.__availablePoints -= 1
-
-    def increase_strength(self):
-        if self.__availablePoints:
-            self.__strength += 1
-            #Criar um BuffEffect vazio
-            for damagetype in DamageType:
-                if damagetype.value == DamageClass.physical:
-                    pass
-                    #Adicionar o buff correspondente ao BuffEffect criado
-
-            self.__availablePoints -= 1
-
-    def increase_constitution(self):
-        if self.__availablePoints:
-            self.__constitution += 1
-            self.__availablePoints -= 1
-
-    #Implementar Buffs
-    def increase_wits(self):
-        if self.__availablePoints:
-            self.__wits += 1
-            self.__availablePoints -= 1
+    def upgrade_stat(self, stat: str, amount = 1):
+        if stat in self.__stats:
+            self.__stats[stat] += amount
 
     def add_availablePoints(self, amount):
         self.__availablePoints += amount

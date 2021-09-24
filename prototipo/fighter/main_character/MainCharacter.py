@@ -34,3 +34,6 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     #Implementar mensagem de level up 
     def level_up(self):
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
+
+    def clear_buffs(self):
+        self.__buffs = self.__equipment.equipment_buffs()

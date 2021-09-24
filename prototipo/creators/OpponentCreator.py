@@ -32,12 +32,10 @@ class OpponentCreator:
 
     @staticmethod
     def generate_test_opponent():
-        stats = Stats(10, 10, 10, 10)
+        stats = Stats()
         hp = Resource(1000, 1000)
         ap = Resource(3, 3)
         sprite = OpponentSprite("prototipo/assets/enemy_sprites/slime3.png")
         basic_attack = Skill([DamageEffect(15, DamageType.PIERCING, 100, 0, EffectTarget.ENEMY)], 1, 0, "teste", "prototipo/assets/fire_icon.png")
         OpponentCreator.current = Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_attack])
-        OpponentCreator.current.add_buff(Buff(0.5, BuffTarget.RESISTANCE, DamageType.FIRE))
-
-    
+        OpponentCreator.current.add_buff(Buff(0.6, BuffTarget.RESISTANCE, DamageType.FIRE))
