@@ -58,7 +58,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
 
             elif self._level < 20:
                 if self._xp > 1500:
-                    self._xp -= 2000
+                    self._xp -= 1500
                     self.level_up()
                 else:
                     return
