@@ -47,6 +47,7 @@ class OpponentPlayingState(BaseState):
 
         if self.__new_round:
             OpponentCreator.current.update_lingering_effects()
+            OpponentCreator.current.update_skills_cooldown()
             self.__new_round = False
 
         self.time_active += 1

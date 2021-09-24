@@ -87,3 +87,7 @@ class Fighter(ABC):
         tmp = self.__skills[newpos]
         self.__skills[newpos] = self.__skills[currentpos]
         self.__skills[currentpos] = tmp
+
+    def update_skills_cooldown(self):
+        for skill in self.__skills:
+            skill.update_cooldown()

@@ -59,8 +59,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
     def run(self):
         if self.__new_round:
-            for skill in MainCharacter().skills:
-                skill.update_cooldown()
+            MainCharacter().update_skills_cooldown()
             MainCharacter().update_lingering_effects()
             self.__new_round = False
 

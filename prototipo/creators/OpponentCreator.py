@@ -43,7 +43,7 @@ class OpponentCreator:
         sprite = OpponentSprite(sprite_path)
         basic_skill = Skill(
             [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, "Basic attack", None)
+            1, 0, "Basic attack", None)
         return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
 
     @staticmethod
@@ -55,13 +55,13 @@ class OpponentCreator:
         sprite = OpponentSprite(sprite_path)
         basic_skill = Skill(
             [DamageEffect(random.randrange(10, 20), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, "Basic attack", None)
+            1, 0, "Basic attack", None)
         special_skill = Skill(
             [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            2, "Special attack", None)
+            2, 2, "Special attack", None)
         healing_skill = Skill(
             [HealingEffect(30, EffectTarget.SELF)], 
-            1, "Healing effect", None
+            1, 2, "Healing effect", None
         )
         return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill])
 
@@ -74,16 +74,16 @@ class OpponentCreator:
         sprite = OpponentSprite(sprite_path)
         basic_skill = Skill(
             [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, "Basic attack", None)
+            1, 0, "Basic attack", None)
         special_skill = Skill(
             [DamageEffect(random.randrange(20, 40), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            2, "Special attack", None)
+            2, 2, "Special attack", None)
         healing_skill = Skill(
             [HealingEffect(40, EffectTarget.SELF)], 
-            1, "Healing effect", None
+            1, 2, "Healing effect", None
         )
         buff_skill = Skill(
             [BuffEffect(Buff(0.2, BuffTarget.DAMAGE, DamageType.ALL))],
-            1, "Damage buff", None
+            1, 3, "Damage buff", None
         )
         return Opponent(stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill, buff_skill])
