@@ -10,14 +10,19 @@ from item.Equipment import Equipment
 
 #buffs: dict[bufftarget, dict[DamageType, multiplier]]
 class Opponent(Fighter):
-    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = []):
+    def __init__(self, level, xp, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, sprite: OpponentSprite, behavior: Behavior, skills: list = []):
         self.__behavior = behavior
         self.__sprite = sprite
-        super().__init__(stats, hp, ap, equipment, skills)
+        self.__xp = xp
+        super().__init__(level, stats, hp, ap, equipment, skills)
 
     @property
     def info(self):
         return self.__info
+
+    @property
+    def xp(self):
+        return self.__xp
 
     @property
     def behavior(self):

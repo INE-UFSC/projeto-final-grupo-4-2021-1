@@ -64,7 +64,11 @@ class MainCharacterPlayingState(BaseMenuState):
             self.__new_round = False
 
         if OpponentCreator.current.hp.is_zero():
-            MainCharacter().level_up()
+            MainCharacter().add_xp(OpponentCreator.current.xp)
+            if MainCharacter().leveled_up:
+                return "LEVEL_UP"
+            
+            
             self.__active_skills.clear()
             for skill in MainCharacter().skills:
                 skill.cooldown_reset()
