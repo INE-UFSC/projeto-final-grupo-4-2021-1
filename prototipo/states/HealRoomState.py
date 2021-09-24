@@ -1,12 +1,11 @@
 import pygame
 from .BaseMenuState import BaseMenuState
 from TextSprite import TextSprite
-from Singleton import Singleton
 from room.HealRoom import HealRoom
 from display.components.MenuTextButton import MenuTextButton
 from display.components.Text import Text
 from display.compounds.MainCharacterResources import MainCharacterResources
-
+from display.components.Background import Background
 
 
 class HealRoomState(BaseMenuState):
@@ -21,7 +20,7 @@ class HealRoomState(BaseMenuState):
         for option in [("Inventory", "INVENTORY"), ("Options", "OPTIONS")]:
             option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
-                25,
+                35,
                 pygame.Color(255, 255, 255),
                 option[0]
             ), option[1])
@@ -34,8 +33,6 @@ class HealRoomState(BaseMenuState):
         return self.options[self.active_index].on_pressed()
 
     def run(self):
-        Singleton.room = HealRoom()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -43,10 +40,10 @@ class HealRoomState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0,0))
         MainCharacterResources.draw(surface)
 
-        for door in Singleton.room.doors():
+        for door in HealRoom().doors():
             if door.next_room_type.value not in self.menu:
                 self.menu.append(door.next_room_type.value)
                 option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(

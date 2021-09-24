@@ -1,4 +1,3 @@
-from Singleton import Singleton
 from display.components.Text import Text
 import pygame
 from .BaseState import BaseState

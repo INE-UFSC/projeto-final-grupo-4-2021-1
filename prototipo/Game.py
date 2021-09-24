@@ -1,13 +1,14 @@
 import pygame
 from typing import List
 from states.BaseState import BaseState
-
+from display.components.Background import Background
 
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
 class Game:
     def __init__(self, screen, states: List["BaseState"], start_state):
+        self.background = Background()
         self.screen = screen
         self.states = states
         self.current_state = self.states[start_state]

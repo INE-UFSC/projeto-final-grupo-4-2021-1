@@ -1,11 +1,11 @@
 from fighter.main_character.MainCharacter import MainCharacter
 import pygame
-from Singleton import Singleton
-from TextSprite import TextSprite
 from states.BaseMenuState import BaseMenuState
 from display.components.Text import Text
 from display.components.MenuTextButton import MenuTextButton
 from display.compounds.MainCharacterResources import MainCharacterResources
+from room.CombatRoom import CombatRoom
+from display.components.Background import Background
 
 
 class EndCombatState(BaseMenuState):
@@ -39,20 +39,20 @@ class EndCombatState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0,0))
         MainCharacterResources.draw(surface)
 
         adder = 300
-        for i in range(len(Singleton.room.doors())):
-            if Singleton.room.doors()[i].next_room_type.value not in self.menu:
-                self.menu.append(Singleton.room.doors()[i].next_room_type.value)
+        for i in range(len(CombatRoom().doors())):
+            if CombatRoom().doors()[i].next_room_type.value not in self.menu:
+                self.menu.append(CombatRoom().doors()[i].next_room_type.value)
                 if i == 0:
-                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 0, 0), Singleton.room.doors()[i].next_room_type.value[0]), Singleton.room.doors()[i].next_room_type.value[1])
+                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 0, 0), CombatRoom().doors()[i].next_room_type.value[0]), CombatRoom().doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)
                 else:
-                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 255, 255), Singleton.room.doors()[i].next_room_type.value[0]), Singleton.room.doors()[i].next_room_type.value[1])
+                    option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text("prototipo/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 255, 255), CombatRoom().doors()[i].next_room_type.value[0]), CombatRoom().doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)

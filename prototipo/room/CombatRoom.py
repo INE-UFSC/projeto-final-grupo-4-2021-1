@@ -2,12 +2,14 @@ import pygame
 from room.RoomType import RoomType
 from room.Room import Room
 from room.Door import Door
+from display.components.Background import Background
 
 
 class CombatRoom(Room):
     counter = 0
 
     def __init__(self):
+        Background().image = pygame.image.load("prototipo/assets/Ruins.png")
         CombatRoom.counter += 1
         self.__number = CombatRoom.counter
         self.__surf = pygame.Surface(size=(456, 200))

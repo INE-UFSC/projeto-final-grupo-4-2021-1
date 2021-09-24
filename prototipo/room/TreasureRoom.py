@@ -2,11 +2,14 @@ from room.RoomType import RoomType
 from room.Room import Room
 from room.Door import Door
 from room.Chest import Chest
+from display.components.Background import Background
+import pygame
 
 
 class TreasureRoom(Room):
     def __init__(self):
         self.__chest = Chest()
+        Background().image = pygame.image.load("prototipo/assets/RockCave.png")
         super().__init__(self.make_room)
 
     def make_room(self):
