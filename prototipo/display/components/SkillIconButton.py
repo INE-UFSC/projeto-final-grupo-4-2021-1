@@ -30,5 +30,5 @@ class SkillIconButton(IconButton):
         self.__blit_availability()
 
     def __blit_availability(self):
-        if self.__skill.active_cooldown:
+        if self.__skill.active_cooldown or self.__skill.cost > MainCharacter().ap.current:
             self._surface.blit(self.__opaque_rect, (0,0))

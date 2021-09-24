@@ -52,3 +52,13 @@ class MainCharacterCreator:
             ])
 
         main_char.add_buff(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))
+
+    # @staticmethod
+    # def generate_skills():
+    #     surfaces = 
+
+
+
+
+
+        #animations = [LinearAnimation(surface, surface.get_rect(topright = (screen.width, screen.height)), surface.get_rect(center = (screen.center)), 60) for x in range(15)]
