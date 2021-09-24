@@ -9,7 +9,8 @@ from display.components.MenuTextButton import MenuTextButton
 from skill.Skill import Skill
 from display.compounds.MainCharacterResources import MainCharacterResources
 from display.compounds.OpponentResources import OpponentResources
-from Singleton import Singleton
+from display.components.Background import Background
+from room.CombatRoom import CombatRoom
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -59,6 +60,7 @@ class MainCharacterPlayingState(BaseMenuState):
 
     def run(self):
         if self.__new_round:
+            CombatRoom()
             MainCharacter().update_skills_cooldown()
             MainCharacter().update_lingering_effects()
             self.__new_round = False
@@ -93,7 +95,7 @@ class MainCharacterPlayingState(BaseMenuState):
                 skill.main_char_animation.update()
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0,0))
 
         OpponentCreator.current.draw(surface)
         MainCharacterResources.draw(surface)
@@ -106,5 +108,5 @@ class MainCharacterPlayingState(BaseMenuState):
             option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
 
-        room_level = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), f"Room Level: {str(Singleton.room.number)}", (1100, 25))
-        room_level.draw(surface)
+        combat_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
+        combat_room.draw(surface)
