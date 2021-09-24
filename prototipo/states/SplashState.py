@@ -15,6 +15,10 @@ class SplashState(BaseState):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+            
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RETURN:
+                    return "INIT"
 
         self.__time_active += 1
         if self.__time_active % 2 and self.__time_active > 60:

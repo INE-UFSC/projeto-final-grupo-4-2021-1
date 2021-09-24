@@ -18,13 +18,13 @@ class MainCharacterPlayingState(BaseMenuState):
     def __init__(self):
         super(MainCharacterPlayingState, self).__init__()
         self.active_index = 0
-        self.options = []
         self.__new_round = True
 
-        self.__active_skill: Skill = None
+        self.__build_options()
+        self.__active_skills: List["Skill"] = []
 
-
-
+    def __build_options(self):
+        self.options = []
         for skill in MainCharacter().skills:
             self.options.append(SkillIconButton(skill))
 
@@ -46,22 +46,31 @@ class MainCharacterPlayingState(BaseMenuState):
         if isinstance(self.options[self.active_index], SkillIconButton) and not MainCharacter().ap.is_zero():
             skill = self.options[self.active_index].skill
 
-            if not self.__active_skill:
-                self.__active_skill = skill
+            if skill not in self.__active_skills and MainCharacter().ap.current >= skill.cost and not skill.active_cooldown:
+                skill.main_char_animation.reset()
+                self.__active_skills.append(skill)
                 MainCharacter().ap.decrease_current(skill.cost)
-
+                
         else:
-            return self.options[self.active_index].on_pressed()
+            next_state = self.options[self.active_index].on_pressed()
+            if next_state == "OPPONENT_PLAYING":
+                self.__new_round = True
+            return next_state
 
     def run(self):
         if self.__new_round:
+            for skill in MainCharacter().skills:
+                skill.update_cooldown()
             MainCharacter().update_lingering_effects()
             self.__new_round = False
 
         if OpponentCreator.current.hp.is_zero():
+            self.__active_skills.clear()
+            for skill in MainCharacter().skills:
+                skill.cooldown_reset()
             return "END_COMBAT"
 
-        if MainCharacter().ap.is_zero() and not self.__active_skill:
+        if MainCharacter().ap.is_zero() and not self.__active_skills:
             OpponentCreator.current.ap.increase_current(2)
             self.__new_round = True
             return "OPPONENT_PLAYING"
@@ -75,13 +84,13 @@ class MainCharacterPlayingState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def apply_skills(self):
-        if self.__active_skill:
-            if self.__active_skill.main_char_animation.finished:
-                MainCharacter().use_skill(self.__active_skill, OpponentCreator.current)
-                self.__active_skill.main_char_animation.reset()
-                self.__active_skill = None
+
+        for index, skill in enumerate(self.__active_skills):
+            if skill.main_char_animation.finished:
+                MainCharacter().use_skill(skill, OpponentCreator.current)
+                self.__active_skills.pop(index)
             else:
-                self.__active_skill.main_char_animation.update()
+                skill.main_char_animation.update()
 
     def draw(self, surface):
         surface.blit(Singleton.background, (0,0))
@@ -90,12 +99,12 @@ class MainCharacterPlayingState(BaseMenuState):
         MainCharacterResources.draw(surface)
         OpponentResources.draw(surface)
 
-        if self.__active_skill:
-            self.__active_skill.main_char_animation.draw(surface)
-        else:
-            for index, option in enumerate(self.options):
-                option.select() if index == self.active_index else option.unselect()
-                option.draw(surface)
+        for skill in self.__active_skills:
+            skill.main_char_animation.draw(surface)
+
+        for index, option in enumerate(self.options):
+            option.select() if index == self.active_index else option.unselect()
+            option.draw(surface)
 
         room_level = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), f"Room Level: {str(Singleton.room.number)}", (1100, 25))
         room_level.draw(surface)

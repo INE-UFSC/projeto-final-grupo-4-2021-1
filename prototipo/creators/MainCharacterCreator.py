@@ -32,7 +32,7 @@ class MainCharacterCreator:
         animation2 = LinearAnimation(surface2, surface2.get_rect(topright = (screen.width, screen.height)), surface2.get_rect(center = (screen.center)), 60)
         animation3 = LinearAnimation(surface3, surface3.get_rect(topright = (screen.width, screen.height)), surface3.get_rect(center = (screen.center)), 60)
         
-        healing_skill = Skill([HealingEffect(5, EffectTarget.SELF)], 1, "Heal", "prototipo/assets/skill_icons/heal-jade-1.png", animation)
+        healing_skill = Skill([HealingEffect(5, EffectTarget.SELF)], 1, 2, "Heal", "prototipo/assets/skill_icons/heal-jade-1.png", animation)
 
         weapon = Weapon("Default Sword", "Just your default sword.", 10, {DamageType.FIRE: 10}, None)
         armor =  Armor("Default Armor", "Just your default armor.", 20, {DamageType.PIERCING: 10}, None)
@@ -43,11 +43,11 @@ class MainCharacterCreator:
         for i in range(11):
             inventory.add_item(consumable)
 
-        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(100, 100), Resource(5, 0), Equipment.default_equipment(), inventory, 0, [
-            Skill([DamageEffect(1000, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1,"Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
-            Skill([DamageEffect(50, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1,"Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
-            Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1,"Poison", "prototipo/assets/skill_icons/rip-acid-1.png", animation3),              
-            Skill([BuffEffect(Buff(0.5, BuffTarget.RESISTANCE, DamageType.ALL), 1, EffectTarget.SELF)], 1,"Block", "prototipo/assets/skill_icons/protect-orange-1.png", animation3),            
+        main_char = MainCharacter(Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(5, 0), Equipment.default_equipment(), inventory, 0, [
+            Skill([DamageEffect(1000, DamageType.SLASHING, 100, 5, EffectTarget.ENEMY)], 1, 2, "Slashing", "prototipo/assets/skill_icons/enchant-orange-1.png", animation),
+            Skill([DamageEffect(50, DamageType.FIRE, 100, 0, EffectTarget.ENEMY)], 1, 1, "Fire", "prototipo/assets/skill_icons/fireball-red-1.png", animation2),
+            Skill([PoisonEffect(0.1, 2, EffectTarget.ENEMY)], 1, 2, "Poison", "prototipo/assets/skill_icons/rip-acid-1.png", animation3),              
+            Skill([BuffEffect(Buff(0.5, BuffTarget.RESISTANCE, DamageType.ALL), 1, EffectTarget.SELF)], 1, 3, "Block", "prototipo/assets/skill_icons/protect-orange-1.png", animation3),            
             healing_skill
             ])
 
