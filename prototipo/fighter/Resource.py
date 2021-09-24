@@ -1,4 +1,3 @@
-
 class Resource:
     "Manages the values of a especific Resource, such as HP (HealthPoints) or AP (ActionPoints). Ensures that it's values are not less than 0, nor the current value is greater than the max value"
     def __init__(self, max, current = None):
@@ -12,6 +11,10 @@ class Resource:
     @property
     def current(self):
         return self.__current
+
+    @current.setter
+    def current(self, current):
+        self.current = current
 
     def increase_current(self, amount: int):
         "Increase the current value by the given amount. Ensures that it's not greater than the max value nor less than 0"

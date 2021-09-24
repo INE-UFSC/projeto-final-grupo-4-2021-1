@@ -3,6 +3,7 @@ from .BaseMenuState import BaseMenuState
 from display.components.Text import Text
 from display.components.MenuTextPressable import MenuTextPressable
 
+
 class InitState(BaseMenuState):
     def __init__(self):
         super(InitState, self).__init__()

@@ -1,9 +1,10 @@
 import pygame
 from .BaseMenuState import BaseMenuState
-from Singleton import Singleton
 from room.TreasureRoom import TreasureRoom
 from display.components.Text import Text
 from display.components.MenuTextButton import MenuTextButton
+from display.components.Background import Background
+from display.components.MenuIconButton import MenuIconButton
 
 
 class TreasureRoomState(BaseMenuState):
@@ -18,7 +19,7 @@ class TreasureRoomState(BaseMenuState):
         for option in [("Inventory", "INVENTORY"), ("Select Item", None), ("Options", "OPTIONS")]:
             option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
-                50,
+                35,
                 pygame.Color(255, 255, 255),
                 option[0]
             ), option[1])
@@ -32,8 +33,6 @@ class TreasureRoomState(BaseMenuState):
 
 
     def run(self):
-        Singleton.room = TreasureRoom()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -41,9 +40,9 @@ class TreasureRoomState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0,0))
 
-        for door in Singleton.room.doors():
+        for door in TreasureRoom().doors():
             if door.next_room_type.value not in self.menu:
                 self.menu.append(door.next_room_type.value)
                 option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
@@ -59,6 +58,16 @@ class TreasureRoomState(BaseMenuState):
         for index, option in enumerate(self.options):
             option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
+
+        # treasure = MenuIconButton("prototipo/assets/treasure.png")
+        treasure = MenuTextButton("prototipo/assets/treasure.png", Text(
+                    "prototipo/assets/fonts/menu_option.ttf",
+                    35,
+                    pygame.Color(255, 255, 255),
+                    "O"
+                ), "O")
+        treasure.rect = option.surface.get_rect(topleft=(400, 20))
+        treasure.draw(surface)
 
         treasure_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Treasure Room", (1100, 25))
         treasure_room.draw(surface)
