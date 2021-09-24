@@ -8,7 +8,6 @@ from item.Equipment import Equipment
 class EquipmentState(BaseMenuState):
     def __init__(self):
         super(EquipmentState, self).__init__()
-        mc = MainCharacter()
         self.active_index = 0
 
         font = "prototipo/assets/fonts/menu_option.ttf"
@@ -32,10 +31,10 @@ class EquipmentState(BaseMenuState):
             pygame.Color(255, 255, 0),
             f"{info}"
         ) for info in [
-            f"Name: {mc.equipment.weapon.name}",
-            f"Damage: {mc.equipment.weapon.base_damage}",
-            f"Weight: {mc.equipment.weapon.weight}lbs",
-            f"Description: {mc.equipment.weapon.description}"]]
+            f"Name: {MainCharacter().equipment.weapon.name}",
+            f"Damage: {MainCharacter().equipment.weapon.base_damage}",
+            f"Weight: {MainCharacter().equipment.weapon.weight}lbs",
+            f"Description: {MainCharacter().equipment.weapon.description}"]]
         menu_height = 0
         for info in self.weapon_info:
             info.rect = info.surface.get_rect(center=(800, 300 + menu_height))
@@ -46,10 +45,10 @@ class EquipmentState(BaseMenuState):
             pygame.Color(255, 255, 0),
             f"{info}"
         ) for info in [
-            f"Name: {mc.equipment.armor.name}",
-            f"Protection: {mc.equipment.armor.base_armor}",
-            f"Weight: {mc.equipment.armor.weight}lbs",
-            f"Description: {mc.equipment.armor.description}"]]
+            f"Name: {MainCharacter().equipment.armor.name}",
+            f"Protection: {MainCharacter().equipment.armor.base_armor}",
+            f"Weight: {MainCharacter().equipment.armor.weight}lbs",
+            f"Description: {MainCharacter().equipment.armor.description}"]]
         menu_height = 0
         for info in self.armor_info:
             info.rect = info.surface.get_rect(center=(800, 300 + menu_height))
@@ -60,9 +59,9 @@ class EquipmentState(BaseMenuState):
             pygame.Color(255, 255, 0),
             f"{info}"
         ) for info in [
-            f"Name: {mc.equipment.trinket.name}",
-            f"Weight: {mc.equipment.trinket.weight}lbs",
-            f"Description: {mc.equipment.trinket.description}"]]
+            f"Name: {MainCharacter().equipment.trinket.name}",
+            f"Weight: {MainCharacter().equipment.trinket.weight}lbs",
+            f"Description: {MainCharacter().equipment.trinket.description}"]]
         menu_height = 0
         for info in self.trinket_info:
             info.rect = info.surface.get_rect(center=(800, 300 + menu_height))

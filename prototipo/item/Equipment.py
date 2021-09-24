@@ -14,9 +14,9 @@ class Equipment:
 
     @abstractmethod
     def default_equipment():
-        return Equipment(Weapon("Default", "Default", 0, {DamageType.ALL: 0}, None),
-                        Armor("Default", "Default", 0, {DamageType.ALL: 0}, None),
-                        Trinket("Default", "Default", 0, None))
+        return Equipment(Weapon("Hands", "Your own pair of fists.", 0, {DamageType.ALL: 0}, None),
+                        Armor("Tattered Clothes", "Useless for battle.", 0, {DamageType.ALL: 0}, None),
+                        Trinket("UFSC's Badge of Honor", "Pretty cool looking, but useless nonetheless.", 0, None))
 
     @property
     def weapon(self):
