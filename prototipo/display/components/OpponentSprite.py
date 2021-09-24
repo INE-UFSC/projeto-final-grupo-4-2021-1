@@ -1,8 +1,8 @@
 import pygame
 
 class OpponentSprite:
-    def __init__(self, spritePath: str):
-        self.__sprite = pygame.image.load(spritePath).convert_alpha()
+    def __init__(self, sprite_path: str):
+        self.__sprite = pygame.image.load(sprite_path).convert_alpha()
         sprite_height = self.__sprite.get_height()
         sprite_width = self.__sprite.get_width()
 

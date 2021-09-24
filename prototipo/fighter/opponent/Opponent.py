@@ -1,3 +1,5 @@
+from random import choice
+
 from display.components.OpponentSprite import OpponentSprite
 from fighter.Fighter import Fighter
 from fighter.Stats import Stats
@@ -24,6 +26,9 @@ class Opponent(Fighter):
     @property
     def sprite(self):
         return self.__sprite
+
+    def use_skill(self, target):
+        choice(self.skills).use(self, target)
 
     def draw(self, surface):
         self.__sprite.draw(surface)
