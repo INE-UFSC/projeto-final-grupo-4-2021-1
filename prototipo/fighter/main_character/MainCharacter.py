@@ -31,9 +31,6 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
         "Increases the current EXP by the specified amount"
         self.__exp += amount
 
-    #Implementar mensagem de level up 
     def level_up(self):
-        self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
-
-    def clear_buffs(self):
-        self.__buffs = self.__equipment.equipment_buffs()
+        for stat in self.stats.stats.keys():
+            self.stats.upgrade_stat(stat)
