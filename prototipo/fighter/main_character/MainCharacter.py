@@ -37,6 +37,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     def level_up(self):
         self.__leveled_up = True
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
+        self._level += 1
 
     def add_xp(self, xp):
         self._xp += xp
@@ -58,7 +59,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
 
             elif self._level < 20:
                 if self._xp > 1500:
-                    self._xp -= 2000
+                    self._xp -= 1500
                     self.level_up()
                 else:
                     return

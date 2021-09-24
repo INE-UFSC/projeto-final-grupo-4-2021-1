@@ -9,7 +9,8 @@ from display.components.MenuTextButton import MenuTextButton
 from skill.Skill import Skill
 from display.compounds.MainCharacterResources import MainCharacterResources
 from display.compounds.OpponentResources import OpponentResources
-from Singleton import Singleton
+from display.components.Background import Background
+from room.CombatRoom import CombatRoom
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
@@ -41,10 +42,10 @@ class MainCharacterPlayingState(BaseMenuState):
 
         adder = 40
         for option in self.options:
-            option.rect = option.surface.get_rect(topleft = (adder, self.screen_rect.height - option.surface.get_height() - 20))
+            option.rect = option.surface.get_rect(
+                topleft=(adder, self.screen_rect.height - option.surface.get_height() - 20))
             adder += (option.surface.get_width() + 20)
 
-    
     def handle_action(self):
         if isinstance(self.options[self.active_index], SkillIconButton) and not MainCharacter().ap.is_zero():
             skill = self.options[self.active_index].skill
@@ -53,21 +54,21 @@ class MainCharacterPlayingState(BaseMenuState):
                 skill.main_char_animation.reset()
                 self.__active_skills.append(skill)
                 MainCharacter().ap.decrease_current(skill.cost)
-                
+
         else:
             next_state = self.options[self.active_index].on_pressed()
             return next_state
 
     def run(self):
         if OpponentCreator.current.hp.is_zero():
-            MainCharacter().add_xp(OpponentCreator.current.xp)
-            if MainCharacter().leveled_up:
-                return "LEVEL_UP"
-            
-            
             self.__active_skills.clear()
             for skill in MainCharacter().skills:
                 skill.cooldown_reset()
+
+            MainCharacter().add_xp(OpponentCreator.current.xp)
+            if MainCharacter().leveled_up:
+                return "LEVEL_UP"
+
             return "END_COMBAT"
 
         if MainCharacter().ap.is_zero() and not self.__active_skills:
@@ -91,7 +92,7 @@ class MainCharacterPlayingState(BaseMenuState):
                 skill.main_char_animation.update()
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0, 0))
 
         OpponentCreator.current.draw(surface)
         MainCharacterResources.draw(surface)
@@ -104,5 +105,6 @@ class MainCharacterPlayingState(BaseMenuState):
             option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
 
-        room_level = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), f"Room Level: {str(Singleton.room.number)}", (1100, 25))
-        room_level.draw(surface)
+        combat_room = Text("prototipo/assets/fonts/menu_option.ttf",
+                           25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
+        combat_room.draw(surface)

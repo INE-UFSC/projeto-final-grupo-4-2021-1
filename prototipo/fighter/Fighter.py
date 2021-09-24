@@ -26,6 +26,10 @@ class Fighter(ABC):
     def hp(self):
         return self.__hp
 
+    @hp.setter
+    def hp(self, hp):
+        self.hp = hp
+
     @property
     def ap(self):
         return self.__ap

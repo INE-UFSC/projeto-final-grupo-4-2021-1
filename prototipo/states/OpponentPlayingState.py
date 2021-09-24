@@ -1,12 +1,12 @@
 import pygame
 from .BaseState import BaseState
-from TextSprite import TextSprite
 from creators.OpponentCreator import OpponentCreator
 from fighter.main_character.MainCharacter import MainCharacter
 from display.compounds.MainCharacterResources import MainCharacterResources
 from display.compounds.OpponentResources import OpponentResources
 from creators.OpponentCreator import OpponentCreator
-from Singleton import Singleton
+from display.components.Background import Background
+from display.components.Text import Text
 
 
 class OpponentPlayingState(BaseState):
@@ -21,7 +21,11 @@ class OpponentPlayingState(BaseState):
         OpponentCreator.current.update_skills_cooldown()
 
     def draw(self, surface):
-        surface.blit(Singleton.background, (0,0))
+        surface.blit(Background().image, (0,0))
+
+        combat_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
+        combat_room.draw(surface)
+
         OpponentCreator.current.draw(surface)
         MainCharacterResources.draw(surface)
         OpponentResources.draw(surface)
@@ -38,10 +42,6 @@ class OpponentPlayingState(BaseState):
             return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
-        room_level_text = f"Room Level: {str(Singleton.room.number)}"
-        surface = self.font.render(room_level_text, True, pygame.Color(255, 255, 255))
-        self.room_level = (TextSprite(room_level_text, surface, surface.get_rect(topleft=(670,10))))
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
