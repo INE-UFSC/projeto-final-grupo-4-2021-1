@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 import pygame
 
+
 class Button(ABC):
     def __init__(self, surface, rect):
         self._surface: pygame.Surface = surface
         self.__rect: pygame.Rect = rect
         self.__selected = False
-    
+
     @property
     def surface(self):
         return self._surface

@@ -3,6 +3,7 @@ from .ItemTypes import ItemType
 from skill.Skill import Skill
 from creators.OpponentCreator import OpponentCreator
 
+
 class Consumable(Item):
     def __init__(self, name: str, description: str, weight: float, skill: Skill):
         super().__init__(name, description, weight, ItemType.CONSUMABLE)

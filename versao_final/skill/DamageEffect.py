@@ -8,6 +8,7 @@ from .BuffTarget import BuffTarget
 from .DamageType import DamageType
 from .Buff import Buff
 
+
 class DamageEffect(Effect):
     def __init__(self, value: float, type: DamageType, accuracy: int, crit_chance: int, target: EffectTarget):
         super().__init__(target)
@@ -23,7 +24,7 @@ class DamageEffect(Effect):
     @value.setter
     def value(self, value):
         self.__value = value
-    
+
     @property
     def accuracy(self):
         return self.__accuracy
@@ -70,10 +71,8 @@ class DamageEffect(Effect):
         multiplier = sum(buff.multiplier for buff in buffs)
         return (damage - receiver.equipment.armor.base_armor[self.type]) * max(0, 1 - multiplier)
 
-
     def __is_damage_buff(self, buff: Buff):
         return buff.target == BuffTarget.DAMAGE and (buff.type == self.__type or buff.type == DamageType.ALL)
 
     def __is_resistance_buff(self, buff: Buff):
         return buff.target == BuffTarget.RESISTANCE and (buff.type == self.__type or buff.type == DamageType.ALL)
-

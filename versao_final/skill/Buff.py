@@ -1,6 +1,7 @@
 from .BuffTarget import BuffTarget
 from .DamageType import DamageType
 
+
 class Buff:
     def __init__(self, multiplier: float, target: BuffTarget, type: DamageType):
         self.__multiplier = multiplier

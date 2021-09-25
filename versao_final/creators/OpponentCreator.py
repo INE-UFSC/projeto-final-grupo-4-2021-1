@@ -1,27 +1,17 @@
 import os, random
-
 from fighter.opponent.Opponent import Opponent
 from fighter.main_character.MainCharacter import MainCharacter
-
 from skill.EffectTarget import EffectTarget
 from skill.DamageEffect import DamageEffect
-from skill.HealingEffect import HealingEffect
 from skill.DamageType import DamageType
 from skill.Skill import Skill
-from skill.BuffTarget import BuffTarget
-from skill.BuffEffect import BuffEffect
-from skill.PosionEffect import PoisonEffect
-from skill.Buff import Buff
 from .SkillCreator import SkillCreator
-
-from room.CombatRoom import CombatRoom
-
 from display.components.LinearAnimation import LinearAnimation
 from display.components.OpponentSprite import OpponentSprite
 from item.Equipment import Equipment
-
 from fighter.Stats import Stats
 from fighter.Resource import Resource
+
 
 class OpponentCreator:
     current: Opponent = None
@@ -34,7 +24,7 @@ class OpponentCreator:
         elif level < 20:
             if random_number < 60:
                 OpponentCreator.current = self.__generate_common_enemy(level)
-            else: 
+            else:
                 OpponentCreator.current = self.__generate_rare_enemy(level)
         elif level < 50:
             if random_number < 60:
@@ -48,18 +38,20 @@ class OpponentCreator:
     def create_dummy():
         level = 1
         xp = 600
-        stats = Stats(0,0,0,0)
+        stats = Stats(0, 0, 0, 0)
         hp = Resource(1000)
         ap = Resource(2)
-        sprite_path = "versao_final/assets/enemy_sprites/common/" + random.choice(os.listdir("versao_final/assets/enemy_sprites/common/"))
+        sprite_path = "versao_final/assets/enemy_sprites/common/" + random.choice(
+            os.listdir("versao_final/assets/enemy_sprites/common/"))
         sprite = OpponentSprite(sprite_path)
         skills = random.sample(SkillCreator.create_skills(), 1)
-        
+
         Skill(
-            [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+            [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100),
+                          random.randrange(10), EffectTarget.ENEMY)],
             1, 0, "Basic attack", None)
         return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, skills)
-        
+
     @staticmethod
     def __generate_common_enemy(level: int):
         level = 1
@@ -67,7 +59,8 @@ class OpponentCreator:
         stats = Stats(*[random.randrange(5, 10) + level for i in range(4)])
         hp = Resource(random.randrange(300, 500))
         ap = Resource(2)
-        sprite_path = "versao_final/assets/enemy_sprites/common/" + random.choice(os.listdir("versao_final/assets/enemy_sprites/common/"))
+        sprite_path = "versao_final/assets/enemy_sprites/common/" + random.choice(
+            os.listdir("versao_final/assets/enemy_sprites/common/"))
         sprite = OpponentSprite(sprite_path)
 
         skills = random.sample(SkillCreator.create_skills(), 2)
@@ -84,10 +77,10 @@ class OpponentCreator:
         stats = Stats(*[random.randrange(10, 20) + level for i in range(4)])
         hp = Resource(random.randrange(500, 1000))
         ap = Resource(2)
-        sprite_path = "versao_final/assets/enemy_sprites/rare/" + random.choice(os.listdir("versao_final/assets/enemy_sprites/rare/"))
+        sprite_path = "versao_final/assets/enemy_sprites/rare/" + random.choice(
+            os.listdir("versao_final/assets/enemy_sprites/rare/"))
         sprite = OpponentSprite(sprite_path)
         skills = random.sample(SkillCreator.create_skills(), 4)
-
 
         # basic_skill = Skill(
         #     [DamageEffect(random.randrange(10, 20), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
@@ -107,11 +100,10 @@ class OpponentCreator:
         stats = Stats(*[random.randrange(20, 30) + level for i in range(4)])
         hp = Resource(random.randrange(1000, 2000))
         ap = Resource(2)
-        sprite_path = "versao_final/assets/enemy_sprites/mythic/" + random.choice(os.listdir("versao_final/assets/enemy_sprites/mythic/"))
+        sprite_path = "versao_final/assets/enemy_sprites/mythic/" + random.choice(
+            os.listdir("versao_final/assets/enemy_sprites/mythic/"))
         sprite = OpponentSprite(sprite_path)
         skills = skills = random.sample(SkillCreator.create_skills(), 5)
-
-
 
         # basic_skill = Skill(
         #     [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],

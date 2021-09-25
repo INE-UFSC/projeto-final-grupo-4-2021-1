@@ -26,8 +26,3 @@ class Inventory:
     
     def remove_item(self, item):
         self.__items.remove(item)
-
-
-
-
-

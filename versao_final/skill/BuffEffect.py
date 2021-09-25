@@ -22,6 +22,6 @@ class BuffEffect(LingeringEffect):
 
     def update(self, attached_to: 'Fighter'):
         self.duration -= 1
-        if (self.duration == 0):
+        if self.duration == 0:
             attached_to.remove_buff(self.__buff)
         return super().update(attached_to)

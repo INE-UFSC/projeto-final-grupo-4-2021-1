@@ -41,7 +41,3 @@ class ItemManagementSystem:
         self.__inventory.remove_item(item)
 
         return f"{item.name} dropped."
-
-
-
-

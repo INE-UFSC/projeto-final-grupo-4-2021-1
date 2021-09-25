@@ -22,18 +22,18 @@ class OpponentPlayingState(BaseState):
         OpponentCreator.current.update_skills_cooldown()
 
     def draw(self, surface):
-        surface.blit(Background().image, (0,0))
+        surface.blit(Background().image, (0, 0))
 
         for skill in self.__active_skills:
             skill.opponent_animation.draw(surface)
 
-        combat_room = Text("versao_final/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
+        combat_room = Text("versao_final/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room",
+                           (1100, 25))
         combat_room.draw(surface)
 
         OpponentCreator.current.draw(surface)
         MainCharacterResources.draw(surface)
         OpponentResources.draw(surface)
-
 
     def handle_action(self):
         skill = OpponentCreator.current.choose_skill()
@@ -54,7 +54,6 @@ class OpponentPlayingState(BaseState):
             return "END"
         elif OpponentCreator.current.ap.is_zero() and not self.__active_skills:
             return "MAIN_CHARACTER_PLAYING"
-
 
     def apply_skills(self):
         for index, skill in enumerate(self.__active_skills):

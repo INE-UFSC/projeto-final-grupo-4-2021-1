@@ -9,7 +9,6 @@ from display.components.Background import Background
 from MusicPlayer import MusicPlayer
 
 
-
 class EndCombatState(BaseMenuState):
     def __init__(self):
         super(EndCombatState, self).__init__()
@@ -18,7 +17,6 @@ class EndCombatState(BaseMenuState):
         self.previous_index = 0
         self.options = []
         MusicPlayer().stop_music()
-
 
     def handle_action(self):
         if self.active_index == 0:
@@ -41,7 +39,7 @@ class EndCombatState(BaseMenuState):
                 return self.handle_menu(event.key)
 
     def draw(self, surface):
-        surface.blit(Background().image, (0,0))
+        surface.blit(Background().image, (0, 0))
         MainCharacterResources.draw(surface)
 
         adder = 300
@@ -49,12 +47,20 @@ class EndCombatState(BaseMenuState):
             if CombatRoom().doors()[i].next_room_type.value not in self.menu:
                 self.menu.append(CombatRoom().doors()[i].next_room_type.value)
                 if i == 0:
-                    option = MenuTextButton("versao_final/assets/combatMenuButton.png", Text("versao_final/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 0, 0), CombatRoom().doors()[i].next_room_type.value[0]), CombatRoom().doors()[i].next_room_type.value[1])
+                    option = MenuTextButton("versao_final/assets/combatMenuButton.png",
+                                            Text("versao_final/assets/fonts/menu_option.ttf", 35,
+                                                 pygame.Color(255, 0, 0),
+                                                 CombatRoom().doors()[i].next_room_type.value[0]),
+                                            CombatRoom().doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)
                 else:
-                    option = MenuTextButton("versao_final/assets/combatMenuButton.png", Text("versao_final/assets/fonts/menu_option.ttf", 35, pygame.Color(255, 255, 255), CombatRoom().doors()[i].next_room_type.value[0]), CombatRoom().doors()[i].next_room_type.value[1])
+                    option = MenuTextButton("versao_final/assets/combatMenuButton.png",
+                                            Text("versao_final/assets/fonts/menu_option.ttf", 35,
+                                                 pygame.Color(255, 255, 255),
+                                                 CombatRoom().doors()[i].next_room_type.value[0]),
+                                            CombatRoom().doors()[i].next_room_type.value[1])
                     option.rect = option.surface.get_rect(topleft=(adder, 600))
                     adder += (option.surface.get_width() + 200)
                     self.options.append(option)

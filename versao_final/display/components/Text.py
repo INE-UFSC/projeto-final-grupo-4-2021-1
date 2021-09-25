@@ -1,13 +1,14 @@
 import pygame
 
+
 class Text:
     def __init__(self, font_path: str, size: int, color: pygame.Color, text: str, topleft: tuple = None):
         self.__font = pygame.font.Font(font_path, size)
         self.__text = text
         self.__color = color
-        
+
         if topleft:
-            self.__rect = pygame.Rect(self.surface.get_rect(topleft = topleft))
+            self.__rect = pygame.Rect(self.surface.get_rect(topleft=topleft))
         else:
             self.__rect = None
 

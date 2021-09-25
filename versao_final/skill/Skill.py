@@ -1,8 +1,10 @@
 from display.components.Animation import Animation
 from typing import List
 
+
 class Skill:
-    def __init__(self, effects: list, cost: int, cooldown: int, category: str, icon_path: str, main_char_animation: Animation = None, opponent_animation: Animation = None):
+    def __init__(self, effects: list, cost: int, cooldown: int, category: str, icon_path: str,
+                 main_char_animation: Animation = None, opponent_animation: Animation = None):
         self.__effects = effects
         self.__cost = cost
         self.__category = category

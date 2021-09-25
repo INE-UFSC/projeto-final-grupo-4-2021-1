@@ -2,6 +2,7 @@ import pygame
 from abc import ABC, abstractmethod
 from copy import copy
 
+
 class Animation(ABC):
     def __init__(self, surface, start_rect: pygame.Rect, end_rect: pygame.Rect, duration):
         self.__surface = surface
@@ -10,7 +11,6 @@ class Animation(ABC):
         self.__end_rect = end_rect
         self.__duration = duration
         self._finished = False
-        
 
     @property
     def start_rect(self):

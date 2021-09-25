@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class DamageType(Enum):
     FIRE = "FIRE"
     WATER = "WATER"
@@ -10,5 +11,5 @@ class DamageType(Enum):
     SLASHING = "SLASHING"
     BLUDGEONING = "BLUDGEONING"
 
-    #Special type, must only be used to specify buffs
+    # Special type, must only be used to specify buffs
     ALL = "ALL"

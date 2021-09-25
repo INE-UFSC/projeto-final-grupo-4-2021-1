@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from item.ItemTypes import ItemType
 
+
 class Item(ABC):
     @abstractmethod
     def __init__(self, name: str, description: str, weight: float, type: ItemType):

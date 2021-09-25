@@ -4,14 +4,15 @@ from fighter.main_character.MainCharacter import MainCharacter
 from creators.OpponentCreator import OpponentCreator
 import pygame
 
+
 class SkillIconButton(IconButton):
     def __init__(self, skill: Skill):
         self.__skill = skill
         super().__init__(skill.icon_path, None)
 
         s = pygame.Surface(self._surface.get_size())
-        s.fill((0,0,0))
-        s.set_alpha(200) 
+        s.fill((0, 0, 0))
+        s.set_alpha(200)
         self.__opaque_rect = s
 
     @property
@@ -31,4 +32,4 @@ class SkillIconButton(IconButton):
 
     def __blit_availability(self):
         if self.__skill.active_cooldown or self.__skill.cost > MainCharacter().ap.current:
-            self._surface.blit(self.__opaque_rect, (0,0))
+            self._surface.blit(self.__opaque_rect, (0, 0))

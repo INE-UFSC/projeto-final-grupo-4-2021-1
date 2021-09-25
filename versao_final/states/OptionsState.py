@@ -16,9 +16,9 @@ class OptionsState(BaseMenuState):
 
         menu_height = 0
         for option in self.options:
-            option.rect = option.surface.get_rect(center=(self.screen_rect.center[0], self.screen_rect.center[1] + menu_height))
+            option.rect = option.surface.get_rect(
+                center=(self.screen_rect.center[0], self.screen_rect.center[1] + menu_height))
             menu_height += (option.surface.get_height() + 10)
-
 
     def render_text(self, index):
         color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)

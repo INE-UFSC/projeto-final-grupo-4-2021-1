@@ -1,5 +1,6 @@
 from .TextPressable import TextPressable
 
+
 class MenuTextPressable(TextPressable):
     def __init__(self, font_path: str, size: int, text: str, next_state: str):
         super().__init__(font_path, size, text)

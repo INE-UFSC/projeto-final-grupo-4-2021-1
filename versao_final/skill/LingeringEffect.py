@@ -3,6 +3,7 @@ from copy import deepcopy
 from .EffectTarget import EffectTarget
 from .Effect import Effect
 
+
 class LingeringEffect(Effect, ABC):
     def __init__(self, duration: int, target: EffectTarget):
         super().__init__(target)

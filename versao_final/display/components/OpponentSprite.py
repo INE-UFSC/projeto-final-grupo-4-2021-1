@@ -1,5 +1,6 @@
 import pygame
 
+
 class OpponentSprite:
     def __init__(self, sprite_path: str):
         self.__sprite = pygame.image.load(sprite_path).convert_alpha()

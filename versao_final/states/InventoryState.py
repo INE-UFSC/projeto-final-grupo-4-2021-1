@@ -7,10 +7,12 @@ from display.components.ItemTextPressable import ItemTextPressable
 from display.components.MenuTextPressable import MenuTextPressable
 from fighter.main_character.MainCharacter import MainCharacter
 
+
 class InventoryState(BaseMenuState):
     def __init__(self):
         self.active_index = 0
-        self.__title = Text("versao_final/assets/fonts/menu_option.ttf", 40, pygame.Color(255, 255, 255), "Inventory (Enter - Use / Backspace - Drop)")
+        self.__title = Text("versao_final/assets/fonts/menu_option.ttf", 40, pygame.Color(255, 255, 255),
+                            "Inventory (Enter - Use / Backspace - Drop)")
         self.__title.rect = self.__title.surface.get_rect(topleft=(10, 10))
         self.options: List["TextPressable"] = []
         self.__item_descriptions: List["Text"] = []
@@ -42,23 +44,26 @@ class InventoryState(BaseMenuState):
         self.__item_weights.clear()
         for item in MainCharacter().inventory.items:
             self.options.append(ItemTextPressable("versao_final/assets/fonts/description.ttf", 30, item.name, item))
-            self.__item_descriptions.append(Text("versao_final/assets/fonts/description.ttf", 30, pygame.Color(255, 255, 255), f"{item.description} ({item.type.value})"))
-            self.__item_weights.append(Text("versao_final/assets/fonts/description.ttf", 30, pygame.Color(255, 255, 255), str(item.weight)))
-        
+            self.__item_descriptions.append(
+                Text("versao_final/assets/fonts/description.ttf", 30, pygame.Color(255, 255, 255),
+                     f"{item.description} ({item.type.value})"))
+            self.__item_weights.append(
+                Text("versao_final/assets/fonts/description.ttf", 30, pygame.Color(255, 255, 255), str(item.weight)))
+
         self.options.append(MenuTextPressable("versao_final/assets/fonts/description.ttf", 30, "Return", "PREVIOUS"))
-        
+
         adder = 40
         for option, desc, weight in zip(self.options, self.__item_descriptions, self.__item_weights):
-            option.rect = option.surface.get_rect(topleft = (20, adder))
-            desc.rect = desc.surface.get_rect(topleft= (400, adder))
-            weight.rect = weight.surface.get_rect(topleft= (1240, adder))
+            option.rect = option.surface.get_rect(topleft=(20, adder))
+            desc.rect = desc.surface.get_rect(topleft=(400, adder))
+            weight.rect = weight.surface.get_rect(topleft=(1240, adder))
 
             adder += (option.surface.get_height() + 5)
 
-        self.options[-1].rect = self.options[-1].surface.get_rect(topleft = (10, adder))
+        self.options[-1].rect = self.options[-1].surface.get_rect(topleft=(10, adder))
 
     def draw(self, surface: pygame.Surface):
-        surface.fill(pygame.Color(0,0,0))
+        surface.fill(pygame.Color(0, 0, 0))
         self.__title.draw(surface)
 
         for index, option in enumerate(self.options):
@@ -67,4 +72,3 @@ class InventoryState(BaseMenuState):
 
         for text in [*self.__item_descriptions, *self.__item_weights]:
             text.draw(surface)
-    

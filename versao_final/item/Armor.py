@@ -3,6 +3,7 @@ from .Item import Item
 from .ItemTypes import ItemType
 from skill.Buff import Buff
 
+
 class Armor(Item):
     def __init__(self, name: str, description: str, weight: float, base_armor: dict, buff: Buff):
         super().__init__(name, description, weight, ItemType.ARMOR)
