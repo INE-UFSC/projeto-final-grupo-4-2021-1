@@ -1,3 +1,4 @@
+from MusicPlayer import MusicPlayer
 from fighter.main_character.MainCharacter import MainCharacter
 from creators.OpponentCreator import OpponentCreator
 from .BaseState import BaseState
@@ -12,6 +13,7 @@ class StartCombatState(BaseState):
 
     def run(self):
         CombatRoom()
+        MusicPlayer().play_music("prototipo/music/combat.mp3")
         self.time_active += 1
         if self.time_active > 50:
             self.time_active = 0

@@ -4,6 +4,7 @@ from .BaseMenuState import BaseMenuState
 from display.components.Text import Text
 from display.components.TextPressable import TextPressable
 from fighter.main_character.MainCharacter import MainCharacter
+from MusicPlayer import MusicPlayer
 
 class LevelUpState(BaseMenuState):
     def __init__(self):
@@ -19,6 +20,7 @@ class LevelUpState(BaseMenuState):
             stat.rect = stat.surface.get_rect(midtop = self.options[index].rect.midbottom)
 
     def run(self):
+        MusicPlayer().stop_music()
         MainCharacter().leveled_up = False
         self.__availablePoints.text = "Available Points: " + str(MainCharacter().stats.availablePoints)
         for index, option in enumerate(self.options):

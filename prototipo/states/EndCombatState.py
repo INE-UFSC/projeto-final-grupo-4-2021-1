@@ -1,3 +1,4 @@
+from MusicPlayer import MusicPlayer
 from fighter.main_character.MainCharacter import MainCharacter
 import pygame
 from states.BaseMenuState import BaseMenuState
