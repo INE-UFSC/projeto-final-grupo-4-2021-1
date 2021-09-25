@@ -9,7 +9,7 @@ class OptionsState(BaseMenuState):
         self.active_index = 0
         self.options = [Text(
             "prototipo/assets/fonts/menu_option.ttf",
-            50,
+            35,
             pygame.Color(255, 255, 255),
             option
         ) for option in ["Option1", "Option2", "Return"]]

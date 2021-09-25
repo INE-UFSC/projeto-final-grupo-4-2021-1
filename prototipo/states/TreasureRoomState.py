@@ -1,10 +1,11 @@
+from room.Chest import Chest
 import pygame
 from .BaseMenuState import BaseMenuState
 from room.TreasureRoom import TreasureRoom
 from display.components.Text import Text
 from display.components.MenuTextButton import MenuTextButton
 from display.components.Background import Background
-from display.components.MenuIconButton import MenuIconButton
+from fighter.main_character.MainCharacter import MainCharacter
 
 
 class TreasureRoomState(BaseMenuState):
@@ -14,6 +15,7 @@ class TreasureRoomState(BaseMenuState):
         self.active_index = 0
         self.previous_index = 0
         self.options = []
+        self.__new_round = True
 
         self.adder = 50
         for option in [("Inventory", "INVENTORY"), ("Select Item", None), ("Options", "OPTIONS")]:
@@ -29,8 +31,11 @@ class TreasureRoomState(BaseMenuState):
             self.options.append(option)
 
     def handle_action(self):
-        return self.options[self.active_index].on_pressed()
+        if self.active_index == 1:
+            for item in TreasureRoom().chest.items:
+                MainCharacter().inventory.add_item(item)
 
+        return self.options[self.active_index].on_pressed()
 
     def run(self):
         for event in pygame.event.get():
@@ -59,7 +64,6 @@ class TreasureRoomState(BaseMenuState):
             option.select() if index == self.active_index else option.unselect()
             option.draw(surface)
 
-        # treasure = MenuIconButton("prototipo/assets/treasure.png")
         treasure = MenuTextButton("prototipo/assets/treasure.png", Text(
                     "prototipo/assets/fonts/menu_option.ttf",
                     35,
@@ -68,6 +72,17 @@ class TreasureRoomState(BaseMenuState):
                 ), "O")
         treasure.rect = option.surface.get_rect(topleft=(400, 20))
         treasure.draw(surface)
+
+        adder_item = 75
+        item_options = []
+        for item in TreasureRoom().chest.items:
+            item_option = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), item.name, (1100, 25))
+            item_option.rect = option.surface.get_rect(topleft=(600, adder_item))
+            adder_item += 50
+            item_options.append(item_option)
+
+        for item_option in item_options:
+            item_option.draw(surface)
 
         treasure_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Treasure Room", (1100, 25))
         treasure_room.draw(surface)

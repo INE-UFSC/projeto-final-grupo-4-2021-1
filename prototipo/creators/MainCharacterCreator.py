@@ -40,7 +40,7 @@ class MainCharacterCreator:
         consumable = Consumable("Healing Potion", "Heals for some HP.", 1, healing_skill)
 
         inventory = Inventory([weapon, armor, trinket, consumable], 999)
-        for i in range(11):
+        for i in range(5):
             inventory.add_item(consumable)
 
         main_char = MainCharacter(0, Stats(10, 10, 10, 10), Resource(1000, 100), Resource(5, 0), Equipment.default_equipment(), inventory, 0, [
