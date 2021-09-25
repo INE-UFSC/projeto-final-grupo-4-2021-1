@@ -6,7 +6,7 @@ import random
 from helpers.SingletonMeta import ABCSingletonMeta
 
 
-class Chest():
+class Chest(metaclass=ABCSingletonMeta):
     def __init__(self):
         self.__items = self.item_generator()
 
