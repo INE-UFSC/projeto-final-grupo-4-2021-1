@@ -35,7 +35,7 @@ class MainCharacterPlayingState(BaseMenuState):
         for option in [("Pass", "OPPONENT_PLAYING"), ("Inventory", "INVENTORY"), ("Equipment", "EQUIPMENT")]:
             self.options.append(MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
                 "prototipo/assets/fonts/menu_option.ttf",
-                50,
+                35,
                 pygame.Color(255, 255, 255),
                 option[0]
             ), option[1]))

@@ -1,6 +1,7 @@
 import pygame as pg
+from helpers.SingletonMeta import ABCSingletonMeta
 
-class MusicPlayer:
+class MusicPlayer(metaclass=ABCSingletonMeta):
     def start_player(self):
         pg.init()
         pg.mixer.init()
