@@ -12,6 +12,7 @@ from skill.BuffTarget import BuffTarget
 from skill.BuffEffect import BuffEffect
 from skill.PosionEffect import PoisonEffect
 from skill.Buff import Buff
+from .SkillCreator import SkillCreator
 
 from display.components.LinearAnimation import LinearAnimation
 from display.components.OpponentSprite import OpponentSprite
@@ -24,7 +25,7 @@ class OpponentCreator:
     current: Opponent = None
 
     def generate_enemy(self):
-        OpponentCreator.current = self.create_dummy()
+        OpponentCreator.current = self.__generate_rare_enemy()
 
     @staticmethod
     def create_dummy():
@@ -35,10 +36,12 @@ class OpponentCreator:
         ap = Resource(2)
         sprite_path = "prototipo/assets/enemy_sprites/common/" + random.choice(os.listdir("prototipo/assets/enemy_sprites/common/"))
         sprite = OpponentSprite(sprite_path)
-        basic_skill = Skill(
+        skills = random.sample(SkillCreator.create_skills(), 1)
+        
+        Skill(
             [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
             1, 0, "Basic attack", None)
-        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, skills)
         
     @staticmethod
     def __generate_common_enemy():
@@ -49,10 +52,13 @@ class OpponentCreator:
         ap = Resource(2)
         sprite_path = "prototipo/assets/enemy_sprites/common/" + random.choice(os.listdir("prototipo/assets/enemy_sprites/common/"))
         sprite = OpponentSprite(sprite_path)
-        basic_skill = Skill(
-            [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, 0, "Basic attack", None)
-        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill])
+
+        skills = random.sample(SkillCreator.create_skills(), 2)
+
+        # basic_skill = Skill(
+        #     [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+        #     1, 0, "Basic attack", None)
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, skills)
 
     @staticmethod
     def __generate_rare_enemy():
@@ -63,17 +69,20 @@ class OpponentCreator:
         ap = Resource(2)
         sprite_path = "prototipo/assets/enemy_sprites/rare/" + random.choice(os.listdir("prototipo/assets/enemy_sprites/rare/"))
         sprite = OpponentSprite(sprite_path)
-        basic_skill = Skill(
-            [DamageEffect(random.randrange(10, 20), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, 0, "Basic attack", None)
-        special_skill = Skill(
-            [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            2, 2, "Special attack", None)
-        healing_skill = Skill(
-            [HealingEffect(30, EffectTarget.SELF)], 
-            1, 2, "Healing effect", None
-        )
-        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill])
+        skills = random.sample(SkillCreator.create_skills(), 4)
+
+
+        # basic_skill = Skill(
+        #     [DamageEffect(random.randrange(10, 20), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+        #     1, 0, "Basic attack", None)
+        # special_skill = Skill(
+        #     [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+        #     2, 2, "Special attack", None)
+        # healing_skill = Skill(
+        #     [HealingEffect(30, EffectTarget.SELF)], 
+        #     1, 2, "Healing effect", None
+        # )
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, skills)
 
     @staticmethod
     def __generate_mythic_enemy():
@@ -84,18 +93,22 @@ class OpponentCreator:
         ap = Resource(2)
         sprite_path = "prototipo/assets/enemy_sprites/mythic/" + random.choice(os.listdir("prototipo/assets/enemy_sprites/mythic/"))
         sprite = OpponentSprite(sprite_path)
-        basic_skill = Skill(
-            [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            1, 0, "Basic attack", None)
-        special_skill = Skill(
-            [DamageEffect(random.randrange(20, 40), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
-            2, 2, "Special attack", None)
-        healing_skill = Skill(
-            [HealingEffect(40, EffectTarget.SELF)], 
-            1, 2, "Healing effect", None
-        )
-        buff_skill = Skill(
-            [BuffEffect(Buff(0.2, BuffTarget.DAMAGE, DamageType.ALL))],
-            1, 3, "Damage buff", None
-        )
-        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, [basic_skill, special_skill, healing_skill, buff_skill])
+        skills = skills = random.sample(SkillCreator.create_skills(), 5)
+
+
+
+        # basic_skill = Skill(
+        #     [DamageEffect(random.randrange(15, 30), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+        #     1, 0, "Basic attack", None)
+        # special_skill = Skill(
+        #     [DamageEffect(random.randrange(20, 40), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
+        #     2, 2, "Special attack", None)
+        # healing_skill = Skill(
+        #     [HealingEffect(40, EffectTarget.SELF)], 
+        #     1, 2, "Healing effect", None
+        # )
+        # buff_skill = Skill(
+        #     [BuffEffect(Buff(0.2, BuffTarget.DAMAGE, DamageType.ALL))],
+        #     1, 3, "Damage buff", None
+        # )
+        return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, None, skills)

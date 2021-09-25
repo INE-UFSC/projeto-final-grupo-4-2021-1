@@ -32,8 +32,14 @@ class Opponent(Fighter):
     def sprite(self):
         return self.__sprite
 
-    def use_skill(self, target):
-        choice(list(filter(lambda skill: not skill.cooldown and skill.cost <= self.ap.current, self.skills))).use(self, target)
+    def choose_skill(self):
+        skill = list(filter(lambda skill: skill.cost <= self.ap.current, self.skills))
+        if skill:
+            return choice(skill)
+        return None
+
+    def use_skill(self, skill, target):
+        skill.use(self, target)
 
     def draw(self, surface):
         self.__sprite.draw(surface)

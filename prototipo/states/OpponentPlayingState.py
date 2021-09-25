@@ -15,6 +15,7 @@ class OpponentPlayingState(BaseState):
         self.player_hp = None
         self.opponent_hp = None
         self.time_active = 0
+        self.__active_skills = []
 
         OpponentCreator.current.ap.increase_current(2)
         OpponentCreator.current.update_lingering_effects()
@@ -22,6 +23,9 @@ class OpponentPlayingState(BaseState):
 
     def draw(self, surface):
         surface.blit(Background().image, (0,0))
+
+        for skill in self.__active_skills:
+            skill.opponent_animation.draw(surface)
 
         combat_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
         combat_room.draw(surface)
@@ -32,21 +36,42 @@ class OpponentPlayingState(BaseState):
 
 
     def handle_action(self):
-        skill = OpponentCreator.current.skills[0]
-        OpponentCreator.current.use_skill(MainCharacter())
-        OpponentCreator.current.ap.decrease_current(skill.cost)
+        skill = OpponentCreator.current.choose_skill()
+
+        if not skill:
+            return "MAIN_CHARACTER_PLAYING"
+
+        if skill not in self.__active_skills:
+            if skill.opponent_animation:
+                skill.opponent_animation.reset()
+                self.__active_skills.append(skill)
+            else:
+                OpponentCreator.current.use_skill(skill, MainCharacter())
+
+            OpponentCreator.current.ap.decrease_current(skill.cost)
 
         if MainCharacter().hp.is_zero():
             return "END"
-        elif OpponentCreator.current.ap.is_zero():
+        elif OpponentCreator.current.ap.is_zero() and not self.__active_skills:
             return "MAIN_CHARACTER_PLAYING"
+
+
+    def apply_skills(self):
+        for index, skill in enumerate(self.__active_skills):
+            if skill.opponent_animation.finished:
+                OpponentCreator.current.use_skill(skill, MainCharacter())
+                self.__active_skills.pop(index)
+            else:
+                skill.opponent_animation.update()
 
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
 
+        self.apply_skills()
+
         self.time_active += 1
-        if self.time_active > 29:
+        if self.time_active > 60:
             self.time_active = 0
             return self.handle_action()
