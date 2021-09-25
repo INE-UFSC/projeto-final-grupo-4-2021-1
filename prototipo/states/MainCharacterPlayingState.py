@@ -51,8 +51,12 @@ class MainCharacterPlayingState(BaseMenuState):
             skill = self.options[self.active_index].skill
 
             if skill not in self.__active_skills and MainCharacter().ap.current >= skill.cost and not skill.active_cooldown:
-                skill.main_char_animation.reset()
-                self.__active_skills.append(skill)
+                if skill.main_char_animation:
+                    skill.main_char_animation.reset()
+                    self.__active_skills.append(skill)
+                else:
+                    MainCharacter().use_skill(skill, OpponentCreator.current)
+
                 MainCharacter().ap.decrease_current(skill.cost)
 
         else:
