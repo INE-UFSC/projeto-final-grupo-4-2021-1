@@ -21,7 +21,8 @@ class Inventory:
         self.__weight_capacity = weight_capacity
 
     def add_item(self, item):
-        self.__items.append(item)
+        if item not in self.__items:
+            self.__items.append(item)
     
     def remove_item(self, item):
         self.__items.remove(item)

@@ -12,6 +12,10 @@ class TreasureRoom(Room):
         Background().image = pygame.image.load("prototipo/assets/RockCave.png")
         super().__init__(self.make_room)
 
+    @property
+    def chest(self):
+        return self.__chest
+
     def make_room(self):
         return RoomType.RoomType.TREASURE
 
