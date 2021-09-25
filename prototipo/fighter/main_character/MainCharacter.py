@@ -30,10 +30,6 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     def equipment(self):
         return self.__equipment
 
-    def increase_exp(self, amount):
-        "Increases the current EXP by the specified amount"
-        self.__exp += amount
-
     def level_up(self):
         self.__leveled_up = True
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
