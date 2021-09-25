@@ -39,10 +39,5 @@ class MainCharacter(Fighter):
     #    self.__inventory = inventory
 
 
-    def increase_exp(self, amount):
-        "Increases the current EXP by the specified amount"
-        self.__exp += amount
-
-    #Implementar mensagem de level up 
     def level_up(self):
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
