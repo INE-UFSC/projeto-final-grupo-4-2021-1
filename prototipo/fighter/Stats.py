@@ -5,8 +5,7 @@ from skill.StatBuff import StatBuff
 from skill.BuffTarget import BuffTarget
 from skill.DamageType import DamageType
 
-INTELLIGENCE_MULTIPLIER = 0.05
-STRENGTH_MULTIPLIER = 0.05
+STATS_MULTIPLIER = 0.01
 
 class Stats:
     def __init__(self, strengh: int = 0, intelligence: int = 0,
@@ -19,8 +18,10 @@ class Stats:
         }
 
         self.__buffs = [
-            StatBuff(self, "INTELLIGENCE", INTELLIGENCE_MULTIPLIER, BuffTarget.DAMAGE, DamageType.ALL),
-            StatBuff(self, "STRENGTH", STRENGTH_MULTIPLIER, BuffTarget.RESISTANCE, DamageType.ALL)
+            StatBuff(self, "INTELLIGENCE", STATS_MULTIPLIER, BuffTarget.DAMAGE, DamageType.ALL),
+            StatBuff(self, "CONSTITUTION", STATS_MULTIPLIER, BuffTarget.RESISTANCE, DamageType.ALL),
+            StatBuff(self, "WITS", STATS_MULTIPLIER, BuffTarget.RESISTANCE, DamageType.ALL),
+            StatBuff(self, "STRENGTH", STATS_MULTIPLIER, BuffTarget.DAMAGE, DamageType.ALL)
         ]
 
         self.__availablePoints = availablePoints

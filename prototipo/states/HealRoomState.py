@@ -1,6 +1,5 @@
 import pygame
 from .BaseMenuState import BaseMenuState
-from TextSprite import TextSprite
 from room.HealRoom import HealRoom
 from display.components.MenuTextButton import MenuTextButton
 from display.components.Text import Text

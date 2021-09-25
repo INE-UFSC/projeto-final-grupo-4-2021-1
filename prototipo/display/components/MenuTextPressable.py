@@ -6,8 +6,8 @@ class MenuTextPressable(TextPressable):
         self.__next_state = next_state
 
     @property
-    def item(self):
-        return self.__item
+    def next_state(self):
+        return self.__next_state
 
     def on_pressed(self):
         return self.__next_state

@@ -32,6 +32,7 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
 
     def level_up(self):
         self.__leveled_up = True
+        self.hp.increase_max(self.stats.stats["CONSTITUTION"])
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
         self._level += 1
 

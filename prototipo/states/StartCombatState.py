@@ -13,9 +13,10 @@ class StartCombatState(BaseState):
 
     def run(self):
         CombatRoom()
-        MusicPlayer().play_music("prototipo/music/combat.mp3")
         self.time_active += 1
         if self.time_active > 50:
+            MusicPlayer().play_music("prototipo/music/combat.mp3")
+            CombatRoom()
             self.time_active = 0
 
             OpponentCreator().generate_enemy()

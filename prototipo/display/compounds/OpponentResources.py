@@ -1,9 +1,8 @@
 import pygame
-from .Compound import Compound
 from display.components.Text import Text
 from creators.OpponentCreator import OpponentCreator
 
-class OpponentResources(Compound):
+class OpponentResources():
     
     def draw(surface: pygame.Surface):
         current_hp =  OpponentCreator.current.hp.current
