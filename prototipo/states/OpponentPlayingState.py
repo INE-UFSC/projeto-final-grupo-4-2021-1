@@ -1,77 +1,42 @@
 import pygame
 from .BaseState import BaseState
-from creators.OpponentCreator import OpponentCreator
-from fighter.main_character.MainCharacter import MainCharacter
-from display.compounds.MainCharacterResources import MainCharacterResources
-from display.compounds.OpponentResources import OpponentResources
-from creators.OpponentCreator import OpponentCreator
-from display.components.Background import Background
-from display.components.Text import Text
+from TextSprite import TextSprite
+from Singleton import Singleton
 
 
-class OpponentPlayingState(BaseState):
+class OpponentPlaying(BaseState):
     def __init__(self):
-        super(OpponentPlayingState, self).__init__()
+        super(OpponentPlaying, self).__init__()
         self.player_hp = None
         self.opponent_hp = None
         self.time_active = 0
-        self.__active_skills = []
-
-        OpponentCreator.current.ap.increase_current(2)
-        OpponentCreator.current.update_lingering_effects()
-        OpponentCreator.current.update_skills_cooldown()
 
     def draw(self, surface):
-        surface.blit(Background().image, (0,0))
-
-        for skill in self.__active_skills:
-            skill.opponent_animation.draw(surface)
-
-        combat_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
-        combat_room.draw(surface)
-
-        OpponentCreator.current.draw(surface)
-        MainCharacterResources.draw(surface)
-        OpponentResources.draw(surface)
-
+        surface.blit(Singleton.background, (0,0))
+        Singleton.opponent.draw(surface)
+        for hp in [self.player_hp, self.opponent_hp]:
+            surface.blit(hp.surf, hp.rect)
 
     def handle_action(self):
-        skill = OpponentCreator.current.choose_skill()
+        Singleton.main_character.get_attacked(Singleton.opponent.use_skill(0))
 
-        if not skill:
-            return "MAIN_CHARACTER_PLAYING"
-
-        if skill not in self.__active_skills:
-            if skill.opponent_animation:
-                skill.opponent_animation.reset()
-                self.__active_skills.append(skill)
-            else:
-                OpponentCreator.current.use_skill(skill, MainCharacter())
-
-            OpponentCreator.current.ap.decrease_current(skill.cost)
-
-        if MainCharacter().hp.is_zero():
-            return "END"
-        elif OpponentCreator.current.ap.is_zero() and not self.__active_skills:
-            return "MAIN_CHARACTER_PLAYING"
-
-
-    def apply_skills(self):
-        for index, skill in enumerate(self.__active_skills):
-            if skill.opponent_animation.finished:
-                OpponentCreator.current.use_skill(skill, MainCharacter())
-                self.__active_skills.pop(index)
-            else:
-                skill.opponent_animation.update()
+        if Singleton.main_character.hp.is_zero():
+            return "END_COMBAT"
+        return "MAIN_CHARACTER_PLAYING"
 
     def run(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return "QUIT"
+        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
 
-        self.apply_skills()
+        surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
+        self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
 
+        surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
+        self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
         self.time_active += 1
-        if self.time_active > 60:
+        if self.time_active > 119:
             self.time_active = 0
             return self.handle_action()
+        
+    
+

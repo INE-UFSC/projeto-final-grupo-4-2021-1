@@ -1,113 +1,99 @@
 import pygame
-from typing import List
-from .BaseMenuState import BaseMenuState
-from fighter.main_character.MainCharacter import MainCharacter
-from creators.OpponentCreator import OpponentCreator
-from display.components.Text import Text
-from display.components.SkillIconButton import SkillIconButton
-from display.components.MenuTextButton import MenuTextButton
-from skill.Skill import Skill
-from display.compounds.MainCharacterResources import MainCharacterResources
-from display.compounds.OpponentResources import OpponentResources
-from display.components.Background import Background
+from .BaseState import BaseState
+from TextSprite import TextSprite
+from Singleton import Singleton
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 
 
-class MainCharacterPlayingState(BaseMenuState):
+class MainCharacterPlaying(BaseState):
     def __init__(self):
-        super(MainCharacterPlayingState, self).__init__()
+        super(MainCharacterPlaying, self).__init__()
         self.active_index = 0
+        self.previous_index = 0
 
-        MainCharacter().ap.increase_current(2)
-        MainCharacter().update_skills_cooldown()
-        MainCharacter().update_lingering_effects()
-
-        self.__build_options()
-        self.__active_skills: List["Skill"] = []
-
-    def __build_options(self):
         self.options = []
-        for skill in MainCharacter().skills:
-            self.options.append(SkillIconButton(skill))
+        self.player_hp = None
+        self.opponent_hp = None
+        options = ("Attack", "Effect", "Item", "Options")
 
-        for option in [("Pass", "OPPONENT_PLAYING"), ("Inventory", "INVENTORY"), ("Equipment", "EQUIPMENT")]:
-            self.options.append(MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
-                "prototipo/assets/fonts/menu_option.ttf",
-                35,
-                pygame.Color(255, 255, 255),
-                option[0]
-            ), option[1]))
+        #Pls correct the gambiarra as soon as possible
+        index = (800/2) - 100*2
 
-        adder = 40
-        for option in self.options:
-            option.rect = option.surface.get_rect(
-                topleft=(adder, self.screen_rect.height - option.surface.get_height() - 20))
-            adder += (option.surface.get_width() + 20)
+        surface = self.font.render(options[0], True, pygame.Color("red"))
+        self.options.append(TextSprite(options[0], surface, surface.get_rect(topleft=(index, 500))))
+        for option in options[1:]:
+            index += 100
+            surface = self.font.render(option, True, pygame.Color("white"))
+            self.options.append(TextSprite(option, surface, surface.get_rect(topleft=(index, 500))))
+
+        # #Incitializes text surfaces
+        # self.options_surfaces.append(self.font.render(self.options_texts[self.active_index], True, pygame.Color("red")))
+        # for option in self.options_texts[1:]:
+        #     self.options_surfaces.append(self.font.render(option, True, pygame.Color("white")))
+
+    # def render_text(self, index):
+    #     color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
+    #     return self.font.render(self.options[index], True, color)
+
+    # def get_text_position(self, text, index):
+    #     center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))
+    #     return text.get_rect(center=center)
 
     def handle_action(self):
-        if isinstance(self.options[self.active_index], SkillIconButton) and not MainCharacter().ap.is_zero():
-            skill = self.options[self.active_index].skill
-
-            if skill not in self.__active_skills and MainCharacter().ap.current >= skill.cost and not skill.active_cooldown:
-                if skill.main_char_animation:
-                    skill.main_char_animation.reset()
-                    self.__active_skills.append(skill)
-                else:
-                    MainCharacter().use_skill(skill, OpponentCreator.current)
-
-                MainCharacter().ap.decrease_current(skill.cost)
-
+        if self.active_index == 3:
+            return "MENU"
+        
         else:
-            next_state = self.options[self.active_index].on_pressed()
-            return next_state
+            if self.active_index == 1:
+                Singleton.main_character.use_skill(1)
 
-    def run(self):
-        if OpponentCreator.current.hp.is_zero():
-            self.__active_skills.clear()
-            for skill in MainCharacter().skills:
-                skill.cooldown_reset()
-
-            MainCharacter().add_xp(OpponentCreator.current.xp)
-            if MainCharacter().leveled_up:
-                return "LEVEL_UP"
-
-            return "END_COMBAT"
-
-        if MainCharacter().ap.is_zero() and not self.__active_skills:
+            elif self.active_index == 2:
+                print("You used an item! Wow!")
+            
+            elif self.active_index == 0:
+                Singleton.opponent.get_attacked(Singleton.main_character.use_skill(0))
+            
+            if Singleton.opponent.hp.is_zero():
+                return "END_COMBAT"
             return "OPPONENT_PLAYING"
 
-        self.apply_skills()
+    def run(self):
+        player_hp_text = f"Player HP: {Singleton.main_character.hp.current}/{Singleton.main_character.hp.max}"
+        opponent_hp_text =  f"Opponent HP: {Singleton.opponent.hp.current}/{Singleton.opponent.hp.max}"
 
+        surface = self.font.render(player_hp_text, True, pygame.Color("blue"))
+        self.player_hp = (TextSprite(player_hp_text, surface, surface.get_rect(topleft=(10,10))))
+
+        surface = self.font.render(opponent_hp_text, True, pygame.Color("blue"))
+        self.opponent_hp = (TextSprite(opponent_hp_text, surface, surface.get_rect(topleft=(10,40))))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
             elif event.type == pygame.KEYUP:
-                return self.handle_menu(event.key)
+                if event.key == pygame.K_LEFT:
+                    if self.active_index > 0:
+                        self.active_index -= 1
+                    else:
+                        self.active_index = 0
+                elif event.key == pygame.K_RIGHT:
+                    if self.active_index < 3:
+                        self.active_index += 1
+                    else:
+                        self.active_index = 3
+                elif event.key == pygame.K_RETURN:
+                    return self.handle_action()
 
-    def apply_skills(self):
+        if self.active_index != self.previous_index:
+            self.options[self.active_index].surf = self.font.render(self.options[self.active_index].text, True, pygame.Color("red"))
+            self.options[self.previous_index].surf = self.font.render(self.options[self.previous_index].text, True, pygame.Color("white"))
+            self.previous_index = self.active_index
 
-        for index, skill in enumerate(self.__active_skills):
-            if skill.main_char_animation.finished:
-                MainCharacter().use_skill(skill, OpponentCreator.current)
-                self.__active_skills.pop(index)
-            else:
-                skill.main_char_animation.update()
 
     def draw(self, surface):
-        surface.blit(Background().image, (0, 0))
+        surface.blit(Singleton.background, (0,0))
+        Singleton.opponent.draw(surface)
 
-        OpponentCreator.current.draw(surface)
-        MainCharacterResources.draw(surface)
-        OpponentResources.draw(surface)
-
-        for skill in self.__active_skills:
-            skill.main_char_animation.draw(surface)
-
-        for index, option in enumerate(self.options):
-            option.select() if index == self.active_index else option.unselect()
-            option.draw(surface)
-
-        combat_room = Text("prototipo/assets/fonts/menu_option.ttf",
-                           25, pygame.Color(255, 255, 255), "Combat Room", (1100, 25))
-        combat_room.draw(surface)
+        for option in [*self.options, self.player_hp, self.opponent_hp]:
+            # text_render = self.render_text(index)
+            surface.blit(option.surf, option.rect)

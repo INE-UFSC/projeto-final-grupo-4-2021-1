@@ -1,31 +1,26 @@
-from collections import defaultdict
 from .Item import Item
 from .ItemTypes import ItemType
-from skill.Buff import Buff
+from skill.BuffEffect import BuffEffect
+from skill.DamageType import DamageType
 
 class Armor(Item):
-    def __init__(self, name: str, description: str, weight: float, base_armor: dict, buff: Buff):
-        super().__init__(name, description, weight, ItemType.ARMOR)
-        self.__base_armor = defaultdict(int, base_armor)
-        self.__buff = buff
+    def __init__(self, name: str, description: str, weight: float, type: ItemType, base_armor: dict, buff_effect: BuffEffect):
+        super().__init__(name, description, weight, type)
+        self.__base_armor = base_armor
+        self.__buff_effect = buff_effect
 
     @property
     def base_armor(self):
         return self.__base_armor
 
     @property
-    def buff(self):
-        return self.__buff
+    def buff_effect(self):
+        return self.__buff_effect
 
     @base_armor.setter
     def base_armor(self, base_armor: dict):
         self.__base_armor = base_armor
 
-    @buff.setter
-    def buff(self, buff: Buff):
-        self.__buff = buff
-
-    def use(self, mc):
-        mc.inventory.remove_item(self)
-        mc.inventory.add_item(mc.equipment.armor)
-        mc.equipment.armor = self
+    @buff_effect.setter
+    def buff_effect(self, buff_effect: BuffEffect):
+        self.__buff_effect = buff_effect

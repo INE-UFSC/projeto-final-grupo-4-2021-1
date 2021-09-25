@@ -1,42 +1,52 @@
 import pygame
-from .BaseMenuState import BaseMenuState
-from display.components.Text import Text
-from display.components.MenuTextPressable import MenuTextPressable
+from .BaseState import BaseState
 
 
-class InitState(BaseMenuState):
+class Init(BaseState):
     def __init__(self):
-        super(InitState, self).__init__()
+        super(Init, self).__init__()
         self.active_index = 0
+        self.options = ["New", "Load", "Options", "Exit"]
 
-        self.__title = Text("prototipo/assets/fonts/title.ttf", 200, pygame.Color(255, 30, 30), "Masmorra")
-        self.__title.rect = self.__title.surface.get_rect(center=(self.screen_rect.width/2, self.screen_rect.height/2 - 90))
+    def render_text(self, index):
+        color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
+        return self.font.render(self.options[index], True, color)
 
-        self.options = [MenuTextPressable(
-            "prototipo/assets/fonts/menu_option.ttf",
-            50,
-            option[0],
-            option[1]
-        ) for option in [("New", "START_COMBAT"), ("Options", "OPTIONS"), ("Exit", "QUIT")]]
-
-        adder = self.screen_rect.center[1] + 100
-        for option in self.options:
-            option.rect = option.surface.get_rect(center=(self.screen_rect.center[0], adder))
-            adder += (option.surface.get_height() + 10)
+    def get_text_position(self, text, index):
+        center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))
+        return text.get_rect(center=center)
 
     def handle_action(self):
-        return self.options[self.active_index].on_pressed()
+        if self.active_index == 0:
+            return "START_COMBAT"
+        elif self.active_index == 1:
+            # load
+            pass
+        elif self.active_index == 2:
+            return "MENU"
+        elif self.active_index == 3:
+            return "QUIT"
 
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return "QUIT"
+                self.quit = True
             elif event.type == pygame.KEYUP:
-                return self.handle_menu(event.key)
+                if event.key == pygame.K_UP:
+                    if self.active_index > 0:
+                        self.active_index -= 1
+                    else:
+                        self.active_index = 0
+                elif event.key == pygame.K_DOWN:
+                    if self.active_index < 3:
+                        self.active_index += 1
+                    else:
+                        self.active_index = 3
+                elif event.key == pygame.K_RETURN:
+                    return self.handle_action()
 
     def draw(self, surface):
-        surface.fill(pygame.Color(0, 0, 0))
-        self.__title.draw(surface)
+        surface.fill(pygame.Color("black"))
         for index, option in enumerate(self.options):
-            option.color = pygame.Color(255, 0, 0) if index == self.active_index else pygame.Color(255, 255, 255)
-            option.draw(surface)
+            text_render = self.render_text(index)
+            surface.blit(text_render, self.get_text_position(text_render, index))

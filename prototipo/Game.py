@@ -1,17 +1,14 @@
 import pygame
-from typing import List
-from states.BaseState import BaseState
-from display.components.Background import Background
+
 
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
 class Game:
-    def __init__(self, screen, states: List["BaseState"], start_state):
-        self.background = Background()
+    def __init__(self, screen, states, start_state):
         self.screen = screen
         self.states = states
-        self.current_state = self.states[start_state]()
+        self.current_state = self.states[start_state]
         self.previous_state = self.current_state
 
     def update_state(self, next_state_key):
@@ -23,8 +20,12 @@ class Game:
             quit()
         else:
             self.previous_state = self.current_state
-            self.current_state = self.states[next_state_key]()
-            
+            self.current_state = self.states[next_state_key]
+
+
+    def draw_current_state(self):
+        self.current_state.draw(self.screen)
+
     def run_current_state(self):
         "Calls the current state's routine. Returns the key to the next state, or None if the state should not be changed."
         return self.current_state.run()
@@ -32,7 +33,7 @@ class Game:
     def run(self):
         while True:
             next_state_key = self.run_current_state()
-            self.current_state.draw(self.screen)
+            self.draw_current_state()
         
             pygame.display.update()
             FramePerSec.tick(FPS)

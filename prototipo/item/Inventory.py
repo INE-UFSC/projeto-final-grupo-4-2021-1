@@ -1,3 +1,4 @@
+#from typing import ItemsView
 #from Armor import Armor
 #from Weapon import Weapon
 #from Trinket import Trinket
@@ -21,8 +22,7 @@ class Inventory:
         self.__weight_capacity = weight_capacity
 
     def add_item(self, item):
-        if item not in self.__items:
-            self.__items.append(item)
+        self.__items.append(item)
     
     def remove_item(self, item):
         self.__items.remove(item)

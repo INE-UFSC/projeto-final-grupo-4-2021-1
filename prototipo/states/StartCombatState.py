@@ -1,30 +1,21 @@
-from MusicPlayer import MusicPlayer
-from fighter.main_character.MainCharacter import MainCharacter
-from creators.OpponentCreator import OpponentCreator
+from fighter.opponent.Opponent import Opponent
+from Singleton import Singleton
 from .BaseState import BaseState
-from display.components.Background import Background
-from room.CombatRoom import CombatRoom
 
 
-class StartCombatState(BaseState):
+class StartCombat(BaseState):
     def __init__(self):
-        super(StartCombatState, self).__init__()
+        super(StartCombat, self).__init__()
         self.time_active = 0
 
     def run(self):
-        CombatRoom()
         self.time_active += 1
         if self.time_active > 50:
-            MusicPlayer().play_music("prototipo/music/combat.mp3")
-            CombatRoom()
             self.time_active = 0
-
-            OpponentCreator().generate_enemy()
-
+            Singleton.opponent = Opponent.generate_test_opponent()
             return "MAIN_CHARACTER_PLAYING"
 
     def draw(self, surface):
-        surface.blit(Background().image, (0,0))
-
-        if self.time_active > 50:
-            OpponentCreator.current.draw(surface)
+        if (Singleton.opponent):
+            Singleton.opponent.draw(surface)
+        # desenhar quadrado como oponente

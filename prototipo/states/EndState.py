@@ -1,13 +1,12 @@
 import pygame
 from .BaseState import BaseState
-from display.components.Text import Text
 
 
-class EndState(BaseState):
+class End(BaseState):
     def __init__(self):
-        super(EndState, self).__init__()
-        self.__title = Text("prototipo/assets/fonts/title.ttf", 400, pygame.Color(255, 20, 20), "End")
-        self.__title.rect = self.__title.surface.get_rect(center=(self.screen_rect.center[0], self.screen_rect.center[1]))
+        super(End, self).__init__()
+        self.title = self.font.render("End", True, pygame.Color("white"))
+        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
         self.time_active = 0
 
     def run(self):
@@ -16,5 +15,5 @@ class EndState(BaseState):
             return "QUIT"
 
     def draw(self, surface):
-        surface.fill(pygame.Color(0, 0, 0))
-        self.__title.draw(surface)
+        surface.fill(pygame.Color("black"))
+        surface.blit(self.title, self.title_rect)

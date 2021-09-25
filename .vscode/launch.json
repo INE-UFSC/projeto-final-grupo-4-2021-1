@@ -9,7 +9,7 @@
             "name": "Python: Run Main",
             "type": "python",
             "request": "launch",
-            "program": "prototipo/Main.py",
+            "program": "versao_final/Main.py",
             "console": "integratedTerminal"
         }
     ]

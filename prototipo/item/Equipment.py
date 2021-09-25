@@ -1,6 +1,3 @@
-from abc import abstractmethod
-from skill.DamageType import DamageType
-from item.ItemTypes import ItemType
 from .Armor import Armor
 from .Weapon import Weapon
 from .Trinket import Trinket
@@ -11,12 +8,6 @@ class Equipment:
         self.__weapon = weapon
         self.__armor = armor
         self.__trinket = trinket
-
-    @abstractmethod
-    def default_equipment():
-        return Equipment(Weapon("Hands", "Your own pair of fists.", 0, {DamageType.ALL: 0}, None),
-                        Armor("Tattered Clothes", "Useless for battle.", 0, {DamageType.ALL: 0}, None),
-                        Trinket("UFSC's Badge of Honor", "Pretty cool looking, but useless nonetheless.", 0, None))
 
     @property
     def weapon(self):
@@ -41,6 +32,3 @@ class Equipment:
     @trinket.setter
     def trinket(self, trinket: Trinket):
         self.__trinket = trinket
-
-    def equipment_buffs(self):
-        return list(filter(None, [self.__weapon.buff, self.__armor.buff, self.__trinket.buff]))

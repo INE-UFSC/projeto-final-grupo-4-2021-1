@@ -1,74 +1,48 @@
-from helpers.SingletonMeta import ABCSingletonMeta
 from fighter.Fighter import Fighter
 from fighter.Stats import Stats
 from fighter.Resource import Resource
 from item.Inventory import Inventory
 from item.Equipment import Equipment
+from skill.EffectTarget import EffectTarget
+from skill.DamageEffect import DamageEffect
+from skill.HealingEffect import HealingEffect
+from skill.DamageType import DamageType
+from skill.Skill import Skill
+#importar inventário e equipamento
 
 ATRIBUTE_POINTS_PER_LEVEL = 2
 
-class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
-    def __init__(self, level, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, inventory: Inventory, exp: int, skills: list = [], xp=0):
+#buffs: dict[bufftarget, dict[DamageType, multiplier]]
+class MainCharacter(Fighter):
+    def __init__(self, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, buffs: dict, inventory: Inventory, exp: int, skills: list = []):
         self.__inventory = inventory
-        self.__equipment = equipment
-        self.__leveled_up = False
-        super().__init__(level, stats, hp, ap, equipment, skills)
+        self.__exp = exp
+        super().__init__(stats, hp, ap, equipment, skills)
+
+    @staticmethod
+    def generate_test_character():
+        return MainCharacter(Stats(10, 10, 10, 10), Resource(10, 10), Resource(1, 1), None, None, None, 0, [
+            Skill([DamageEffect({DamageType.SLASHING: 2}, 100, 0, EffectTarget.ENEMY)], "teste"),
+            Skill([HealingEffect(2, EffectTarget.SELF)], "teste")
+            ])
     
     @property
     def inventory(self):
         return self.__inventory
 
     @property
-    def leveled_up(self):
-        return self.__leveled_up
+    def exp(self):
+        return self.__exp
 
-    @leveled_up.setter
-    def leveled_up(self, leveled_up):
-        self.__leveled_up = bool(leveled_up)
+    #@inventory.setter
+    #def inventory(self, inventory):
+    #    self.__inventory = inventory
 
-    @property
-    def equipment(self):
-        return self.__equipment
 
     def increase_exp(self, amount):
         "Increases the current EXP by the specified amount"
         self.__exp += amount
 
+    #Implementar mensagem de level up 
     def level_up(self):
-        self.__leveled_up = True
-        self.hp.increase_max(self.stats.stats["CONSTITUTION"])
         self.stats.add_availablePoints(ATRIBUTE_POINTS_PER_LEVEL)
-        self._level += 1
-
-    def add_xp(self, xp):
-        self._xp += xp
-
-        while True:
-            if self._level < 5:
-                if self._xp > 500:
-                    self._xp -= 500
-                    self.level_up()
-                else:
-                    return
-
-            elif self._level < 10:
-                if self._xp > 1000:
-                    self._xp -= 1000
-                    self.level_up()
-                else:
-                    return
-
-            elif self._level < 20:
-                if self._xp > 1500:
-                    self._xp -= 1500
-                    self.level_up()
-                else:
-                    return
-
-            else:
-                if self._xp > 2000:
-                    self._xp -= 2000
-                    self.level_up()
-                else:
-                    return
-                

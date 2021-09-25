@@ -1,63 +1,41 @@
 import pygame
-from .BaseMenuState import BaseMenuState
-from room.HealRoom import HealRoom
-from display.components.MenuTextButton import MenuTextButton
-from display.components.Text import Text
-from display.compounds.MainCharacterResources import MainCharacterResources
-from display.components.Background import Background
+from .BaseState import BaseState
 
 
-class HealRoomState(BaseMenuState):
+class HealRoom(BaseState):
     def __init__(self):
-        super(HealRoomState, self).__init__()
+        super(HealRoom, self).__init__()
         self.active_index = 0
-        self.previous_index = 0
-        self.options = []
-        self.menu = []
+        self.options = ["Inventory", "Options"]
 
-        self.adder = 150
-        for option in [("Inventory", "INVENTORY"), ("Options", "OPTIONS")]:
-            option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
-                "prototipo/assets/fonts/menu_option.ttf",
-                35,
-                pygame.Color(255, 255, 255),
-                option[0]
-            ), option[1])
-            option.rect = option.surface.get_rect(topleft=(self.adder, 600))
-            self.adder += (option.surface.get_width() + 25)
+    def render_text(self, index):
+        color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
+        return self.font.render(self.options[index], True, color)
 
-            self.options.append(option)
+    def get_text_position(self, text, index):
+        center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))
+        return text.get_rect(center=center)
 
     def handle_action(self):
-        return self.options[self.active_index].on_pressed()
+        if self.active_index == 0:
+            self.done = True
+        elif self.active_index == 1:
+            self.done = True
+            self.next_state = "MENU"
 
-    def run(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return "QUIT"
-            elif event.type == pygame.KEYUP:
-                return self.handle_menu(event.key)
+    def get_event(self, event):
+        if event.type == pygame.QUIT:
+            self.quit = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                self.active_index = 1 if self.active_index <= 0 else 0
+            elif event.key == pygame.K_DOWN:
+                self.active_index = 0 if self.active_index >= 1 else 1
+            elif event.key == pygame.K_RETURN:
+                self.handle_action()
 
     def draw(self, surface):
-        surface.blit(Background().image, (0,0))
-        MainCharacterResources.draw(surface)
-
-        for door in HealRoom().doors():
-            if door.next_room_type.value not in self.menu:
-                self.menu.append(door.next_room_type.value)
-                option = MenuTextButton("prototipo/assets/combatMenuButton.png", Text(
-                    "prototipo/assets/fonts/menu_option.ttf",
-                    35,
-                    pygame.Color(255, 255, 255),
-                    door.next_room_type.value[0]
-                ), door.next_room_type.value[1])
-                option.rect = option.surface.get_rect(topleft=(self.adder, 600))
-                self.adder += (option.surface.get_width() + 25)
-                self.options.append(option)
-
+        surface.fill(pygame.Color("black"))
         for index, option in enumerate(self.options):
-            option.select() if index == self.active_index else option.unselect()
-            option.draw(surface)
-
-        heal_room = Text("prototipo/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), "Heal Room", (1100, 25))
-        heal_room.draw(surface)
+            text_render = self.render_text(index)
+            surface.blit(text_render, self.get_text_position(text_render, index))
