@@ -5,7 +5,6 @@ class DamageType(Enum):
     WATER = "WATER"
     EARTH = "EARTH"
     AIR = "AIR"
-    MAGICAL = "MAGICAL"
 
     PIERCING = "PIERCING"
     SLASHING = "SLASHING"

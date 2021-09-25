@@ -10,7 +10,6 @@ from skill.Skill import Skill
 from display.compounds.MainCharacterResources import MainCharacterResources
 from display.compounds.OpponentResources import OpponentResources
 from display.components.Background import Background
-from room.CombatRoom import CombatRoom
 # necessario identificar momento em que passar da sala atual para escolher treasureroom ou healroom
 # necessario identificar momento em que troca de turno para passar para opponentplaying
 

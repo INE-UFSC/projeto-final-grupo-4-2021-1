@@ -1,9 +1,8 @@
 import pygame
-from .Compound import Compound
 from display.components.Text import Text
 from fighter.main_character.MainCharacter import MainCharacter
 
-class MainCharacterResources(Compound):
+class MainCharacterResources():
 
     def draw(surface: pygame.Surface):
         topleft = (20, 20)
