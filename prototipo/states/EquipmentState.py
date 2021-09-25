@@ -32,7 +32,7 @@ class EquipmentState(BaseMenuState):
             f"{info}"
         ) for info in [
             f"Name: {MainCharacter().equipment.weapon.name}",
-            f"Damage: {MainCharacter().equipment.weapon.base_damage}",
+            f"Damage: {list(MainCharacter().equipment.weapon.base_damage.values())[0]}",
             f"Weight: {MainCharacter().equipment.weapon.weight}lbs",
             f"Description: {MainCharacter().equipment.weapon.description}"]]
         menu_height = 0
@@ -46,7 +46,7 @@ class EquipmentState(BaseMenuState):
             f"{info}"
         ) for info in [
             f"Name: {MainCharacter().equipment.armor.name}",
-            f"Protection: {MainCharacter().equipment.armor.base_armor}",
+            f"Protection: {list(MainCharacter().equipment.armor.base_armor.values())[0]}",
             f"Weight: {MainCharacter().equipment.armor.weight}lbs",
             f"Description: {MainCharacter().equipment.armor.description}"]]
         menu_height = 0
