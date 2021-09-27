@@ -31,7 +31,7 @@ class Opponent(Fighter):
         return self.__sprite
 
     def choose_skill(self):
-        skill = list(filter(lambda skill: skill.cost <= self.ap.current, self.skills))
+        skill = list(filter(lambda skill: skill.cost <= self.ap.current and not skill.active_cooldown, self.skills))
         if skill:
             return choice(skill)
         return None

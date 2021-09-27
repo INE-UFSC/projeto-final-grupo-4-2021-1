@@ -1,4 +1,3 @@
-from room.Chest import Chest
 import pygame
 from .BaseMenuState import BaseMenuState
 from room.TreasureRoom import TreasureRoom
@@ -16,6 +15,8 @@ class TreasureRoomState(BaseMenuState):
         self.previous_index = 0
         self.options = []
 
+        self.__room = TreasureRoom()
+
         self.adder = 50
         for option in [("Inventory", "INVENTORY"), ("Select Item", None), ("Options", "OPTIONS")]:
             option = MenuTextButton("versao_final/assets/combatMenuButton.png", Text(
@@ -31,7 +32,7 @@ class TreasureRoomState(BaseMenuState):
 
     def handle_action(self):
         if self.active_index == 1:
-            for item in TreasureRoom().chest.items:
+            for item in self.__room.chest.items:
                 MainCharacter().inventory.add_item(item)
 
         return self.options[self.active_index].on_pressed()
@@ -46,7 +47,7 @@ class TreasureRoomState(BaseMenuState):
     def draw(self, surface):
         surface.blit(Background().image, (0,0))
 
-        for door in TreasureRoom().doors():
+        for door in self.__room.doors():
             if door.next_room_type.value not in self.menu:
                 self.menu.append(door.next_room_type.value)
                 option = MenuTextButton("versao_final/assets/combatMenuButton.png", Text(
@@ -74,7 +75,7 @@ class TreasureRoomState(BaseMenuState):
 
         adder_item = 75
         item_options = []
-        for item in TreasureRoom().chest.items:
+        for item in self.__room.chest.items:
             item_option = Text("versao_final/assets/fonts/menu_option.ttf", 25, pygame.Color(255, 255, 255), item.name, (1100, 25))
             item_option.rect = option.surface.get_rect(topleft=(600, adder_item))
             adder_item += 50

@@ -36,6 +36,9 @@ class OpponentPlayingState(BaseState):
         OpponentResources.draw(surface)
 
     def handle_action(self):
+        if MainCharacter().hp.is_zero():
+            return "END"
+
         skill = OpponentCreator.current.choose_skill()
 
         if not skill:
@@ -64,6 +67,7 @@ class OpponentPlayingState(BaseState):
                 skill.opponent_animation.update()
 
     def run(self):
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"

@@ -36,6 +36,6 @@ class MainCharacterCreator:
             inventory.add_item(consumable)
 
         main_char = MainCharacter(0, Stats(10, 10, 10, 10), Resource(1000, 1000), Resource(5, 0),
-                                  Equipment.default_equipment(), inventory, 0, SkillCreator.create_skills())
+                                  Equipment.default_equipment(), inventory, 0, SkillCreator().create_skills())
 
         main_char.add_buff(Buff(0.5, BuffTarget.DAMAGE, DamageType.FIRE))

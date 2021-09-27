@@ -46,14 +46,13 @@ class OpponentCreator:
         sprite = OpponentSprite(sprite_path)
         skills = random.sample(SkillCreator.create_skills(), 1)
 
-        Skill(
-            [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100),
-                          random.randrange(10), EffectTarget.ENEMY)],
-            1, 0, "Basic attack", None)
+        #Skill(
+        #    [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100),
+        #                  random.randrange(10), EffectTarget.ENEMY)],
+        #    1, 0, "Basic attack", None)
         return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, skills)
 
-    @staticmethod
-    def __generate_common_enemy(level: int):
+    def __generate_common_enemy(self, level: int):
         level = 1
         xp = 300
         stats = Stats(*[random.randrange(5, 10) + level for i in range(4)])
@@ -63,15 +62,14 @@ class OpponentCreator:
             os.listdir("versao_final/assets/enemy_sprites/common/"))
         sprite = OpponentSprite(sprite_path)
 
-        skills = random.sample(SkillCreator.create_skills(), 2)
+        skills = random.sample(SkillCreator().create_skills(), 2)
 
         # basic_skill = Skill(
         #     [DamageEffect(random.randrange(8, 18), random.choice(list(DamageType)), random.randrange(80, 100), random.randrange(10), EffectTarget.ENEMY)],
         #     1, 0, "Basic attack", None)
         return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, skills)
 
-    @staticmethod
-    def __generate_rare_enemy(level: int):
+    def __generate_rare_enemy(self, level: int):
         level = 2
         xp = 600
         stats = Stats(*[random.randrange(10, 20) + level for i in range(4)])
@@ -94,8 +92,7 @@ class OpponentCreator:
         # )
         return Opponent(level, xp, stats, hp, ap, Equipment.default_equipment(), sprite, skills)
 
-    @staticmethod
-    def __generate_mythic_enemy(level: int):
+    def __generate_mythic_enemy(self, level: int):
         xp = 1200
         stats = Stats(*[random.randrange(20, 30) + level for i in range(4)])
         hp = Resource(random.randrange(1000, 2000))
