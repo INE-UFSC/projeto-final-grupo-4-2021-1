@@ -10,9 +10,9 @@ from .Stats import Stats
 
 
 class Fighter(ABC):
-    def __init__(self, level: int, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = []):
+    def __init__(self, level: int, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, skills: List["Skill"] = [], xp: int = 0):
         self._level = level
-        self._xp = 0
+        self._xp = xp
         self.__stats = stats
         self.__hp = hp
         self.__ap = ap

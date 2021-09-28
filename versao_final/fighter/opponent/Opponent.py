@@ -11,20 +11,7 @@ class Opponent(Fighter):
     def __init__(self, level, xp, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment,
                  sprite: OpponentSprite, skills: list = []):
         self.__sprite = sprite
-        self.__xp = xp
-        super().__init__(level, stats, hp, ap, equipment, skills)
-
-    @property
-    def info(self):
-        return self.__info
-
-    @property
-    def xp(self):
-        return self.__xp
-
-    @property
-    def behavior(self):
-        return self.__behavior
+        super().__init__(level, stats, hp, ap, equipment, skills, xp)
 
     @property
     def sprite(self):
@@ -35,9 +22,6 @@ class Opponent(Fighter):
         if skill:
             return choice(skill)
         return None
-
-    def use_skill(self, skill, target):
-        skill.use(self, target)
 
     def draw(self, surface):
         self.__sprite.draw(surface)

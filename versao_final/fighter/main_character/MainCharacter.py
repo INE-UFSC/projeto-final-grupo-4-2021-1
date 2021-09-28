@@ -10,9 +10,8 @@ ATRIBUTE_POINTS_PER_LEVEL = 2
 class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     def __init__(self, level, stats: Stats, hp: Resource, ap: Resource, equipment: Equipment, inventory: Inventory, exp: int, skills: list = [], xp=0):
         self.__inventory = inventory
-        self.__equipment = equipment
         self.__leveled_up = False
-        super().__init__(level, stats, hp, ap, equipment, skills)
+        super().__init__(level, stats, hp, ap, equipment, skills, xp)
     
     @property
     def inventory(self):
@@ -25,14 +24,6 @@ class MainCharacter(Fighter, metaclass=ABCSingletonMeta):
     @leveled_up.setter
     def leveled_up(self, leveled_up):
         self.__leveled_up = bool(leveled_up)
-
-    @property
-    def equipment(self):
-        return self.__equipment
-
-    def increase_exp(self, amount):
-        "Increases the current EXP by the specified amount"
-        self.__exp += amount
 
     def level_up(self):
         self.__leveled_up = True
